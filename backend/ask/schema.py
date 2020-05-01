@@ -2,16 +2,18 @@ import graphene
 from graphene_django.types import DjangoObjectType
 from .models import Question, Answer
 
+
 class QuestionType(DjangoObjectType):
     class Meta:
         model = Question
+
 
 class AnswerType(DjangoObjectType):
     class Meta:
         model = Answer
 
 
-class Query(object):
+class Query(graphene.ObjectType):
     all_questions = graphene.List(QuestionType)
     all_answers = graphene.List(AnswerType)
 
@@ -22,4 +24,4 @@ class Query(object):
         return Answer.objects.all()
 
 
-
+schema = graphene.Schema(query=Query)

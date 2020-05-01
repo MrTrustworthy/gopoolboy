@@ -1,9 +1,1 @@
-{% if latest_question_list %}
-    <ul>
-    {% for question in latest_question_list %}
-        <li><a href="{% url 'ask:detail' question.id %}">Q: {{ question.text }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No polls are available.</p>
-{% endif %}
+<p>Hi! there's a total of {{ amount }} questions available</p>
