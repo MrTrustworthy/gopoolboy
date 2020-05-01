@@ -8,6 +8,7 @@ authors = ["MrTrustworthy <tinywritingmakesmailhardtoread@gmail.com>"]
 python = "^3.8"
 django = "^3.0.5"
 djangorestframework = "^3.11"
+psycopg2 = "^2.8.5"
 
 [tool.poetry.dev-dependencies]
 

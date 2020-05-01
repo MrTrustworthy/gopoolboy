@@ -12,7 +12,13 @@ ENV DJANGO_ENV=${DJANGO_ENV} \
   PIP_DEFAULT_TIMEOUT=100 \
   POETRY_VERSION=1.0.2 \
   POETRY_VIRTUALENVS_CREATE=false \
-  POETRY_CACHE_DIR='/var/cache/pypoetry'
+  POETRY_CACHE_DIR='/var/cache/pypoetry' \
+  # application
+  SECRET_KEY="" \
+  PG_USER="" \
+  PG_PASSWORD="" \
+  PG_HOST="" \
+  PG_PORT=""
 
 RUN mkdir /code
 RUN pip install "poetry==$POETRY_VERSION"
@@ -30,4 +36,5 @@ RUN echo "$DJANGO_ENV" \
 
 COPY . /code
 
-CMD poetry run python manage.py runserver 0.0.0.0:8000
+CMD /code/docker-entrypoint.sh
+#poetry run python manage.py runserver 0.0.0.0:8000
