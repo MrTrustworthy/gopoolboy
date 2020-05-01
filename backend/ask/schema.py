@@ -14,11 +14,24 @@ class AnswerType(DjangoObjectType):
 
 
 class Query(graphene.ObjectType):
+    question = graphene.Field(QuestionType, id=graphene.Int(), title=graphene.String())
     all_questions = graphene.List(QuestionType)
     all_answers = graphene.List(AnswerType)
 
     def resolve_all_questions(self, info, **kwargs):
         return Question.objects.all()
+
+    def resolve_question(self, info, **kwargs):
+        id = kwargs.get('id')
+        title = kwargs.get('title')
+
+        if id is not None:
+            return Question.objects.get(pk=id)
+
+        if title is not None:
+            return Question.objects.get(title=title)
+
+        return None
 
     def resolve_all_answers(self, info, **kwargs):
         return Answer.objects.all()

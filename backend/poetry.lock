@@ -29,6 +29,17 @@ sqlparse = ">=0.2.2"
 
 [[package]]
 category = "main"
+description = "django-cors-headers is a Django application for handling the server headers required for Cross-Origin Resource Sharing (CORS)."
+name = "django-cors-headers"
+optional = false
+python-versions = ">=3.5"
+version = "3.2.1"
+
+[package.dependencies]
+Django = ">=1.11"
+
+[[package]]
+category = "main"
 description = "Web APIs for Django, made easy."
 name = "djangorestframework"
 optional = false
@@ -157,13 +168,14 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "0.3.1"
 
 [metadata]
-content-hash = "e7c9121bef4307915bceb4ea977be066572dbcae5e9e6a239461bcf0e60f0741"
+content-hash = "ba8ea306fd0ea91a676cd87f4e4f1bcda6101292b9e1486361daa4fbdb538c4f"
 python-versions = "^3.8"
 
 [metadata.hashes]
 aniso8601 = ["513d2b6637b7853806ae79ffaca6f3e8754bdd547048f5ccc1420aec4b714f1e", "d10a4bf949f619f719b227ef5386e31f49a2b6d453004b21f02661ccc8670c7b"]
 asgiref = ["8036f90603c54e93521e5777b2b9a39ba1bad05773fcf2d208f0299d1df58ce5", "9ca8b952a0a9afa61d30aa6d3d9b570bb3fd6bafcf7ec9e6bed43b936133db1c"]
 django = ["642d8eceab321ca743ae71e0f985ff8fdca59f07aab3a9fb362c617d23e33a76", "d4666c2edefa38c5ede0ec1655424c56dc47ceb04b6d8d62a7eac09db89545c1"]
+django-cors-headers = ["a5960addecc04527ab26617e51b8ed42f0adab4594b24bb0f3c33e2bd3857c3f", "a785b5f446f6635810776d9f5f5d23e6a2a2f728ea982648370afaf0dfdf2627"]
 djangorestframework = ["05809fc66e1c997fd9a32ea5730d9f4ba28b109b9da71fccfa5ff241201fd0a4", "e782087823c47a26826ee5b6fa0c542968219263fb3976ec3c31edab23a4001f"]
 graphene = ["09165f03e1591b76bf57b133482db9be6dac72c74b0a628d3c93182af9c5a896", "2cbe6d4ef15cfc7b7805e0760a0e5b80747161ce1b0f990dfdc0d2cf497c12f9"]
 graphene-django = ["33843f3f86b4d580a7cc69ccf5d2cff9e275597ae2c33c906627fa15e0c18590", "9a95913e3c70e8013c4908b916c68ab1497e1a6cd1cdd1793010f79777978596"]
