@@ -16,7 +16,7 @@ services:
     volumes:
       - ./backend:/code
     ports:
-      - "8000:8000"
+      - 8000:8000
     environment:
       SECRET_KEY: "blub"
       PG_USER: postgres
@@ -25,3 +25,9 @@ services:
       PG_PORT: 5432
     depends_on:
       - db-pg
+  frontend:
+    build: frontend
+    volumes:
+      - ./frontend:/app
+    ports:
+      - 8080:8080
