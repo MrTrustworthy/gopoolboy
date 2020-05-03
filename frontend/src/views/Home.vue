@@ -1,24 +1,23 @@
 <template>
-    <div id="app">
-        <Header msg="Poolboy"/>
-        <router-view/>
+    <div id="home">
+        <QuestionOverview msg="Most recent questions:"/>
     </div>
 </template>
 
 <script>
-    import Header from './components/Header.vue'
+    import QuestionOverview from '@/components/QuestionOverview.vue'
 
     export default {
         name: 'App',
         components: {
-            Header
+            QuestionOverview
 
         }
     }
 </script>
 
 <style>
-    #app {
+    #home {
         font-family: Avenir, Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
