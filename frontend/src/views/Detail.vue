@@ -1,23 +1,21 @@
 <template>
-    <div id="app">
-        <Header msg="Poolboy"/>
-        <router-view/>
+    <div id="detail">
+        <QuestionDetail />
     </div>
 </template>
 
 <script>
-    import Header from './components/Header.vue'
-
+    import QuestionDetail from '@/components/QuestionDetail.vue'
     export default {
-        name: 'App',
+        name: 'DetailView',
         components: {
-            Header
+            QuestionDetail
         }
     }
 </script>
 
-<style>
-    #app {
+<style scoped>
+    #detail {
         font-family: Avenir, Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;

@@ -1,9 +1,0 @@
-query {
-  allQuestions {
-    id
-    title
-    answerSet {
-      text
-    }
-  }
-}

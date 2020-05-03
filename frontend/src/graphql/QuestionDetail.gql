@@ -1,5 +1,5 @@
-query {
-  question(id: 1) {
+query GetQuestionDetail ($question_id: Int){
+  question(id: $question_id) {
     id
     title
     text

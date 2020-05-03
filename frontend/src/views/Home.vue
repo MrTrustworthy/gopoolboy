@@ -6,12 +6,10 @@
 
 <script>
     import QuestionOverview from '@/components/QuestionOverview.vue'
-
     export default {
-        name: 'App',
+        name: 'Home',
         components: {
             QuestionOverview
-
         }
     }
 </script>
