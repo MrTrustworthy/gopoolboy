@@ -17,10 +17,12 @@
 
                     <div
                             v-for="question of data.allQuestions"
-                            :key="question.title"
+                            :key="question.id"
                             class="message"
                     >
-                        {{ question.title }} : {{ question.answerSet.length }} Answer{{ question.answerSet.length !== 1
+
+                        <router-link v-bind:to="'/q/' + question.id">{{ question.title }}</router-link>
+                        : {{ question.answerSet.length }} Answer{{ question.answerSet.length !== 1
                         ? "s" : "" }}
                     </div>
                 </div>
