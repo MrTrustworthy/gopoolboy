@@ -19,6 +19,7 @@ class Query(graphene.ObjectType):
     all_answers = graphene.List(AnswerType)
 
     def resolve_all_questions(self, info, **kwargs):
+        print(f"Calling resolve_all_questions with info: {dir(info)}")
         return Question.objects.all()
 
     def resolve_question(self, info, **kwargs):

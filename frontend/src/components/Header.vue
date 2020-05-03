@@ -30,4 +30,17 @@ li {
 a {
   color: #42b983;
 }
+
+
+.header {
+    overflow: hidden;
+}
+
+.header img {
+    margin-right: 15px;
+}
+
+.header h1 {
+    display: inline-block;
+}
 </style>

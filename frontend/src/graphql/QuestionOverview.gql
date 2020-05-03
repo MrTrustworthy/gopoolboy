@@ -1,12 +1,9 @@
 query {
-  question(id: 1) {
+  allQuestions {
     id
     title
-    text
     answerSet {
       id
-      text
-      votes
     }
   }
 }

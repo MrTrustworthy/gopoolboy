@@ -1,19 +1,18 @@
 <template>
   <div id="app">
     <Header msg="Poolboy" />
-    <HelloWorld msg="Welcome!"/>
+    <QuestionOverview msg="Most recent questions:"/>
   </div>
 </template>
 
 <script>
 import Header from './components/Header.vue'
-
-import HelloWorld from './components/HelloWorld.vue'
+import QuestionOverview from './components/QuestionOverview.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
+    QuestionOverview,
     Header
 
   }

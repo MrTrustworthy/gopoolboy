@@ -1,26 +1,38 @@
 <template>
-  <div class="hello">
+  <div class="question-overview">
     <h1>{{ msg }}</h1>
 
-    <!-- Apollo watched Graphql query -->
+
+
+
     <ApolloQuery
-      :query="require('../graphql/FirstQuestion.gql')"
-      :variables="{ question }"
+      :query="require('../graphql/QuestionOverview.gql')"
     >
+
       <template slot-scope="{ result: { loading, error, data } }">
-        <!-- Loading -->
         <div v-if="loading" class="loading apollo">Loading...</div>
 
         <!-- Error -->
         <div v-else-if="error" class="error apollo">An error occured</div>
 
-        <!-- Result -->
-        <div v-else-if="data" class="result apollo">{{ data.question.title }}</div>
+        <div v-else-if="data" class="result apollo">
 
-        <!-- No result -->
+          <p>There's a total of {{ data.allQuestions.length }} Questions in your organization</p>
+
+          <div
+            v-for="question of data.allQuestions"
+            :key="question.title"
+            class="message"
+          >
+            {{ question.title }} : {{ question.answerSet.length }} Answer{{ question.answerSet.length !== 1 ? "s" : ""  }}
+          </div>
+        </div>
+
         <div v-else class="no-result apollo">No result :(</div>
+
       </template>
     </ApolloQuery>
+
 
 
   </div>
@@ -28,10 +40,9 @@
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'QuestionOverview',
   props: {
-    msg: String,
-    question: String
+    msg: String
   }
 }
 </script>
