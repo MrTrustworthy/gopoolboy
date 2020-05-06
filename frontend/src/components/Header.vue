@@ -1,9 +1,9 @@
 <template>
     <div class="header">
-        <h1>{{ msg }}</h1>
-        <img alt="Vue logo" src="../assets/logo.png">
         <router-link to="/">Home</router-link>
         <router-link to="/about">About</router-link>
+        <h1>{{ msg }}</h1>
+        <img alt="Poolboy logo" src="../assets/poolboy.png" width="128" height="128">
 
     </div>
 </template>
@@ -31,14 +31,6 @@
     li {
         display: inline-block;
         margin: 0 10px;
-    }
-
-    a {
-        color: #42b983;
-    }
-
-    .router-link-active {
-        color: aquamarine;
     }
 
     .header {

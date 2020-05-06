@@ -22,7 +22,24 @@
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
-        color: #2c3e50;
         margin-top: 60px;
+        color: rgb(31, 135, 181);
+        background-color: antiquewhite;
+    }
+
+    a:link {
+        color: rgb(31, 135, 181);
+    }
+
+    a:visited {
+        color: rgb(31, 135, 181);
+    }
+
+    a:active {
+        color: rgb(31, 135, 181);
+    }
+
+    .router-link-active {
+        color: aquamarine;
     }
 </style>
