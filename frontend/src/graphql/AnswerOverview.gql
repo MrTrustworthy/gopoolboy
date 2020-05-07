@@ -1,0 +1,8 @@
+
+query getAnswers ($question_id: ID!){
+  getAnswers: getAnswersForQuestion(id: $question_id){
+    id
+    text
+    votes
+  }
+}

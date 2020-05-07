@@ -1,9 +1,7 @@
 query GetQuestionOverview {
-  allQuestions {
+  getQuestions {
     id
     title
-    answerSet {
-      id
-    }
+    answerCount
   }
 }

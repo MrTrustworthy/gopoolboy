@@ -1,30 +1,24 @@
 version: '3'
 
 services:
-  db-pg:
+  pg-qapp:
     image: postgres:12.2
     environment:
-      - POSTGRES_DB=postgres
+      - POSTGRES_DB=qapp
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     volumes:
       - ./postgres-data:/var/lib/postgresql/data
     ports:
       - 5432:5432
-  backend:
-    build: backend
+  qapp:
+    build: qapp
     volumes:
-      - ./backend:/code
+      - ./qapp:/app
     ports:
-      - 8000:8000
-    environment:
-      SECRET_KEY: "blub"
-      PG_USER: postgres
-      PG_PASSWORD: postgres
-      PG_HOST: db-pg
-      PG_PORT: 5432
+      - 4000:4000
     depends_on:
-      - db-pg
+      - pg-qapp
   frontend:
     build: frontend
     volumes:

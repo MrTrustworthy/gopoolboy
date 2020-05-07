@@ -1,12 +1,7 @@
-query GetQuestionDetail ($question_id: Int){
-  question(id: $question_id) {
+query getQuestion ($question_id: ID!){
+  getQuestion(id: $question_id) {
     id
     title
     text
-    answerSet {
-      id
-      text
-      votes
-    }
   }
 }

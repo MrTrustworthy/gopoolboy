@@ -13,17 +13,16 @@
 
                 <div v-else-if="data" class="result apollo">
 
-                    <p>There's a total of {{ data.allQuestions.length }} Questions in your organization</p>
+                    <p>There's a total of {{ data.getQuestions.length }} Questions in your organization</p>
 
                     <div
-                            v-for="question of data.allQuestions"
+                            v-for="question of data.getQuestions"
                             :key="question.id"
                             class="message"
                     >
 
                         <router-link v-bind:to="'/q/' + question.id">{{ question.title }}</router-link>
-                        : {{ question.answerSet.length }} Answer{{ question.answerSet.length !== 1
-                        ? "s" : "" }}
+                        : {{ question.answerCount }} Answer{{ question.answerCount !== 1 ? "s" : "" }}
                     </div>
                 </div>
 

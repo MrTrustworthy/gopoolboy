@@ -1,0 +1,18 @@
+{
+  "name": "qapp",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "server": "nodemon index.js",
+    "migrate": "knex migrate:latest"
+  },
+  "dependencies": {
+    "apollo-server": "^2.13.0",
+    "graphql": "^15.0.0",
+    "knex": "^0.21.1",
+    "pg": "^8.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  }
+}
