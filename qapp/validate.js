@@ -29,6 +29,7 @@ async function isTokenValid(token) {
             },
             (error, decoded) => {
                 if (error) {
+                    console.log(bearerToken[1], "ERROR IS ", error)
                     resolve({error});
                 }
                 if (decoded) {
