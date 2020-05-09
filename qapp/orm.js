@@ -1,7 +1,10 @@
 const knexClient = require('./knexclient');
+const isTokenValid = require('./validate')
 
 
-function getAnswersForQuestion(parent, args, context, info) {
+async function getAnswersForQuestion(parent, args, context, info) {
+    //let {error, decoded} = await isTokenValid(context['authToken']);
+    //if (error) return [];
     return knexClient
         .from('answers')
         .select('id', 'text', 'votes')
@@ -21,4 +24,9 @@ function getQuestions() {
         .groupBy('questions.id', ' questions.title', 'questions.text', 'questions.votes')
 }
 
-module.exports = {getAnswersForQuestion, getQuestion, getQuestions};
+const hello = async (parent, args, context, info) => {
+    let {error, decoded} = await isTokenValid(context['authToken']);
+    return error ? "Nope, not you!" : "Hello World again!"
+};
+
+module.exports = {getAnswersForQuestion, getQuestion, getQuestions, hello};

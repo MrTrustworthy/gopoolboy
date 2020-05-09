@@ -1,6 +1,7 @@
 <template>
     <div id="app">
         <Header msg="Poolboy"/>
+
         <router-view/>
     </div>
 </template>

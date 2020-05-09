@@ -1,5 +1,5 @@
 <template>
-    <div id="home">
+    <div class="home">
         <QuestionOverview msg="Most recent questions:"/>
     </div>
 </template>
@@ -14,8 +14,8 @@
     }
 </script>
 
-<style>
-    #home {
+<style scoped>
+    .home {
         margin-top: 60px;
     }
 </style>
