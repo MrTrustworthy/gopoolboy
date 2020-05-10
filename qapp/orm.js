@@ -1,10 +1,7 @@
 const knexClient = require('./knexclient');
-const isTokenValid = require('./validate')
 
 
 async function getAnswersForQuestion(parent, args, context, info) {
-    //let {error, decoded} = await isTokenValid(context['authToken']);
-    //if (error) return [];
     return knexClient
         .from('answers')
         .select('id', 'text', 'votes')
@@ -25,8 +22,9 @@ function getQuestions() {
 }
 
 const hello = async (parent, args, context, info) => {
-    let {error, decoded} = await isTokenValid(context['authToken']);
-    return error ? "Nope, not you!" : "Hello World again!"
+    return "Hello World again!"
 };
+
+
 
 module.exports = {getAnswersForQuestion, getQuestion, getQuestions, hello};

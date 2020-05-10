@@ -3,8 +3,9 @@ import VueRouter from 'vue-router'
 import HomeView from './views/Home.vue'
 import AboutView from './views/About.vue'
 import DetailView from './views/Detail.vue'
+import ProfileView from './views/Profile.vue'
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 
 export default new VueRouter({
@@ -23,6 +24,11 @@ export default new VueRouter({
             path: "/q/:id",
             name: "detail",
             component: DetailView
+        },
+                {
+            path: "/profile",
+            name: "profile",
+            component: ProfileView
         },
     ]
 

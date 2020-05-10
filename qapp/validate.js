@@ -29,7 +29,6 @@ async function isTokenValid(token) {
             },
             (error, decoded) => {
                 if (error) {
-                    console.log(bearerToken[1], "ERROR IS ", error)
                     resolve({error});
                 }
                 if (decoded) {
@@ -38,8 +37,21 @@ async function isTokenValid(token) {
             }
         );
     });
-
-
 }
 
-module.exports = isTokenValid;
+
+function authRequired(resolverFunction) {
+
+    return async (parent, args, context, info)  =>{
+        let {error, decoded} = await isTokenValid(context['authToken']);
+        if (decoded) {
+            console.log("Decoded data is:", decoded);
+            return resolverFunction(parent, args, context, info);
+        } else {
+            console.log("Got an error decoding", context['authToken'], ":", error);
+            return null;
+        }
+    };
+}
+
+module.exports = authRequired;

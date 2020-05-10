@@ -46,6 +46,13 @@ export const useAuth0 = ({
 
                 this.user = await this.auth0Client.getUser();
                 this.isAuthenticated = true;
+                await this.saveToken();
+            },
+            async saveToken() {
+                // do we need this or is it persisted elsewhere already?
+                this.token = await this.getTokenSilently();
+                // can we avoid this and use the token from apollos getAuth via memory?
+                localStorage.setItem('apollo-token', this.token);
             },
             /** Handles the callback when logging in using a redirect */
             async handleRedirectCallback() {
@@ -79,6 +86,7 @@ export const useAuth0 = ({
             },
             /** Logs the user out and removes their session on the authorization server */
             logout(o) {
+                localStorage.removeItem('apollo-token');
                 return this.auth0Client.logout(o);
             }
         },
@@ -112,6 +120,8 @@ export const useAuth0 = ({
                 this.isAuthenticated = await this.auth0Client.isAuthenticated();
                 this.user = await this.auth0Client.getUser();
                 this.loading = false;
+                if (this.isAuthenticated) await this.saveToken();
+
             }
         }
     });
