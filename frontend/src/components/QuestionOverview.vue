@@ -31,7 +31,6 @@
             </template>
         </ApolloQuery>
 
-
     </div>
 </template>
 

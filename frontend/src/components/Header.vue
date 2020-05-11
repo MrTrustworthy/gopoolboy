@@ -3,7 +3,7 @@
         <router-link to="/">Home</router-link>
         <router-link to="/about">About</router-link>
         <h1>{{ msg }}</h1>
-        <img alt="Poolboy logo" src="../assets/poolboy.png" width="128" height="128">
+        <img alt="Poolboy logo" src="../assets/icon.png" width="128" height="128">
         <ProfileHeader />
     </div>
 </template>
@@ -20,11 +20,9 @@
             ProfileHeader
         },
         methods: {
-            // Log the user in
             login() {
                 this.$auth.loginWithRedirect();
             },
-            // Log the user out
             logout() {
                 this.$auth.logout({
                     returnTo: window.location.origin
@@ -42,6 +40,7 @@
 
     .header img {
         margin-right: 15px;
+        display: inline-block;
     }
 
     .header h1 {

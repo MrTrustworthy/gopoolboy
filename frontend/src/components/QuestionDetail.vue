@@ -1,10 +1,7 @@
 <template>
     <div class="question-overview">
         <h1>Question {{ $route.params.id }}</h1>
-
-
         <div v-if="$apollo.queries.getQuestion.loading" class="loading apollo">Loading...</div>
-
         <div class="question-box">
             <h3>{{ getQuestion.title }}</h3>
             <p>{{ getQuestion.text }}</p>
@@ -41,12 +38,8 @@
                         question_id: this.question_id
                     }
                 },
-
-
             }
         }
-
-
     }
 </script>
 
