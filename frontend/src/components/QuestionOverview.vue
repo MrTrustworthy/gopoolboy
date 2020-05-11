@@ -1,35 +1,34 @@
 <template>
     <div class="question-overview">
-        <h1>{{ msg }}</h1>
+        <h2>Most recent questions</h2>
 
-        <ApolloQuery
-                :query="require('../graphql/QuestionOverview.gql')"
-        >
-            <template slot-scope="{ result: { loading, error, data } }">
-                <div v-if="loading" class="loading apollo">Loading...</div>
 
-                <!-- Error -->
-                <div v-else-if="error" class="error apollo">An error occured</div>
+        <div v-if="$apollo.queries.getQuestions.loading" class="loading apollo">
+            Loading...
+        </div>
 
-                <div v-else-if="data" class="result apollo">
+        <!-- Error -->
+        <div v-else-if="$apollo.queries.getQuestions.error" class="error apollo">
+            An error occured
+        </div>
 
-                    <p>There's a total of {{ data.getQuestions.length }} Questions in your organization</p>
+        <div v-else-if="getQuestions">
 
-                    <div
-                            v-for="question of data.getQuestions"
-                            :key="question.id"
-                            class="message"
-                    >
+            <p>There's a total of {{ getQuestions.length }} Questions in your organization</p>
 
-                        <router-link v-bind:to="'/q/' + question.id">{{ question.title }}</router-link>
-                        : {{ question.answerCount }} Answer{{ question.answerCount !== 1 ? "s" : "" }}
-                    </div>
-                </div>
+            <div
+                    v-for="question of getQuestions"
+                    :key="question.id"
+                    class="message"
+            >
+                <router-link v-bind:to="'/q/' + question.id">{{ question.title }}</router-link>
+                : {{ question.answerCount }} Answer{{ question.answerCount !== 1 ? "s" : "" }}
+            </div>
+        </div>
 
-                <div v-else class="no-result apollo">No result :(</div>
-
-            </template>
-        </ApolloQuery>
+        <div v-else>
+            Something went wrong :(
+        </div>
 
     </div>
 </template>
@@ -37,8 +36,15 @@
 <script>
     export default {
         name: 'QuestionOverview',
-        props: {
-            msg: String
+        data() {
+            return {
+                getQuestions: []
+            }
+        },
+        apollo: {
+            getQuestions: {
+                query: require('../graphql/QuestionOverview.gql'),
+            },
         }
     }
 </script>

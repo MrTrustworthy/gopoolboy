@@ -1,6 +1,6 @@
 <template>
     <div class="home">
-        <QuestionOverview msg="Most recent questions:"/>
+        <QuestionOverview />
     </div>
 </template>
 

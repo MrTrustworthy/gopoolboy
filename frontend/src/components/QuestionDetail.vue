@@ -18,7 +18,6 @@
         name: 'QuestionDetail',
         data() {
             return {
-                question: {},
                 getQuestion: {},
                 question_id: this.$route.params.id
             }
@@ -30,9 +29,7 @@
         },
         apollo: {
             getQuestion: {
-                // gql query
                 query: require('../graphql/QuestionDetail.gql'),
-                // Static parameters
                 variables() {
                     return {
                         question_id: this.question_id
@@ -52,11 +49,4 @@
     .question-box {
         background-color: bisque;
     }
-
-    .answer-box {
-        background-color: antiquewhite;
-        padding: 5px;
-        margin: 5px;
-    }
-
 </style>

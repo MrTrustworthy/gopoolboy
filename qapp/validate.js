@@ -1,6 +1,7 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 const jwksClient = require("jwks-rsa");
+const {AuthenticationError} = require('apollo-server');
 
 const client = jwksClient({
     jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`
@@ -42,14 +43,14 @@ async function isTokenValid(token) {
 
 function authRequired(resolverFunction) {
 
-    return async (parent, args, context, info)  =>{
+    return async (parent, args, context, info) => {
         let {error, decoded} = await isTokenValid(context['authToken']);
         if (decoded) {
             console.log("Decoded data is:", decoded);
             return resolverFunction(parent, args, context, info);
         } else {
             console.log("Got an error decoding", context['authToken'], ":", error);
-            return null;
+            throw new AuthenticationError(error);
         }
     };
 }
