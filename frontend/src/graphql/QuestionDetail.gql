@@ -1,7 +1,8 @@
-query getQuestion ($question_id: ID!){
-  getQuestion(id: $question_id) {
+query GetQuestion ($questionId: ID!){
+  getQuestion(id: $questionId) {
     id
     title
     text
+    votes
   }
 }

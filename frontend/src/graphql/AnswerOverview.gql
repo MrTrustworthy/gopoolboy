@@ -1,6 +1,6 @@
 
-query getAnswers ($question_id: ID!){
-  getAnswers: getAnswersForQuestion(id: $question_id){
+query GetAnswers ($questionId: ID!){
+  getAnswers: getAnswersForQuestion(id: $questionId){
     id
     text
     votes

@@ -18,12 +18,12 @@
         data() {
             return {
                 getAnswers: {},
-                question_id: this.$route.params.id
+                questionId: this.$route.params.id
             }
         },
         watch: {
             $route(to, from) { // eslint-disable-line no-unused-vars
-                this.question_id = to.params.id
+                this.questionId = to.params.id
             }
         },
         apollo: {
@@ -33,7 +33,7 @@
                 // Static parameters
                 variables() {
                     return {
-                        question_id: this.question_id
+                        questionId: this.questionId
                     }
                 },
             }

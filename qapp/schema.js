@@ -1,6 +1,6 @@
 const {gql} = require('apollo-server');
 const authRequired = require('./validate');
-const {getAnswersForQuestion, getQuestion, getQuestions, hello} = require('./orm');
+const {getAnswersForQuestion, getQuestion, getQuestions, hello, upvoteQuestion} = require('./orm');
 
 const typeDefs = gql`
     type Answer {
@@ -16,6 +16,8 @@ const typeDefs = gql`
         votes: Int
         answerCount: Int
     }
+    
+    
 
     type Query {
         sayHello: String
@@ -23,6 +25,10 @@ const typeDefs = gql`
         getQuestions: [Question]
         getQuestion(id: ID!): Question
         getAnswersForQuestion(id: ID!): [Answer]
+    }
+    
+    type Mutation {
+        upvoteQuestion(id: ID!): Question!
     }
 
 `;
@@ -34,6 +40,9 @@ const resolvers = {
         getQuestions: authRequired(getQuestions),
         getQuestion: authRequired(getQuestion),
         getAnswersForQuestion: authRequired(getAnswersForQuestion)
+    },
+    Mutation: {
+        upvoteQuestion: upvoteQuestion
     }
 };
 

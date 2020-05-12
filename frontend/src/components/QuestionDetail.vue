@@ -3,11 +3,11 @@
         <h1>Question {{ $route.params.id }}</h1>
         <div v-if="$apollo.queries.getQuestion.loading" class="loading apollo">Loading...</div>
         <div class="question-box">
-            <h3>{{ getQuestion.title }}</h3>
+            <h3>{{ getQuestion.title }} ({{ getQuestion.votes }} votes)</h3>
+            <button @click="upvoteQuestion">Upvote</button>
             <p>{{ getQuestion.text }}</p>
         </div>
         <br>
-
 
 
     </div>
@@ -19,12 +19,12 @@
         data() {
             return {
                 getQuestion: {},
-                question_id: this.$route.params.id
+                questionId: this.$route.params.id
             }
         },
         watch: {
             $route(to, from) { // eslint-disable-line no-unused-vars
-                this.question_id = to.params.id
+                this.questionId = to.params.id
             }
         },
         apollo: {
@@ -32,9 +32,31 @@
                 query: require('../graphql/QuestionDetail.gql'),
                 variables() {
                     return {
-                        question_id: this.question_id
+                        questionId: this.questionId
                     }
                 },
+            }
+        },
+        methods: {
+            upvoteQuestion() {
+                this.$apollo.mutate({
+                    mutation: require('../graphql/UpvoteQuestion.gql'),
+                    variables: {
+                        questionId: this.questionId
+                    },
+                    update: (store, {data: {value}}) => {
+                        console.log("data", store, "vals", value)
+                    },
+                    optimisticResponse: {
+                        __typename: 'Mutation',
+                        upvoteQuestion: {
+                            __typename: 'Question',
+                            id: this.questionId,
+                            votes: this.getQuestion.votes + 1
+                        },
+
+                    }
+                })
             }
         }
     }

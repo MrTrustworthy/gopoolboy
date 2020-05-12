@@ -25,6 +25,11 @@ const hello = async (parent, args, context, info) => {
     return "Hello World again!"
 };
 
+const upvoteQuestion = async (parent, args, context, info) => {
+    return knexClient('questions')
+        .where({'id': args['id']})
+        .increment('votes', 1)
+        .then(() => getQuestion(null, args, null, null));
+};
 
-
-module.exports = {getAnswersForQuestion, getQuestion, getQuestions, hello};
+module.exports = {getAnswersForQuestion, getQuestion, getQuestions, upvoteQuestion, hello};
