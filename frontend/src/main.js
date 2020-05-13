@@ -3,7 +3,7 @@ import {router} from './router'
 import App from './App.vue'
 import {createProvider} from './vue-apollo'
 import {domain, clientId, audience} from "../auth_config.json";
-import {Auth0Plugin, getInstance} from "./auth";
+import {Auth0Plugin} from "./auth";
 
 Vue.config.productionTip = false;
 
