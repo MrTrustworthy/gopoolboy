@@ -44,9 +44,6 @@
                     variables: {
                         questionId: this.questionId
                     },
-                    update: (store, {data: {value}}) => {
-                        console.log("data", store, "vals", value)
-                    },
                     optimisticResponse: {
                         __typename: 'Mutation',
                         upvoteQuestion: {

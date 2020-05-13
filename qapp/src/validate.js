@@ -45,10 +45,8 @@ function authRequired(resolverFunction) {
     return async (parent, args, context, info) => {
         let {error, decoded} = await isTokenValid(context['authToken']);
         if (decoded) {
-            console.log("Decoded data is:", decoded);
             return resolverFunction(parent, args, context, info);
         } else {
-            console.log("Got an error decoding", context['authToken'], ":", error);
             throw new AuthenticationError(error);
         }
     };
