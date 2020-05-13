@@ -42,7 +42,7 @@ const resolvers = {
         getAnswersForQuestion: authRequired(getAnswersForQuestion)
     },
     Mutation: {
-        upvoteQuestion: upvoteQuestion
+        upvoteQuestion: authRequired(upvoteQuestion)
     }
 };
 

@@ -4,32 +4,57 @@ import HomeView from './views/Home.vue'
 import AboutView from './views/About.vue'
 import DetailView from './views/Detail.vue'
 import ProfileView from './views/Profile.vue'
+import WelcomeView from './views/Welcome.vue'
+
 
 Vue.use(VueRouter);
 
 
-export default new VueRouter({
+export const router = new VueRouter({
     routes: [
         {
             path: "/",
             name: "home",
-            component: HomeView
+            component: HomeView,
+            meta: {
+                requiresLogin: true
+            }
         },
         {
             path: "/about",
             name: "about",
-            component: AboutView
+            component: AboutView,
+            meta: {
+                requiresLogin: true
+            }
         },
         {
             path: "/q/:id",
             name: "detail",
-            component: DetailView
+            component: DetailView,
+            meta: {
+                requiresLogin: true
+            }
         },
-                {
+        {
             path: "/profile",
             name: "profile",
-            component: ProfileView
+            component: ProfileView,
+            meta: {
+                requiresLogin: true
+            }
+        },
+        {
+            path: "/welcome",
+            name: "welcome",
+            component: WelcomeView,
         },
     ]
 
-})
+});
+
+
+router.beforeEach((to, from, next) => {
+    if (to.name !== "welcome" && !localStorage.getItem('apollo-token')) next({name: 'welcome'});
+    else next();
+});

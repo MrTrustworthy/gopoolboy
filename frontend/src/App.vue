@@ -1,7 +1,6 @@
 <template>
     <div id="app">
         <Header msg="Poolboy"/>
-
         <router-view/>
     </div>
 </template>
@@ -40,7 +39,4 @@
         color: rgb(31, 135, 181);
     }
 
-    .router-link-active {
-        color: aquamarine;
-    }
 </style>
