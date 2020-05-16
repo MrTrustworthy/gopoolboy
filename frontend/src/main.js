@@ -8,18 +8,7 @@ import {Auth0Plugin} from "./auth";
 Vue.config.productionTip = false;
 
 
-Vue.use(Auth0Plugin, {
-    domain,
-    clientId,
-    audience,
-    onRedirectCallback: appState => {
-        router.push(
-            appState && appState.targetUrl
-                ? appState.targetUrl
-                : window.location.pathname
-        );
-    }
-});
+Vue.use(Auth0Plugin, {domain, clientId, audience});
 
 new Vue({
     apolloProvider: createProvider(),

@@ -4,10 +4,7 @@
             <p>Loading</p>
         </div>
         <div v-else>
-            <template v-if="!$auth.isAuthenticated">
-                <button @click="login">Log in</button>
-            </template>
-            <template v-else>
+            <template v-if="$auth.isAuthenticated">
                 <router-link tag="img" width="64" height="64" :src="$auth.user.picture" to="/profile" />
             </template>
         </div>
@@ -15,15 +12,8 @@
 </template>
 
 <script>
-
     export default {
         name: 'ProfileHeader',
-        methods: {
-            // Log the user in
-            login() {
-                this.$auth.loginWithRedirect();
-            }
-        }
     }
 </script>
 
@@ -33,6 +23,6 @@
     }
 
     .profile {
-        background-color: aqua;
+        background-color: whitesmoke;
     }
 </style>

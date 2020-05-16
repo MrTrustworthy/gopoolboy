@@ -1,9 +1,6 @@
 import Vue from "vue";
 import createAuth0Client from "@auth0/auth0-spa-js";
 
-/** Define a default action to perform after authentication */
-const DEFAULT_REDIRECT_CALLBACK = () =>
-    window.history.replaceState({}, document.title, window.location.pathname);
 
 let instance;
 
@@ -12,7 +9,6 @@ export const getInstance = () => instance;
 
 /** Creates an instance of the Auth0 SDK. If one has already been created, it returns that instance */
 export const useAuth0 = ({
-                             onRedirectCallback = DEFAULT_REDIRECT_CALLBACK,
                              redirectUri = window.location.origin,
                              ...options
                          }) => {
@@ -97,7 +93,7 @@ export const useAuth0 = ({
                 domain: options.domain,
                 client_id: options.clientId,
                 audience: options.audience,
-                redirect_uri: redirectUri
+                redirect_uri: redirectUri,
             });
 
             try {
@@ -109,9 +105,8 @@ export const useAuth0 = ({
                     // handle the redirect and retrieve tokens
                     const {appState} = await this.auth0Client.handleRedirectCallback();
 
-                    // Notify subscribers that the redirect callback has happened, passing the appState
-                    // (useful for retrieving any pre-authentication state)
-                    onRedirectCallback(appState);
+                    // Clean URL
+                    window.history.replaceState({}, document.title, window.location.pathname);
                 }
             } catch (e) {
                 this.error = e;
