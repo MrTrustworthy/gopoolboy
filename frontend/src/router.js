@@ -55,6 +55,6 @@ export const router = new VueRouter({
 
 
 router.beforeEach((to, from, next) => {
-    if (to.name !== "welcome" && !localStorage.getItem('apollo-token')) next({name: 'welcome'});
+    if (to.name !== "welcome" && !localStorage.getItem(process.env.VUE_APP_GRAPHQL_TOKEN_NAME)) next({name: 'welcome'});
     else next();
 });

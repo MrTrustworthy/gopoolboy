@@ -28,6 +28,9 @@ services:
       DB_PASSWORD: postgres
   frontend:
     build: frontend
+    environment:
+      VUE_APP_QAPP_GRAPHQL_HTTP: http://localhost:4000/graphql
+      VUE_APP_QAPP_GRAPHQL_TOKEN_NAME: apollo-token
     volumes:
       - ./frontend:/app
     ports:

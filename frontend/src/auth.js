@@ -48,7 +48,7 @@ export const useAuth0 = ({
                 // do we need this or is it persisted elsewhere already?
                 this.token = await this.getTokenSilently();
                 // can we avoid this and use the token from apollos getAuth via memory?
-                localStorage.setItem('apollo-token', this.token);
+                localStorage.setItem(process.env.VUE_APP_QAPP_GRAPHQL_TOKEN_NAME, this.token);
             },
             /** Handles the callback when logging in using a redirect */
             async handleRedirectCallback() {
@@ -82,7 +82,7 @@ export const useAuth0 = ({
             },
             /** Logs the user out and removes their session on the authorization server */
             logout(o) {
-                localStorage.removeItem('apollo-token');
+                localStorage.removeItem(process.env.VUE_APP_QAPP_GRAPHQL_TOKEN_NAME);
                 return this.auth0Client.logout(o);
             }
         },
