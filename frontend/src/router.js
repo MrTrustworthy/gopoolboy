@@ -1,14 +1,12 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import HomeView from './views/Home.vue'
-import AboutView from './views/About.vue'
-import DetailView from './views/Detail.vue'
-import ProfileView from './views/Profile.vue'
-import WelcomeView from './views/Welcome.vue'
-
+import Vue from "vue";
+import VueRouter from "vue-router";
+import HomeView from "./views/Home.vue";
+import AboutView from "./views/About.vue";
+import DetailView from "./views/Detail.vue";
+import ProfileView from "./views/Profile.vue";
+import WelcomeView from "./views/Welcome.vue";
 
 Vue.use(VueRouter);
-
 
 export const router = new VueRouter({
     routes: [
@@ -17,44 +15,42 @@ export const router = new VueRouter({
             name: "home",
             component: HomeView,
             meta: {
-                requiresLogin: true
-            }
+                requiresLogin: true,
+            },
         },
         {
             path: "/about",
             name: "about",
             component: AboutView,
             meta: {
-                requiresLogin: true
-            }
+                requiresLogin: true,
+            },
         },
         {
             path: "/q/:id",
             name: "detail",
             component: DetailView,
             meta: {
-                requiresLogin: true
-            }
+                requiresLogin: true,
+            },
         },
         {
             path: "/profile",
             name: "profile",
             component: ProfileView,
             meta: {
-                requiresLogin: true
-            }
+                requiresLogin: true,
+            },
         },
         {
             path: "/welcome",
             name: "welcome",
             component: WelcomeView,
         },
-    ]
-
+    ],
 });
 
-
 router.beforeEach((to, from, next) => {
-    if (to.name !== "welcome" && !localStorage.getItem(process.env.VUE_APP_QAPP_GRAPHQL_TOKEN_NAME)) next({name: 'welcome'});
+    if (to.name !== "welcome" && !localStorage.getItem(process.env.VUE_APP_QAPP_GRAPHQL_TOKEN_NAME)) next({ name: "welcome" });
     else next();
 });

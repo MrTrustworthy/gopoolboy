@@ -1,11 +1,10 @@
-import Vue from 'vue'
-import {router} from './router'
-import App from './App.vue'
-import {createProvider} from './vue-apollo'
-import {Auth0Plugin} from "./auth";
+import Vue from "vue";
+import { router } from "./router";
+import App from "./App.vue";
+import { createProvider } from "./vue-apollo";
+import { Auth0Plugin } from "./auth";
 
 Vue.config.productionTip = false;
-
 
 Vue.use(Auth0Plugin, {
     domain: process.env.VUE_APP_AUTH0_DOMAIN,
@@ -16,5 +15,5 @@ Vue.use(Auth0Plugin, {
 new Vue({
     apolloProvider: createProvider(),
     router,
-    render: h => h(App)
-}).$mount('#app');
+    render: (h) => h(App),
+}).$mount("#app");

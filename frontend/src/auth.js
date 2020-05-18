@@ -1,17 +1,13 @@
 import Vue from "vue";
 import createAuth0Client from "@auth0/auth0-spa-js";
 
-
 let instance;
 
 /** Returns the current instance of the SDK */
 export const getInstance = () => instance;
 
 /** Creates an instance of the Auth0 SDK. If one has already been created, it returns that instance */
-export const useAuth0 = ({
-                             redirectUri = window.location.origin,
-                             ...options
-                         }) => {
+export const useAuth0 = ({ redirectUri = window.location.origin, ...options }) => {
     if (instance) return instance;
 
     // The 'instance' is simply a Vue object
@@ -23,7 +19,7 @@ export const useAuth0 = ({
                 user: {},
                 auth0Client: null,
                 popupOpen: false,
-                error: null
+                error: null,
             };
         },
         methods: {
@@ -84,7 +80,7 @@ export const useAuth0 = ({
             logout(o) {
                 localStorage.removeItem(process.env.VUE_APP_QAPP_GRAPHQL_TOKEN_NAME);
                 return this.auth0Client.logout(o);
-            }
+            },
         },
         /** Use this lifecycle method to instantiate the SDK client */
         async created() {
@@ -98,12 +94,9 @@ export const useAuth0 = ({
 
             try {
                 // If the user is returning to the app after authentication..
-                if (
-                    window.location.search.includes("code=") &&
-                    window.location.search.includes("state=")
-                ) {
+                if (window.location.search.includes("code=") && window.location.search.includes("state=")) {
                     // handle the redirect and retrieve tokens
-                    const {appState} = await this.auth0Client.handleRedirectCallback();
+                    const { appState } = await this.auth0Client.handleRedirectCallback();
 
                     // Clean URL
                     window.history.replaceState({}, document.title, window.location.pathname);
@@ -116,9 +109,8 @@ export const useAuth0 = ({
                 this.user = await this.auth0Client.getUser();
                 this.loading = false;
                 if (this.isAuthenticated) await this.saveToken();
-
             }
-        }
+        },
     });
 
     return instance;
@@ -128,5 +120,5 @@ export const useAuth0 = ({
 export const Auth0Plugin = {
     install(Vue, options) {
         Vue.prototype.$auth = useAuth0(options);
-    }
+    },
 };

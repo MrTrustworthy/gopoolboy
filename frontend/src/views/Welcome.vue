@@ -5,17 +5,17 @@
 </template>
 
 <script>
-    import SignUpIn from '@/components/SignUpIn.vue'
-    export default {
-        name: 'Home',
-        components: {
-            SignUpIn
-        }
-    }
+import SignUpIn from "@/components/SignUpIn.vue";
+export default {
+    name: "Home",
+    components: {
+        SignUpIn,
+    },
+};
 </script>
 
 <style scoped>
-    .welcome {
-        margin-top: 60px;
-    }
+.welcome {
+    margin-top: 60px;
+}
 </style>

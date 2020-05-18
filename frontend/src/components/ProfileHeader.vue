@@ -12,17 +12,17 @@
 </template>
 
 <script>
-    export default {
-        name: 'ProfileHeader',
-    }
+export default {
+    name: "ProfileHeader",
+};
 </script>
 
 <style scoped>
-    .profile {
-        overflow: hidden;
-    }
+.profile {
+    overflow: hidden;
+}
 
-    .profile {
-        background-color: whitesmoke;
-    }
+.profile {
+    background-color: whitesmoke;
+}
 </style>
