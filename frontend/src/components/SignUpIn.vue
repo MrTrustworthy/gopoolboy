@@ -13,8 +13,16 @@
             </template>
 
             <template v-else>
-                <button @click="login">Login with existing account</button>
-                <button @click="signup">Sign up for a new organization</button>
+                <template v-if="!newOrgaCreated">
+                    <button @click="login">Login with existing account</button>
+                    <br>
+                    <input v-model="orgaName" placeholder="Organization Name">
+                    <input v-model="creatorEmail" type="email" placeholder="Your Email">
+                    <button @click="signup">Sign up for a new organization</button>
+                </template>
+                <template v-else>
+                    <p>Thank you for signing up! Please check your emails to sign into Poolboy</p>
+                </template>
             </template>
         </div>
     </div>
@@ -24,6 +32,16 @@
 
     export default {
         name: 'ProfileDetail',
+        data() {
+            return {
+                orgaName: "",
+                creatorEmail: "",
+                newOrgaCreated: false,
+            }
+        },
+        apollo: {
+            $client: "orgamonClient"
+        },
         methods: {
             login() {
                 this.$auth.loginWithRedirect();
@@ -34,9 +52,18 @@
                 });
             },
             signup() {
-                console.log("Lets sign you up!");
+                console.log("Lets sign you up!", this.orgaName, this.creatorEmail);
+                //this.newOrgaCreated = true;
+                this.$apollo.mutate({
+                    mutation: require('../graphql/CreateOrganization.gql'),
+                    variables: {
+                        name: this.orgaName,
+                        creatorEmail: this.creatorEmail
+                    }
+                })
             }
         }
+
     }
 </script>
 

@@ -15,9 +15,7 @@ const typeDefs = gql`
         text: String
         votes: Int
         answerCount: Int
-    }
-    
-    
+    }    
 
     type Query {
         sayHello: String
