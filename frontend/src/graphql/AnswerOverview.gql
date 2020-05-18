@@ -1,8 +1,7 @@
-
-query GetAnswers ($questionId: ID!){
-  getAnswers: getAnswersForQuestion(id: $questionId){
-    id
-    text
-    votes
-  }
+query GetAnswers($questionId: ID!) {
+    getAnswers: getAnswersForQuestion(id: $questionId) {
+        id
+        text
+        votes
+    }
 }

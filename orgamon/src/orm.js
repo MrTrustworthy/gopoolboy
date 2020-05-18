@@ -54,7 +54,7 @@ async function createOrganization(parent, args, context, info) {
     });
     console.log("email reset for user", passwordReset);
 
-    return { id: orgaId, name: args.creatorEmail };
+    return { id: orgaId, name: args.name };
 }
 
 module.exports = { getOrganization, getUsers, createOrganization };

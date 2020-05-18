@@ -1,7 +1,7 @@
 query GetQuestionOverview {
-  getQuestions {
-    id
-    title
-    answerCount
-  }
+    getQuestions {
+        id
+        title
+        answerCount
+    }
 }

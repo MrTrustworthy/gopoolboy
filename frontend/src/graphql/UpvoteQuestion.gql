@@ -1,6 +1,6 @@
 mutation UpvoteQuestion($questionId: ID!) {
-  upvoteQuestion(id: $questionId) {
-    id
-    votes
-  }
+    upvoteQuestion(id: $questionId) {
+        id
+        votes
+    }
 }

@@ -53,7 +53,7 @@ export default {
             });
         },
         signup() {
-            console.log("Lets sign you up!", this.orgaName, this.creatorEmail);
+            console.log("Creating new organization", this.orgaName, "with owner", this.creatorEmail);
             //this.newOrgaCreated = true;
             this.$apollo.mutate({
                 mutation: require("../graphql/CreateOrganization.gql"),
