@@ -41,6 +41,9 @@ services:
       DB_DATABASE: orgamon
       DB_USER: postgres
       DB_PASSWORD: postgres
+      # Injected via env file
+      AUTH0_CLIENT_ID: "${AUTH0_CLIENT_ID}"
+      AUTH0_CLIENT_SECRET: "${AUTH0_CLIENT_SECRET}"
   frontend:
     build: frontend
     environment:
