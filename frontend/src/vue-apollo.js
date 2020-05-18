@@ -17,15 +17,22 @@ const qappOptions = {
     httpEndpoint: process.env.VUE_APP_QAPP_GRAPHQL_HTTP
 };
 
+const orgamonOptions = {
+    httpEndpoint: process.env.VUE_APP_ORGAMON_GRAPHQL_HTTP
+};
+
 export function createProvider() {
-    const {apolloClient: qappClient, wsClient} = createApolloClient({
+    const {apolloClient: qappClient} = createApolloClient({
         ...defaultOptions,
         ...qappOptions
     });
+    const {apolloClient: orgamonClient} = createApolloClient({
+        ...defaultOptions,
+        ...orgamonOptions
+    });
+
     return new VueApollo({
-        clients: {
-            apolloClient: qappClient
-        },
+        clients: {qappClient, orgamonClient},
         defaultClient: qappClient,
         errorHandler(error) {
             // eslint-disable-next-line no-console

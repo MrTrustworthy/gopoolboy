@@ -1,6 +1,6 @@
 const {gql} = require('apollo-server');
 const authRequired = require('./validate');
-const {getOrganizations, getUsers} = require('./orm');
+const {getOrganization, getUsers} = require('./orm');
 
 const typeDefs = gql`
     type Organization {
@@ -17,7 +17,7 @@ const typeDefs = gql`
     }
 
     type Query {
-        getOrganizations: [Organization]
+        getOrganization: Organization
         getUsers: [User]
     }
 
@@ -26,12 +26,9 @@ const typeDefs = gql`
 
 const resolvers = {
     Query: {
-        getOrganizations: authRequired(getOrganizations),
+        getOrganization: authRequired(getOrganization),
         getUsers: authRequired(getUsers)
     }
 };
-
-
-
 
 module.exports = {typeDefs, resolvers};

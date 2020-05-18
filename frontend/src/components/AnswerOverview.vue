@@ -1,14 +1,8 @@
 <template>
     <div>
-        <div
-                v-for="answer of getAnswers"
-                :key="answer.id"
-                class="answer-box"
-        >
+        <p v-for="answer of getAnswers" :key="answer.id" class="answer-box">
             A: {{ answer.text }} [{{ answer.votes }} Votes]
-        </div>
-
-
+        </p>
     </div>
 </template>
 
@@ -28,9 +22,7 @@
         },
         apollo: {
             getAnswers: {
-                // gql query
                 query: require('../graphql/AnswerOverview.gql'),
-                // Static parameters
                 variables() {
                     return {
                         questionId: this.questionId

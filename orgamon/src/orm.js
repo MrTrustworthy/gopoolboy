@@ -1,11 +1,12 @@
 const knexClient = require('./knexclient');
 const {managementClient} = require('./auth0api');
 
-async function getOrganizations(args, tenant) {
+async function getOrganization(args, tenant) {
     return knexClient
         .from('organizations')
         .select('id', 'name')
         .where('id', '=', tenant)
+        .first()
 }
 
 async function getUsers(args, tenant) {
@@ -26,4 +27,4 @@ function parseUserAttributes(userObject) {
     }
 }
 
-module.exports = {getOrganizations, getUsers};
+module.exports = {getOrganization, getUsers};

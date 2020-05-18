@@ -1,15 +1,21 @@
 <template>
     <div class="profile">
         <ProfileDetail />
+        <OrgaOverview />
+        <OrgaUserList />
     </div>
 </template>
 
 <script>
-    import ProfileDetail from '@/components/ProfileDetail.vue'
+    import ProfileDetail from '@/components/ProfileDetail.vue';
+    import OrgaOverview from "../components/OrgaOverview";
+    import OrgaUserList from "../components/OrgaUserList";
     export default {
         name: 'Home',
         components: {
-            ProfileDetail
+            ProfileDetail,
+            OrgaOverview,
+            OrgaUserList
         }
     }
 </script>

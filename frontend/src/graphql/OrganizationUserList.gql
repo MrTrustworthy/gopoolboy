@@ -1,0 +1,7 @@
+query GetOrgaUsers {
+  getUsers {
+    name
+    email
+    tenantRole
+  }
+}
