@@ -26,6 +26,21 @@ services:
       DB_DATABASE: qapp
       DB_USER: postgres
       DB_PASSWORD: postgres
+  orgamon:
+    build: orgamon
+    volumes:
+      - ./orgamon:/app
+    ports:
+      - 4040:4000
+    depends_on:
+      - pg-qapp
+    environment:
+      AUTH0_DOMAIN: dev-poolboy.eu.auth0.com
+      API_IDENTIFIER: http://dev-poolboy-api
+      DB_HOST: pg-qapp
+      DB_DATABASE: orgamon
+      DB_USER: postgres
+      DB_PASSWORD: postgres
   frontend:
     build: frontend
     environment:
