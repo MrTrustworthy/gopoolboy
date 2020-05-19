@@ -45,7 +45,7 @@ function authRequired(resolverFunction) {
         if (decoded) {
             let { tenant, tenantRole } = decoded[process.env.API_IDENTIFIER];
             console.log("Decoded token:", decoded, tenant, tenantRole);
-            return resolverFunction(args, tenant);
+            return resolverFunction(args, tenant, tenantRole);
         } else {
             throw new AuthenticationError(error);
         }
