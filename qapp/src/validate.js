@@ -43,9 +43,9 @@ function authRequired(resolverFunction) {
     return async (parent, args, context, info) => {
         let { error, decoded } = await isTokenValid(context["authToken"]);
         if (decoded) {
-            let { tenant, tenantRole } = decoded[process.env.API_IDENTIFIER];
-            console.log("Decoded token:", decoded, tenant, tenantRole);
-            return resolverFunction(args, tenant, tenantRole);
+            let { organization } = decoded[process.env.API_IDENTIFIER];
+            console.log("Decoded token:", decoded, organization);
+            return resolverFunction(args, organization);
         } else {
             throw new AuthenticationError(error);
         }

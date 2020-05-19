@@ -4,7 +4,7 @@
         <div v-for="user of getUsers" :key="user.email">
             <p>User: {{ user.name }} {{ user.email === $auth.user.email ? "(You)" : "" }}</p>
             <p>Email: {{ user.email }}</p>
-            <p>Role: {{ user.tenantRole }}</p>
+            <p>Roles: {{ user.organizationRoles }}</p>
             <br />
         </div>
 
