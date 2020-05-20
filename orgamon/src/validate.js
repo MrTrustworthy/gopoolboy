@@ -39,16 +39,16 @@ async function isTokenValid(token) {
     });
 }
 
-function authRequired(resolverFunction) {
+function authRequired(resolverFunction, requiredPermission = null) {
     return async (parent, args, context, info) => {
         let { error, decoded } = await isTokenValid(context["authToken"]);
-        if (decoded) {
-            let { organization } = decoded[process.env.API_IDENTIFIER];
-            console.log("Decoded token:", decoded, organization);
-            return resolverFunction(args, organization);
-        } else {
-            throw new AuthenticationError(error);
+        if (error) throw new AuthenticationError(error);
+        if (requiredPermission !== null && !decoded.permissions.includes(requiredPermission)) {
+            let msg = "User " + decoded.sub + " doesn't have the required permission " + requiredPermission;
+            throw new AuthenticationError(msg);
         }
+        let { organization } = decoded[process.env.API_IDENTIFIER];
+        return resolverFunction(args, organization);
     };
 }
 

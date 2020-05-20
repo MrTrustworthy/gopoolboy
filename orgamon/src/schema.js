@@ -29,12 +29,12 @@ const typeDefs = gql`
 
 const resolvers = {
     Query: {
-        getOrganization: authRequired(getOrganization),
-        getUsers: authRequired(getUsers),
+        getOrganization: authRequired(getOrganization, "read:organization"),
+        getUsers: authRequired(getUsers, "read:users"),
     },
     Mutation: {
         createOrganization: createOrganization,
-        inviteUser: authRequired(inviteUser),
+        inviteUser: authRequired(inviteUser, "create:users"),
     },
 };
 
