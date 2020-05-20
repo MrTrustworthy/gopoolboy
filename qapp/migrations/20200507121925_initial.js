@@ -6,7 +6,7 @@ exports.up = function (knex) {
         table.timestamp("created_at").defaultTo(knex.fn.now());
         table.timestamp("updated_at").defaultTo(knex.fn.now());
         table.integer("votes").defaultTo(0);
-        table.integer("organization_id").notNullable();
+        table.string("organization_id").notNullable();
         table.string("creator_id").notNullable();
     });
 };
