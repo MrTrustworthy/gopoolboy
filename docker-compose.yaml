@@ -1,61 +1,61 @@
-version: '3'
+version: "3"
 
 services:
-  pg-qapp:
-    image: postgres:12.2
-    environment:
-      - POSTGRES_DB=qapp
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    volumes:
-      - ./postgres-data:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
-  qapp:
-    build: qapp
-    volumes:
-      - ./qapp:/app
-    ports:
-      - 4000:4000
-    depends_on:
-      - pg-qapp
-    environment:
-      AUTH0_DOMAIN: dev-poolboy.eu.auth0.com
-      API_IDENTIFIER: http://dev-poolboy-api
-      DB_HOST: pg-qapp
-      DB_DATABASE: qapp
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-  orgamon:
-    build: orgamon
-    volumes:
-      - ./orgamon:/app
-    ports:
-      - 4040:4000
-    depends_on:
-      - pg-qapp
-    environment:
-      AUTH0_DOMAIN: dev-poolboy.eu.auth0.com
-      API_IDENTIFIER: http://dev-poolboy-api
-      DB_HOST: pg-qapp
-      DB_DATABASE: orgamon
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      # Injected via env file
-      AUTH0_CLIENT_ID: "${AUTH0_CLIENT_ID}"
-      AUTH0_CLIENT_SECRET: "${AUTH0_CLIENT_SECRET}"
-      AUTH0_CONNECTION_NAME: "Username-Password-Authentication"
-  frontend:
-    build: frontend
-    environment:
-      VUE_APP_QAPP_GRAPHQL_HTTP: http://localhost:4000/graphql
-      VUE_APP_QAPP_GRAPHQL_TOKEN_NAME: apollo-token
-      VUE_APP_ORGAMON_GRAPHQL_HTTP: http://localhost:4040/graphql
-      VUE_APP_ORGAMON_GRAPHQL_TOKEN_NAME: apollo-token
-      VUE_APP_AUTH0_DOMAIN: dev-poolboy.eu.auth0.com
-      VUE_APP_AUTH0_SPA_CLIENT_ID: "${AUTH0_SPA_CLIENT_ID}"
-      VUE_APP_AUTH0_AUDIENCE: http://dev-poolboy-api
-    volumes:
-      - ./frontend:/app
-    ports:
-      - 8080:8080
+    pg-qapp:
+        image: postgres:12.2
+        environment:
+            - POSTGRES_DB=qapp
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+        volumes:
+            - ./postgres-data:/var/lib/postgresql/data
+        ports:
+            - 5432:5432
+    qapp:
+        build: qapp
+        volumes:
+            - ./qapp:/app
+        ports:
+            - 4000:4000
+        depends_on:
+            - pg-qapp
+        environment:
+            AUTH0_DOMAIN: dev-poolboy.eu.auth0.com
+            API_IDENTIFIER: http://dev-poolboy-api
+            DB_HOST: pg-qapp
+            DB_DATABASE: qapp
+            DB_USER: postgres
+            DB_PASSWORD: postgres
+    orgamon:
+        build: orgamon
+        volumes:
+            - ./orgamon:/app
+        ports:
+            - 4040:4000
+        depends_on:
+            - pg-qapp
+        environment:
+            AUTH0_DOMAIN: dev-poolboy.eu.auth0.com
+            API_IDENTIFIER: http://dev-poolboy-api
+            DB_HOST: pg-qapp
+            DB_DATABASE: orgamon
+            DB_USER: postgres
+            DB_PASSWORD: postgres
+            # Injected via env file
+            AUTH0_CLIENT_ID: "${AUTH0_CLIENT_ID}"
+            AUTH0_CLIENT_SECRET: "${AUTH0_CLIENT_SECRET}"
+            AUTH0_CONNECTION_NAME: "Username-Password-Authentication"
+    frontend:
+        build: frontend
+        environment:
+            VUE_APP_QAPP_GRAPHQL_HTTP: http://localhost:4000/graphql
+            VUE_APP_QAPP_GRAPHQL_TOKEN_NAME: apollo-token
+            VUE_APP_ORGAMON_GRAPHQL_HTTP: http://localhost:4040/graphql
+            VUE_APP_ORGAMON_GRAPHQL_TOKEN_NAME: apollo-token
+            VUE_APP_AUTH0_DOMAIN: dev-poolboy.eu.auth0.com
+            VUE_APP_AUTH0_SPA_CLIENT_ID: "${AUTH0_SPA_CLIENT_ID}"
+            VUE_APP_AUTH0_AUDIENCE: http://dev-poolboy-api
+        volumes:
+            - ./frontend:/app
+        ports:
+            - 8080:8080
