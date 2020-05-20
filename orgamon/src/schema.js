@@ -1,6 +1,6 @@
 const { gql } = require("apollo-server");
 const authRequired = require("./validate");
-const { getOrganization, getUsers, createOrganization, inviteUser } = require("./resolvers");
+const { getOrganization, getUsers, createOrganization, inviteUser, getRoles } = require("./resolvers");
 
 const typeDefs = gql`
     type Organization {
@@ -8,17 +8,23 @@ const typeDefs = gql`
         name: String
     }
 
+    type Role {
+        name: String
+        description: String
+    }
+
     type User {
         user_id: String
         name: String
         email: String
         organization: String
-        organizationRoles: [String]
+        organizationRole: String
     }
 
     type Query {
         getOrganization: Organization
         getUsers: [User]
+        getRoles: [Role]
     }
 
     type Mutation {
@@ -31,6 +37,7 @@ const resolvers = {
     Query: {
         getOrganization: authRequired(getOrganization, "read:organization"),
         getUsers: authRequired(getUsers, "read:users"),
+        getRoles: authRequired(getRoles, "read:users"),
     },
     Mutation: {
         createOrganization: createOrganization,

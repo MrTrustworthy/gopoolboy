@@ -50,19 +50,29 @@ async function createUser(orgaId, email, role) {
 async function getRoleIdForName(role) {
     const roleIds = (await managementClient.getRoles()).filter((r) => r.name.toLowerCase() === role.toLowerCase()).map((r) => r.id);
     if (roleIds.length !== 1) throw new ReferenceError("Role " + role + " is not defined");
-
     console.log("Found roleId", roleIds[0], "for role name", role);
     return roleIds[0];
 }
 
+async function getRoleNameForUser(user_id) {
+    const roles = await managementClient.getUserRoles({ id: user_id });
+    if (roles.length !== 1) throw ReferenceError("User " + user_id + " should have one role, noe " + roles);
+    return roles.map((role) => role.name)[0];
+}
+
+async function getRoles() {
+    return managementClient.getRoles();
+}
+
 async function parseUserAttributes(userObject) {
-    const roles = (await managementClient.getUserRoles({ id: userObject.user_id })).map((role) => role.description);
+    let role = await getRoleNameForUser(userObject.user_id);
+    console.log("Role is", role);
     return {
         user_id: userObject.user_id,
         name: userObject.name,
         email: userObject.email,
         organization: userObject.app_metadata?.organization,
-        organizationRoles: roles,
+        organizationRole: role,
     };
 }
 
@@ -71,4 +81,4 @@ async function getAllUsers() {
     return Promise.all(allUsers.map(parseUserAttributes));
 }
 
-module.exports = { createUser, getAllUsers };
+module.exports = { createUser, getAllUsers, getRoles };

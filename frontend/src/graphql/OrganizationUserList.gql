@@ -2,6 +2,6 @@ query GetOrgaUsers {
     getUsers {
         name
         email
-        organizationRoles
+        organizationRole
     }
 }
