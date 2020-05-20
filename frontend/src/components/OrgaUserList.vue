@@ -10,6 +10,12 @@
 
         <div class="invite-user-box">
             <input v-model="newUserEmail" type="email" placeholder="New user email" />
+            <select v-model="newUserRole">
+                <option disabled value="">Please select one</option>
+                <option v-for="role in getRoles" :key="role.name">
+                    {{ role.name }}
+                </option>
+            </select>
             <button @click="invite">
                 Invite new user
             </button>
@@ -24,23 +30,32 @@ export default {
         return {
             getUsers: [],
             newUserEmail: "",
+            newUserRole: "",
+            getRoles: [],
         };
     },
     apollo: {
         getUsers: {
             query: require("../graphql/OrganizationUserList.gql"),
         },
+        getRoles: {
+            query: require("../graphql/GetRoles.gql"),
+        },
         $client: "orgamonClient",
     },
     methods: {
         invite() {
-            console.log("Inviting new user", this.newUserEmail);
+            console.log("Inviting new user", this.newUserEmail, "with role", this.newUserRole);
+            if (!this.newUserRole || !this.newUserEmail) {
+                console.log("Can't create user without selecting a role & email first");
+                return;
+            }
             this.$apollo
                 .mutate({
                     mutation: require("../graphql/InviteUser.gql"),
                     variables: {
                         email: this.newUserEmail,
-                        role: "owner",
+                        role: this.newUserRole,
                     },
                 })
                 .then((_) => (this.newUserEmail = ""));
