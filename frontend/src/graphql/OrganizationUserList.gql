@@ -1,5 +1,6 @@
 query GetOrgaUsers {
     getUsers {
+        id
         name
         email
         organizationRole

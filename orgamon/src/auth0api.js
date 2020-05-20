@@ -19,9 +19,7 @@ async function createUser(orgaId, email, role) {
     /**
      * Creates a new user with those parameters.
      * Assumes all necessary validation has been done previously
-     * @returns user object
      */
-    const roleId = await getRoleIdForName(role); // do this at the start to catch errors quickly
     const password = generator.generate({ length: 32, numbers: true, symbols: true, strict: true });
     const initialUserData = await managementClient.users.create({
         email: email,
@@ -36,27 +34,37 @@ async function createUser(orgaId, email, role) {
     );
     console.log("User got assigned app_metadata attributes", enrichedUserData);
 
-    managementClient.assignRolestoUser({ id: initialUserData.user_id }, { roles: [roleId] });
-    console.log("User got assigned the role", role, "with id", roleId);
+    await assignRoletoUser(initialUserData.user_id, role);
 
     const passwordReset = await authenticationClient.requestChangePasswordEmail({
         email: enrichedUserData.email,
         connection: process.env.AUTH0_CONNECTION_NAME,
     });
     console.log("email reset for user", passwordReset, "is underway");
-    return parseUserAttributes(enrichedUserData);
 }
 
 async function getRoleIdForName(role) {
-    const roleIds = (await managementClient.getRoles()).filter((r) => r.name.toLowerCase() === role.toLowerCase()).map((r) => r.id);
+    const roleIds = (await getRoles()).filter((r) => r.name.toLowerCase() === role.toLowerCase()).map((r) => r.id);
     if (roleIds.length !== 1) throw new ReferenceError("Role " + role + " is not defined");
     console.log("Found roleId", roleIds[0], "for role name", role);
     return roleIds[0];
 }
 
-async function getRoleNameForUser(user_id) {
-    const roles = await managementClient.getUserRoles({ id: user_id });
-    if (roles.length !== 1) throw ReferenceError("User " + user_id + " should have one role, noe " + roles);
+async function assignRoleToUser(userId, role) {
+    const roleId = await getRoleIdForName(role);
+    console.log("User gets assigned the role", role, "with id", roleId);
+    managementClient.assignRolestoUser({ id: userId }, { roles: [roleId] });
+}
+
+async function clearAllRolesFromUser(userId) {
+    console.log("Clearing all roles for user", userId);
+    const roleIds = (await getRoles()).map((r) => r.id);
+    managementClient.removeRolesFromUser({ id: userId }, { roles: roleIds });
+}
+
+async function getRoleNameForUser(userId) {
+    const roles = await managementClient.getUserRoles({ id: userId });
+    if (roles.length !== 1) throw ReferenceError("User " + userId + " should have one role, noe " + roles);
     return roles.map((role) => role.name)[0];
 }
 
@@ -64,9 +72,13 @@ async function getRoles() {
     return managementClient.getRoles();
 }
 
+async function getUserDetails(userId) {
+    return parseUserAttributes(await managementClient.getUser({ id: userId }));
+}
+
 async function parseUserAttributes(userObject) {
     return {
-        user_id: userObject.user_id,
+        id: userObject.user_id,
         name: userObject.name,
         email: userObject.email,
         organization: userObject.app_metadata?.organization,
@@ -74,9 +86,23 @@ async function parseUserAttributes(userObject) {
     };
 }
 
+async function ensureUserIsInOrganization(userId, organization) {
+    let isInOrganization = false;
+    try {
+        let user = await getUserDetails(userId);
+        isInOrganization = user.organization === organization;
+    } catch (e) {
+        console.log("Got an error when trying to get user " + userId + ", does it exist?");
+    } finally {
+        if (!isInOrganization) {
+            throw new AuthenticationError("User " + userId + " does not belong to organization " + organization);
+        }
+    }
+}
+
 async function getAllUsers() {
     const allUsers = await managementClient.users.getAll();
     return Promise.all(allUsers.map(parseUserAttributes));
 }
 
-module.exports = { createUser, getAllUsers, getRoles };
+module.exports = { createUser, getAllUsers, getRoles, assignRoleToUser, clearAllRolesFromUser, getUserDetails, ensureUserIsInOrganization };

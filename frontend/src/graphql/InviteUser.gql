@@ -1,5 +1,5 @@
 mutation InviteUser($email: String!, $role: String!) {
     inviteUser(email: $email, role: $role) {
-        user_id
+        id
     }
 }

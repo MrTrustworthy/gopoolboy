@@ -1,5 +1,15 @@
 const knexClient = require("./knexclient");
-const { createUser, getAllUsers, getRoles: apiGetRoles } = require("./auth0api");
+const { AuthenticationError } = require("apollo-server");
+
+const {
+    createUser,
+    getAllUsers,
+    getRoles: apiGetRoles,
+    assignRoleToUser,
+    clearAllRolesFromUser,
+    getUserDetails,
+    ensureUserIsInOrganization,
+} = require("./auth0api");
 
 async function getOrganization(args, organization) {
     return knexClient.from("organizations").select("id", "name").where("id", "=", organization).first();
@@ -22,11 +32,19 @@ async function inviteUser(args, organization) {
     /**
      * Resolver to invite a new user as requested by the organization/org owner
      */
-    return createUser(organization, args.email, args.role);
+    await createUser(organization, args.email, args.role);
+    return getUserDetails(args.id);
 }
 
 async function getRoles(args, organization) {
     return (await apiGetRoles()).map((r) => ({ name: r.name, description: r.description }));
 }
 
-module.exports = { getOrganization, getUsers, createOrganization, inviteUser, getRoles };
+async function changeUserRole(args, organization) {
+    await ensureUserIsInOrganization(args.id, organization);
+    await clearAllRolesFromUser(args.id);
+    await assignRoleToUser(args.id, args.role);
+    return getUserDetails(args.id);
+}
+
+module.exports = { getOrganization, getUsers, createOrganization, inviteUser, getRoles, changeUserRole };
