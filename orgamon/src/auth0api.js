@@ -65,14 +65,12 @@ async function getRoles() {
 }
 
 async function parseUserAttributes(userObject) {
-    let role = await getRoleNameForUser(userObject.user_id);
-    console.log("Role is", role);
     return {
         user_id: userObject.user_id,
         name: userObject.name,
         email: userObject.email,
         organization: userObject.app_metadata?.organization,
-        organizationRole: role,
+        organizationRole: await getRoleNameForUser(userObject.user_id),
     };
 }
 
