@@ -5,6 +5,7 @@
         <h1>{{ msg }}</h1>
         <img alt="Poolboy logo" src="../assets/icon.png" width="128" height="128" />
         <ProfileHeader />
+        <router-link to="/organization">Organization</router-link>
     </div>
 </template>
 

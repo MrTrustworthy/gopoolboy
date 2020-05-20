@@ -5,6 +5,7 @@ import AboutView from "./views/About.vue";
 import DetailView from "./views/Detail.vue";
 import ProfileView from "./views/Profile.vue";
 import WelcomeView from "./views/Welcome.vue";
+import OrganizationView from "./views/Organization.vue";
 
 Vue.use(VueRouter);
 
@@ -38,6 +39,14 @@ export const router = new VueRouter({
             path: "/profile",
             name: "profile",
             component: ProfileView,
+            meta: {
+                requiresLogin: true,
+            },
+        },
+        {
+            path: "/organization",
+            name: "organization",
+            component: OrganizationView,
             meta: {
                 requiresLogin: true,
             },
