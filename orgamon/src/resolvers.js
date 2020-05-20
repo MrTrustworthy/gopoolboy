@@ -5,6 +5,7 @@ const {
     createUser,
     getAllUsers,
     getRoles: apiGetRoles,
+    deleteUser: apiDeleteUser,
     assignRoleToUser,
     clearAllRolesFromUser,
     getUserDetails,
@@ -40,6 +41,12 @@ async function getRoles(args, organization) {
     return (await apiGetRoles()).map((r) => ({ name: r.name, description: r.description }));
 }
 
+async function deleteUser(args, organization) {
+    await ensureUserIsInOrganization(args.id, organization);
+    await apiDeleteUser(args.id);
+    return true;
+}
+
 async function changeUserRole(args, organization) {
     await ensureUserIsInOrganization(args.id, organization);
     await clearAllRolesFromUser(args.id);
@@ -47,4 +54,4 @@ async function changeUserRole(args, organization) {
     return getUserDetails(args.id);
 }
 
-module.exports = { getOrganization, getUsers, createOrganization, inviteUser, getRoles, changeUserRole };
+module.exports = { getOrganization, getUsers, createOrganization, inviteUser, getRoles, changeUserRole, deleteUser };

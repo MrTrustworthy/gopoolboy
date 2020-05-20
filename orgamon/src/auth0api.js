@@ -100,9 +100,23 @@ async function ensureUserIsInOrganization(userId, organization) {
     }
 }
 
+async function deleteUser(userId) {
+    console.log("Deleting user with id", userId);
+    return managementClient.deleteUser({ id: userId });
+}
+
 async function getAllUsers() {
     const allUsers = await managementClient.users.getAll();
     return Promise.all(allUsers.map(parseUserAttributes));
 }
 
-module.exports = { createUser, getAllUsers, getRoles, assignRoleToUser, clearAllRolesFromUser, getUserDetails, ensureUserIsInOrganization };
+module.exports = {
+    createUser,
+    getAllUsers,
+    getRoles,
+    assignRoleToUser,
+    clearAllRolesFromUser,
+    getUserDetails,
+    ensureUserIsInOrganization,
+    deleteUser,
+};

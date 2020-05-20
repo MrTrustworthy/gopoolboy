@@ -10,6 +10,7 @@
                 <option v-for="role in possibleRoles(user.id)" :key="role.name"> {{ role.name }} </option>
             </select>
             <button @click="() => changeUserRole(user.id)">Change user role</button>
+            <button @click="() => deleteUser(user.id)">Delete user</button>
             <br />
         </div>
 
@@ -66,6 +67,15 @@ export default {
                     },
                 })
                 .then((_) => (this.changedUserRoles[userId] = ""));
+        },
+        deleteUser(userId) {
+            console.log("Deleting user", userId);
+            this.$apollo.mutate({
+                mutation: require("../graphql/DeleteUser.gql"),
+                variables: {
+                    userId: userId,
+                },
+            });
         },
         invite() {
             console.log("Inviting new user", this.newUserEmail, "with role", this.newUserRole);
