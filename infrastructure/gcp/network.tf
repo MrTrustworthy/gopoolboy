@@ -1,17 +1,17 @@
 module "network" {
-  source = "terraform-google-modules/network/google"
+  source  = "terraform-google-modules/network/google"
   version = "~> 2.3.0"
 
-  project_id = "${terraform.workspace}${var.project_name_stud}"
+  project_id   = "${terraform.workspace}${var.project_name_stud}"
   network_name = var.network_name
   routing_mode = "GLOBAL"
 
   subnets = [
     {
-      subnet_name = var.k8s-subnet-name
-      subnet_ip = var.k8s-subnet-ip
+      subnet_name   = var.k8s-subnet-name
+      subnet_ip     = var.k8s-subnet-ip
       subnet_region = var.project_region
-      description = "Subnet for all kubernetes-related things"
+      description   = "Subnet for all kubernetes-related things"
 
     },
   ]
@@ -19,11 +19,11 @@ module "network" {
   secondary_ranges = {
     kubernetes-subnet = [
       {
-        range_name = var.k8s-pods-range-name
+        range_name    = var.k8s-pods-range-name
         ip_cidr_range = var.k8s-pods-range-ip
       },
       {
-        range_name = var.k8s-services-range-name
+        range_name    = var.k8s-services-range-name
         ip_cidr_range = var.k8s-services-range-ip
       },
     ]
