@@ -1,5 +1,5 @@
 resource "auth0_role" "owner" {
-  name = "Owner"
+  name        = "Owner"
   description = "Organization Owner"
   permissions {
     name                       = "create:answers"
@@ -48,7 +48,7 @@ resource "auth0_role" "owner" {
 }
 
 resource "auth0_role" "editor" {
-  name = "Editor"
+  name        = "Editor"
   description = "Editor"
 
   permissions {
@@ -78,7 +78,7 @@ resource "auth0_role" "editor" {
 }
 
 resource "auth0_role" "viewer" {
-  name = "Viewer"
+  name        = "Viewer"
   description = "Viewer"
 
   permissions {

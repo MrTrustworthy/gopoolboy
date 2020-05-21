@@ -1,6 +1,6 @@
 resource "auth0_rule" "enrich_from_app_metadata" {
-    name = "Move tenant info from app-metadata to context"
-  script = <<EOF
+  name    = "Move tenant info from app-metadata to context"
+  script  = <<EOF
 function enrichTenantInfo(user, context, callback) {
     if (user.app_metadata && user.app_metadata.organization) {
         context.accessToken['${local.env.api_identifier}'] = {
@@ -11,5 +11,5 @@ function enrichTenantInfo(user, context, callback) {
 }    
 EOF
   enabled = true
-  order = 1
+  order   = 1
 }
