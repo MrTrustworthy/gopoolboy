@@ -52,3 +52,8 @@ variable "k8s-services-range-ip" {
   type    = string
   default = "10.129.0.0/16"
 }
+
+variable "office_ips" {
+  type    = list
+  default = ["78.94.91.125/32"]
+}

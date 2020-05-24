@@ -6,9 +6,7 @@ resource "google_compute_firewall" "allow_office_to_jumphost" {
     "jumphost",
   ]
 
-  source_ranges = [
-    "78.94.91.125/32"
-  ]
+  source_ranges = var.office_ips
 
   allow {
     protocol = "tcp"
@@ -22,3 +20,24 @@ resource "google_compute_firewall" "allow_office_to_jumphost" {
 }
 
 
+resource "google_compute_firewall" "allow_office_to_gke" {
+  name    = "allow-office-to-gke"
+  network = module.network.network_self_link
+
+  target_tags = [
+    "small-pool",
+  ]
+
+  source_ranges = var.office_ips
+
+  allow {
+    protocol = "tcp"
+
+    ports = [
+      "22",
+      "80",
+      "443",
+      "4000"
+    ]
+  }
+}
