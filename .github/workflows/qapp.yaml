@@ -28,7 +28,7 @@ env:
 
 jobs:
     deploy-qapp-staging:
-        name: Deploy APIServer staging
+        name: Deploy QApp staging
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
@@ -40,6 +40,7 @@ jobs:
                   version: $GCP_VERSION
                   project_id: $GKE_PROJECT
                   service_account_key: ${{ secrets.GKE_KEY }}
+                  export_default_credentials: true
             - run: |
                   gcloud auth configure-docker
 
