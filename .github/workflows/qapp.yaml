@@ -38,7 +38,7 @@ jobs:
             - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
               with:
                   version: $GCP_VERSION
-                  project: $GKE_PROJECT
+                  project_id: $GKE_PROJECT
                   service_account_key: ${{ secrets.GKE_KEY }}
             - run: |
                   gcloud auth configure-docker
