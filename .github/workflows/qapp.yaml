@@ -32,9 +32,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
-              uses: actions/checkout@master
-
-            # Setup gcloud CLI
+            - uses: actions/checkout@master
             - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
               with:
                   version: $GCP_VERSION
