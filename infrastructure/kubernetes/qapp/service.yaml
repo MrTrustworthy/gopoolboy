@@ -14,5 +14,5 @@ spec:
         - name: http
           port: #@ app.appPort
           targetPort: #@ app.appPort
-          nodePort: #@ app.nodePort
+          nodePort: #@ app.appPort
           protocol: TCP
