@@ -1,0 +1,17 @@
+#@ load("@ytt:data", "data")
+#@ app = data.values.qapp
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: #@ app.serviceName
+    namespace: #@ app.namespace
+spec:
+    selector:
+        name: #@ app.appName
+    type: NodePort
+    ports:
+        - name: http
+          port: #@ app.appPort
+          targetPort: #@ app.appPort
+          protocol: TCP

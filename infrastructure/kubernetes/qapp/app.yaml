@@ -1,0 +1,19 @@
+#@data/values
+---
+qapp:
+    appName: qapp
+    imageName: qapp-image
+    serviceName: qapp-service
+    secretName: qapp-secret
+    dockerfileFolder: qapp
+    namespace: qapp
+    appPort: 4000
+
+    env:
+        auth0_domain: dev-poolboy.eu.auth0.com
+        api_identifier: http://dev-poolboy-api
+        db_host: pg-qapp
+        db_database: qapp
+    secrets:
+        db_user: postgres
+        db_password: postgres
