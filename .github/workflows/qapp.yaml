@@ -35,8 +35,8 @@ jobs:
               uses: actions/checkout@v2
             - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
               with:
-                  #version: $GCP_VERSION
-                  project_id: $GKE_PROJECT
+                  version: ${{ env.GCP_VERSION }}
+                  project_id: ${{ env.GKE_KEY }}
                   service_account_email: "terraform@integration-poolboy.iam.gserviceaccount.com"
                   service_account_key: ${{ secrets.GKE_KEY }}
                   export_default_credentials: true
