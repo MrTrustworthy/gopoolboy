@@ -17,7 +17,7 @@ env:
     YTT_VERSION: v0.27.2
     KAPP_VERSION: v0.27.0
     KBLD_VERSION: v0.22.0
-    GCP_VERSION: "290.0.1"
+    GCP_VERSION: "293.0.0"
 
     YTTENV_qapp__env__auth0_domain: staging-poolboy.eu.auth0.com
     YTTENV_qapp__env__api_identifier: http://staging-poolboy-api
@@ -32,10 +32,10 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
-              uses: actions/checkout@master
+              uses: actions/checkout@v2
             - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
               with:
-                  version: $GCP_VERSION
+                  #version: $GCP_VERSION
                   project_id: $GKE_PROJECT
                   service_account_email: "terraform@integration-poolboy.iam.gserviceaccount.com"
                   service_account_key: ${{ secrets.GKE_KEY }}
