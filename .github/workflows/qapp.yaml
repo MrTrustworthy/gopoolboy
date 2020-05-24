@@ -17,7 +17,7 @@ env:
     YTT_VERSION: v0.27.2
     KAPP_VERSION: v0.27.0
     KBLD_VERSION: v0.22.0
-    GCP_VERSION: 270.0.0
+    GCP_VERSION: "290.0.1"
 
     YTTENV_qapp__env__auth0_domain: staging-poolboy.eu.auth0.com
     YTTENV_qapp__env__api_identifier: http://staging-poolboy-api
