@@ -11,6 +11,8 @@ metadata:
         kubernetes.io/ingress.allow-http: "false"
         kubernetes.io/ingress.global-static-ip-name: #@ app.staticIpName
         cert-manager.io/cluster-issuer: "letsencrypt-prod"
+        nginx.ingress.kubernetes.io/whitelist-source-range: #@ app.officeIps
+
 spec:
     tls:
         - hosts:

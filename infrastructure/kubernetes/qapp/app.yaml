@@ -12,6 +12,7 @@ qapp:
     dockerfileFolder: qapp
     namespace: qapp
     appPort: 4000
+    officeIps: "78.94.91.125/32"
 
     env:
         auth0_domain: dev-poolboy.eu.auth0.com
