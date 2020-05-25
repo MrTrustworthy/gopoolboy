@@ -5,6 +5,9 @@ qapp:
     imageName: qapp-image
     serviceName: qapp-service
     secretName: qapp-secret
+    ingressName: qapp-ingress
+    staticIpName: nginx-ingress-static-ip
+    externalUrl: qapp.gopoolboy.dev
     dockerfileFolder: qapp
     namespace: qapp
     appPort: 4000
