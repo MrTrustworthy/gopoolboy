@@ -37,6 +37,6 @@ jobs:
             - name: Deploy via kubectl apply
               run: |
                   gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
-                  kubectl apply -f infrastructure/kubernetes/cert-manager/cert-manager.yaml -n cert-manager
-                  kubectl apply -f infrastructure/kubernetes/cert-manager/letsencrypt-staging.yaml -n cert-manager
-                  kubectl apply -f infrastructure/kubernetes/cert-manager/letsencrypt-prod.yaml -n cert-manager
+                  kubectl apply -f infrastructure/kubernetes/cert-manager/cert-manager.yaml
+                  kubectl apply -f infrastructure/kubernetes/cert-manager/letsencrypt-staging.yaml
+                  kubectl apply -f infrastructure/kubernetes/cert-manager/letsencrypt-prod.yaml
