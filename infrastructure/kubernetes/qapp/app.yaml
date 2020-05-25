@@ -6,7 +6,7 @@ qapp:
     serviceName: qapp-service
     secretName: qapp-secret
     ingressName: qapp-ingress
-    staticIpName: nginx-ingress-static-ip
+    staticIpName: nginx-ingress-static-global-ip
     externalUrl: qapp.gopoolboy.dev
     dockerfileFolder: qapp
     namespace: qapp

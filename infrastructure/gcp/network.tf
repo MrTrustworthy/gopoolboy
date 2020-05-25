@@ -34,6 +34,10 @@ resource "google_compute_address" "ingress_static_ip" {
   name = "nginx-ingress-static-ip"
 }
 
+resource "google_compute_global_address" "nginx_ingress_static_ip" {
+  name = "nginx-ingress-static-global-ip"
+}
+
 resource "google_compute_global_address" "pg_private_ip_address" {
   provider = google-beta
 
