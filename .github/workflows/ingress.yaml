@@ -34,13 +34,13 @@ jobs:
             - run: |
                   gcloud auth configure-docker
 
-            - name: Install and configure k14s
+            - name: Install and configure helm
               run: |
                   curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
                   chmod 700 get_helm.sh
                   ./get_helm.sh
 
-            - name: Build and Deploy via k14s
+            - name: Build and Deploy via helm
               run: |
                   gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
                   helm install nginx-ingress infrastructure/kubernetes/ingress -n nginx-ingress
