@@ -32,12 +32,5 @@ resource "google_compute_firewall" "allow_office_to_gke" {
 
   allow {
     protocol = "tcp"
-
-    ports = [
-      "22",
-      "80",
-      "443",
-      "4000"
-    ]
   }
 }

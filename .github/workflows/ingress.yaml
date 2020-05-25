@@ -1,0 +1,46 @@
+# This workflow will build a docker container, publish it to Google Container Registry, and deploy it to GKE.
+name: Deploy ingress
+
+on:
+    push:
+        branches:
+            - master
+        paths:
+            - "infrastructure/kubernetes/ingress/**"
+            - ".github/workflows/ingress.yaml"
+
+env:
+    GKE_PROJECT: staging-poolboy
+    GKE_ZONE: europe-west3-b
+    GKE_CLUSTER: kubernetes-cluster
+    YTT_VERSION: v0.27.2
+    KAPP_VERSION: v0.27.0
+    KBLD_VERSION: v0.22.0
+    GCP_VERSION: "293.0.0"
+
+jobs:
+    deploy-ingress-staging:
+        name: Deploy ingress staging
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+              with:
+                  version: ${{ env.GCP_VERSION }}
+                  project_id: ${{ env.GKE_KEY }}
+                  service_account_key: ${{ secrets.GKE_KEY }}
+                  export_default_credentials: true
+            - run: |
+                  gcloud auth configure-docker
+
+            - name: Install and configure k14s
+              run: |
+                  curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+                  chmod 700 get_helm.sh
+                  ./get_helm.sh
+
+            - name: Build and Deploy via k14s
+              run: |
+                  gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
+                  helm install nginx-ingress infrastructure/kubernetes/ingress -n nginx-ingress
