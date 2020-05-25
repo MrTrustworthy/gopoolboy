@@ -43,4 +43,4 @@ jobs:
             - name: Build and Deploy via helm
               run: |
                   gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
-                  helm install nginx-ingress infrastructure/kubernetes/ingress -n nginx-ingress
+                  helm install nginx-ingress -f  infrastructure/kubernetes/ingress/values-staging.yaml infrastructure/kubernetes/ingress -n nginx-ingress
