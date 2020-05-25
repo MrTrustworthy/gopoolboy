@@ -1,13 +1,13 @@
 # This workflow will build a docker container, publish it to Google Container Registry, and deploy it to GKE.
-name: Deploy ingress
+name: Deploy cert-manager
 
 on:
     push:
         branches:
             - master
         paths:
-            - "infrastructure/kubernetes/ingress/**"
-            - ".github/workflows/ingress.yaml"
+            - "infrastructure/kubernetes/cert-manager/**"
+            - ".github/workflows/cert-manager.yaml"
 
 env:
     GKE_PROJECT: staging-poolboy
@@ -19,8 +19,8 @@ env:
     GCP_VERSION: "293.0.0"
 
 jobs:
-    deploy-ingress-staging:
-        name: Deploy ingress staging
+    deploy-cert-manager-staging:
+        name: Deploy cert-manager staging
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
@@ -34,13 +34,7 @@ jobs:
             - run: |
                   gcloud auth configure-docker
 
-            - name: Install and configure helm
-              run: |
-                  curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
-                  chmod 700 get_helm.sh
-                  ./get_helm.sh
-
             - name: Build and Deploy via helm
               run: |
                   gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
-                  helm upgrade --install nginx-ingress -f infrastructure/kubernetes/ingress/values-staging.yaml infrastructure/kubernetes/ingress -n nginx-ingress
+                  kubectl apply infrastructure/kubernetes/cert-manager/cert-manager.yaml -n cert-manager
