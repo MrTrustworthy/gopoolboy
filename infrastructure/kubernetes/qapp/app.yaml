@@ -8,6 +8,7 @@ qapp:
     ingressName: qapp-ingress
     staticIpName: nginx-ingress-static-global-ip
     externalUrl: qapp.gopoolboy.dev
+    sslCertSecretName: qapp-ssl-secret
     dockerfileFolder: qapp
     namespace: qapp
     appPort: 4000
