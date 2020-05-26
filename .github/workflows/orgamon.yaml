@@ -1,0 +1,58 @@
+# This workflow will build a docker container, publish it to Google Container Registry, and deploy it to GKE.
+name: Deploy orgamon
+
+on:
+    push:
+        branches:
+            - master
+        paths:
+            - "applications/orgamon/**"
+            - "services/orgamon/**"
+            - ".github/workflows/orgamon.yaml"
+
+env:
+    GKE_PROJECT: staging-poolboy
+    GKE_ZONE: europe-west3-b
+    GKE_CLUSTER: kubernetes-cluster
+    YTT_VERSION: v0.27.2
+    KAPP_VERSION: v0.27.0
+    KBLD_VERSION: v0.22.0
+    GCP_VERSION: "293.0.0"
+    YTTENV_orgamon__env__auth0_domain: staging-poolboy.eu.auth0.com
+    YTTENV_orgamon__env__api_identifier: http://staging-poolboy-api
+    YTTENV_orgamon__env__db_host: "10.135.0.3"
+    YTTENV_orgamon__env__db_database: orgamon
+    YTTENV_orgamon__secrets__db_user: ${{ secrets.ORGAMON_PG_USERNAME }}
+    YTTENV_orgamon__secrets__db_password: ${{ secrets.ORGAMON_PG_PASSWORD }}
+    YTTENV_orgamon__secrets__auth0_client_id: ${{ secrets.ORGAMON_AUTH0_CLIENT_ID }}
+    YTTENV_orgamon__secrets__auth0_client_secret: ${{ secrets.ORGAMON_AUTH0_CLIENT_SECRET }}
+
+jobs:
+    deploy-orgamon-staging:
+        name: Deploy orgamon staging
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+              with:
+                  version: ${{ env.GCP_VERSION }}
+                  project_id: ${{ env.GKE_KEY }}
+                  service_account_key: ${{ secrets.GKE_KEY }}
+                  export_default_credentials: true
+            - run: |
+                  gcloud auth configure-docker
+
+            - name: Install and configure k14s
+              run: |
+                  sudo wget -O /bin/ytt https://github.com/k14s/ytt/releases/download/"$YTT_VERSION"/ytt-linux-amd64 \
+                      && sudo chmod +x /bin/ytt
+                  sudo wget -O /bin/kapp https://github.com/k14s/kapp/releases/download/"$KAPP_VERSION"/kapp-linux-amd64 \
+                      && sudo chmod +x /bin/kapp
+                  sudo wget -O /bin/kbld https://github.com/k14s/kbld/releases/download/"$KBLD_VERSION"/kbld-linux-amd64 \
+                      && sudo chmod +x /bin/kbld
+
+            - name: Build and Deploy via k14s
+              run: |
+                  gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
+                  ytt -f services/orgamon --data-values-env YTTENV | kbld -f - | kapp deploy -a orgamon -f - -n orgamon --diff-summary --yes

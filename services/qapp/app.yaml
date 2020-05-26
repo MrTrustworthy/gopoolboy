@@ -3,6 +3,7 @@
 qapp:
     appName: qapp
     imageName: qapp-image
+    newImageName: eu.gcr.io/integration-poolboy/qapp
     serviceName: qapp-service
     secretName: qapp-secret
     ingressName: qapp-ingress
