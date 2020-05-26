@@ -18,7 +18,7 @@ orgamon:
     env:
         auth0_domain: dev-poolboy.eu.auth0.com
         api_identifier: http://dev-poolboy-api
-        db_host: pg-qapp
+        db_host: pg-orgamon
         db_database: orgamon
         auth0_connection_name: "Username-Password-Authentication"
     secrets:

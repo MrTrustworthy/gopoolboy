@@ -1,5 +1,5 @@
 #@ load("@ytt:data", "data")
-#@ app = data.values.qapp
+#@ app = data.values.orgamon
 
 ---
 apiVersion: kbld.k14s.io/v1alpha1

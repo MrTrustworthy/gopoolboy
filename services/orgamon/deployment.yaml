@@ -1,7 +1,7 @@
 #@ load("@ytt:data", "data")
 #@ load("@ytt:struct", "struct")
 
-#@ app = data.values.qapp
+#@ app = data.values.orgamon
 #@ appName = app.appName
 #@ env = struct.decode(app.env)
 ---
