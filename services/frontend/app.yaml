@@ -1,0 +1,26 @@
+#@data/values
+---
+frontend:
+    appName: frontend
+    imageName: frontend-image
+    newImageName: eu.gcr.io/integration-poolboy/frontend
+    serviceName: frontend-service
+    secretName: frontend-secret
+    ingressName: frontend-ingress
+    staticIpName: nginx-ingress-static-global-ip
+    externalUrl: app.gopoolboy.dev
+    sslCertSecretName: frontend-ssl-secret
+    dockerfileFolder: applications/frontend
+    namespace: frontend
+    appPort: 8080
+    officeIps: "78.94.91.125/32"
+
+    env:
+        vue_app_qapp_graphql_http: http://localhost:4000/graphql
+        vue_app_qapp_graphql_token_name: apollo-token
+        vue_app_orgamon_graphql_http: http://localhost:4040/graphql
+        vue_app_orgamon_graphql_token_name: apollo-token
+        vue_app_auth0_domain: dev-poolboy.eu.auth0.com
+        vue_app_auth0_audience: http://dev-poolboy-api
+    secrets:
+        vue_app_auth0_spa_client_id: "AUTH0_SPA_CLIENT_ID"

@@ -46,7 +46,9 @@ services:
             AUTH0_CLIENT_SECRET: "${AUTH0_CLIENT_SECRET}"
             AUTH0_CONNECTION_NAME: "Username-Password-Authentication"
     frontend:
-        build: applications/frontend
+        build:
+            context: applications/frontend
+            dockerfile: dev.Dockerfile
         environment:
             VUE_APP_QAPP_GRAPHQL_HTTP: http://localhost:4000/graphql
             VUE_APP_QAPP_GRAPHQL_TOKEN_NAME: apollo-token
