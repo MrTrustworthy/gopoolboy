@@ -6,7 +6,7 @@ on:
         branches:
             - master
         paths:
-            - "infrastructure/kubernetes/ingress/**"
+            - "services/ingress/**"
             - ".github/workflows/ingress.yaml"
 
 env:
@@ -43,4 +43,4 @@ jobs:
             - name: Build and Deploy via helm
               run: |
                   gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
-                  helm upgrade --install nginx-ingress -f infrastructure/kubernetes/ingress/values-staging.yaml infrastructure/kubernetes/ingress -n nginx-ingress
+                  helm upgrade --install nginx-ingress -f services/ingress/values-staging.yaml services/ingress -n nginx-ingress

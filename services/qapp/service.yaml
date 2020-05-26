@@ -6,6 +6,8 @@ kind: Service
 metadata:
     name: #@ app.serviceName
     namespace: #@ app.namespace
+    #! annotations: #! container-native load balancing - try this out
+    #!    cloud.google.com/neg: '{"ingress": true}'
 spec:
     selector:
         name: #@ app.appName

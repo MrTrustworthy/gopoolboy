@@ -6,7 +6,7 @@ on:
         branches:
             - master
         paths:
-            - "infrastructure/kubernetes/cert-manager/**"
+            - "services/cert-manager/**"
             - ".github/workflows/cert-manager.yaml"
 
 env:
@@ -37,6 +37,6 @@ jobs:
             - name: Deploy via kubectl apply
               run: |
                   gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
-                  kubectl apply -f infrastructure/kubernetes/cert-manager/cert-manager.yaml
-                  kubectl apply -f infrastructure/kubernetes/cert-manager/letsencrypt-staging.yaml
-                  kubectl apply -f infrastructure/kubernetes/cert-manager/letsencrypt-prod.yaml
+                  kubectl apply -f services/cert-manager/cert-manager.yaml
+                  kubectl apply -f services/cert-manager/letsencrypt-staging.yaml
+                  kubectl apply -f services/cert-manager/letsencrypt-prod.yaml

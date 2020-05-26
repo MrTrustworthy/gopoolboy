@@ -6,8 +6,8 @@ on:
         branches:
             - master
         paths:
-            - "qapp/**"
-            - "infrastructure/kubernetes/qapp/**"
+            - "applications/qapp/**"
+            - "services/qapp/**"
             - ".github/workflows/qapp.yaml"
 
 env:
@@ -54,4 +54,4 @@ jobs:
             - name: Build and Deploy via k14s
               run: |
                   gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
-                  ytt -f infrastructure/kubernetes/qapp --data-values-env YTTENV | kbld -f - | kapp deploy -a qapp -f - -n qapp --diff-summary --yes
+                  ytt -f services/qapp --data-values-env YTTENV | kbld -f - | kapp deploy -a qapp -f - -n qapp --diff-summary --yes

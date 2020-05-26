@@ -12,9 +12,9 @@ services:
         ports:
             - 5432:5432
     qapp:
-        build: qapp
+        build: applications/qapp
         volumes:
-            - ./qapp:/app
+            - ./applications/qapp:/app
         ports:
             - 4000:4000
         depends_on:
@@ -27,9 +27,9 @@ services:
             DB_USER: postgres
             DB_PASSWORD: postgres
     orgamon:
-        build: orgamon
+        build: applications/orgamon
         volumes:
-            - ./orgamon:/app
+            - ./applications/orgamon:/app
         ports:
             - 4040:4000
         depends_on:
@@ -46,7 +46,7 @@ services:
             AUTH0_CLIENT_SECRET: "${AUTH0_CLIENT_SECRET}"
             AUTH0_CONNECTION_NAME: "Username-Password-Authentication"
     frontend:
-        build: frontend
+        build: applications/frontend
         environment:
             VUE_APP_QAPP_GRAPHQL_HTTP: http://localhost:4000/graphql
             VUE_APP_QAPP_GRAPHQL_TOKEN_NAME: apollo-token
@@ -56,6 +56,6 @@ services:
             VUE_APP_AUTH0_SPA_CLIENT_ID: "${AUTH0_SPA_CLIENT_ID}"
             VUE_APP_AUTH0_AUDIENCE: http://dev-poolboy-api
         volumes:
-            - ./frontend:/app
+            - ./applications/frontend:/app
         ports:
             - 8080:8080
