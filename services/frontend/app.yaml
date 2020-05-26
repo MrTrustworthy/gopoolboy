@@ -12,7 +12,7 @@ frontend:
     sslCertSecretName: frontend-ssl-secret
     dockerfileFolder: applications/frontend
     namespace: frontend
-    appPort: 8080
+    appPort: 80
     officeIps: "78.94.91.125/32"
 
     env:
