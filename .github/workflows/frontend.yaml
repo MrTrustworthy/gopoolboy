@@ -18,13 +18,13 @@ env:
     KAPP_VERSION: v0.27.0
     KBLD_VERSION: v0.22.0
     GCP_VERSION: "293.0.0"
-    YTTENV_frontend__env__vue_app_qapp_graphql_http: https://qapp.gopoolboy.dev
-    YTTENV_frontend__env__vue_app_qapp_graphql_token_name: apollo-token
-    YTTENV_frontend__env__vue_app_orgamon_graphql_http: https://orgamon.gopoolboy.dev
-    YTTENV_frontend__env__vue_app_orgamon_graphql_token_name: apollo-token
-    YTTENV_frontend__env__vue_app_auth0_domain: staging-poolboy.eu.auth0.com
-    YTTENV_frontend__env__vue_app_auth0_audience: http://staging-poolboy-api
-    YTTENV_frontend__secrets__vue_app_auth0_spa_client_id: ${{ secrets.FRONTEND_AUTH0_SPA_CLIENT_ID }}
+    VUE_APP_QAPP_GRAPHQL_HTTP: https://qapp.gopoolboy.dev
+    VUE_APP_QAPP_GRAPHQL_TOKEN_NAME: apollo-token
+    VUE_APP_ORGAMON_GRAPHQL_HTTP: https://orgamon.gopoolboy.dev
+    VUE_APP_ORGAMON_GRAPHQL_TOKEN_NAME: apollo-token
+    VUE_APP_AUTH0_DOMAIN: staging-poolboy.eu.auth0.com
+    VUE_APP_AUTH0_AUDIENCE: http://staging-poolboy-api
+    VUE_APP_AUTH0_SPA_CLIENT_ID: ${{ secrets.FRONTEND_AUTH0_SPA_CLIENT_ID }}
 
 jobs:
     deploy-frontend-staging:
@@ -54,4 +54,7 @@ jobs:
             - name: Build and Deploy via k14s
               run: |
                   gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
+                  echo 'VUE_APP_QAPP_GRAPHQL_HTTP=bananas' > .env
+                  echo 'VUE_APP_QAPP_GRAPHQL_HTTP=apples' > applications/frontend/.env
+                  echo 'VUE_APP_QAPP_GRAPHQL_HTTP=curry' > applications/frontend/src/.env
                   ytt -f services/frontend --data-values-env YTTENV | kbld -f - | kapp deploy -a frontend -f - -n frontend --diff-summary --yes
