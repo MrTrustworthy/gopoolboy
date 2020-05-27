@@ -54,7 +54,13 @@ jobs:
             - name: Build and Deploy via k14s
               run: |
                   gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
-                  echo 'VUE_APP_QAPP_GRAPHQL_HTTP=bananas' > .env
-                  echo 'VUE_APP_QAPP_GRAPHQL_HTTP=apples' > applications/frontend/.env
-                  echo 'VUE_APP_QAPP_GRAPHQL_HTTP=curry' > applications/frontend/src/.env
+
+                  echo "VUE_APP_QAPP_GRAPHQL_HTTP=$VUE_APP_QAPP_GRAPHQL_HTTP" > applications/frontend.env
+                  echo "VUE_APP_QAPP_GRAPHQL_TOKEN_NAME=$VUE_APP_QAPP_GRAPHQL_TOKEN_NAME" >> applications/frontend.env
+                  echo "VUE_APP_ORGAMON_GRAPHQL_HTTP=$VUE_APP_ORGAMON_GRAPHQL_HTTP" >> applications/frontend.env
+                  echo "VUE_APP_ORGAMON_GRAPHQL_TOKEN_NAME=$VUE_APP_ORGAMON_GRAPHQL_TOKEN_NAME" >> applications/frontend.env
+                  echo "VUE_APP_AUTH0_DOMAIN=$VUE_APP_AUTH0_DOMAIN" >> applications/frontend.env
+                  echo "VUE_APP_AUTH0_AUDIENCE=$VUE_APP_AUTH0_AUDIENCE" >> applications/frontend.env
+                  echo "VUE_APP_AUTH0_SPA_CLIENT_ID=$VUE_APP_AUTH0_SPA_CLIENT_ID" >> applications/frontend.env
+
                   ytt -f services/frontend | kbld -f - | kapp deploy -a frontend -f - -n frontend --diff-summary --yes
