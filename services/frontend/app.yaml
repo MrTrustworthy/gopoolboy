@@ -16,6 +16,7 @@ frontend:
     officeIps: "78.94.91.125/32"
 
     env:
+        node_env: production
         vue_app_qapp_graphql_http: http://localhost:4000/graphql
         vue_app_qapp_graphql_token_name: apollo-token
         vue_app_orgamon_graphql_http: http://localhost:4040/graphql

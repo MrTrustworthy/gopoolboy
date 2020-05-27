@@ -16,6 +16,7 @@ orgamon:
     officeIps: "78.94.91.125/32"
 
     env:
+        node_env: production
         auth0_domain: dev-poolboy.eu.auth0.com
         api_identifier: http://dev-poolboy-api
         db_host: pg-orgamon
