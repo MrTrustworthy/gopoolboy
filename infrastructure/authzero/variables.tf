@@ -16,7 +16,7 @@ locals {
       api_identifier = "http://dev-poolboy-api"
     }
     staging = {
-      client_url     = "https://app.poolboy.dev"
+      client_url     = "https://app.gopoolboy.dev"
       domain         = "staging-poolboy${var.domain_name_stud}"
       api_identifier = "http://staging-poolboy-api"
     }
