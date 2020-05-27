@@ -8,6 +8,7 @@ frontend:
     secretName: frontend-secret
     ingressName: frontend-ingress
     staticIpName: nginx-ingress-static-global-ip
+    configMapName: frontend-configmap
     externalUrl: app.gopoolboy.dev
     sslCertSecretName: frontend-ssl-secret
     dockerfileFolder: applications/frontend
