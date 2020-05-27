@@ -34,7 +34,7 @@ async function createUser(orgaId, email, role) {
     );
     console.log("User got assigned app_metadata attributes", enrichedUserData);
 
-    await assignRoletoUser(initialUserData.user_id, role);
+    await assignRoleToUser(initialUserData.user_id, role);
 
     const passwordReset = await authenticationClient.requestChangePasswordEmail({
         email: enrichedUserData.email,
