@@ -64,7 +64,7 @@ async function clearAllRolesFromUser(userId) {
 
 async function getRoleNameForUser(userId) {
     const roles = await managementClient.getUserRoles({ id: userId });
-    if (roles.length !== 1) throw ReferenceError("User " + userId + " should have one role, noe " + roles);
+    if (roles.length !== 1) throw ReferenceError("User " + userId + " should have one role, not " + roles);
     return roles.map((role) => role.name)[0];
 }
 
