@@ -3,7 +3,6 @@
 
 #@ app = data.values.frontend
 #@ appName = app.appName
-#@ env = struct.decode(app.env)
 ---
 apiVersion: apps/v1beta2
 kind: Deployment

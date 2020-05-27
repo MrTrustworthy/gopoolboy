@@ -57,4 +57,4 @@ jobs:
                   echo 'VUE_APP_QAPP_GRAPHQL_HTTP=bananas' > .env
                   echo 'VUE_APP_QAPP_GRAPHQL_HTTP=apples' > applications/frontend/.env
                   echo 'VUE_APP_QAPP_GRAPHQL_HTTP=curry' > applications/frontend/src/.env
-                  ytt -f services/frontend --data-values-env YTTENV | kbld -f - | kapp deploy -a frontend -f - -n frontend --diff-summary --yes
+                  ytt -f services/frontend | kbld -f - | kapp deploy -a frontend -f - -n frontend --diff-summary --yes
