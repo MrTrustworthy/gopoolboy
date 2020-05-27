@@ -33,14 +33,3 @@ spec:
                           memory: 256Mi
                       limits:
                           memory: 256Mi
-                  volumeMounts:
-                      - name: config-volume
-                        mountPath: /app/.env
-                      - name: secret-volume
-                        mountPath: /app/.env.local
-            volumes:
-                - name: config-volume
-                  configMap:
-                      name: #@ app.configMapName
-                - name: secret-volume
-                  secretName: #@ app.secretName
