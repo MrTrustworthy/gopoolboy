@@ -27,7 +27,7 @@ const getAnswerById = async (id, organization) => {
         .first();
 };
 
-const getAnswerByQuestionId = async (id, organization) => {
+const getAnswersByQuestionId = async (id, organization) => {
     return knexClient
         .from("answers")
         .select("id", "text", "votes")
@@ -46,7 +46,7 @@ const getQuestionsByOrganization = async (organization) => {
 
 // Exposed resolver functions
 const getAnswersForQuestion = async (args, organization) => {
-    return getAnswerByQuestionId(args.id, organization);
+    return getAnswersByQuestionId(args.id, organization);
 };
 
 const getQuestion = async (args, organization) => {
