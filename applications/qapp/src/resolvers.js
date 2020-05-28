@@ -11,20 +11,12 @@ const ensureQuestionInOrga = async (questionId, organization) => {
 };
 
 // Answers
-const getAnswerCountForQuestionId = async (id, organization) => {
-    return knexClient
-        .from("answers")
-        .where({ question_id: id, organization_id: organization })
-        .count("id as answerCount")
-        .first()
-        .then((v) => v.answerCount);
-};
-
 const getAnswersByQuestionId = async (id, organization) => {
     return knexClient
         .from("answers")
         .select("id", "text", "votes")
-        .where({ question_id: id, organization_id: organization });
+        .where({ question_id: id, organization_id: organization })
+        .orderBy("votes", "desc");
 };
 
 const getAnswerById = async (id, organization) => {
@@ -45,7 +37,11 @@ const getQuestionById = async (id, organization) => {
 };
 
 const getQuestionsByOrganization = async (organization) => {
-    return knexClient.from("questions").where({ organization_id: organization }).select("id", "title", "text", "votes");
+    return knexClient
+        .from("questions")
+        .where({ organization_id: organization })
+        .select("id", "title", "text", "votes")
+        .orderBy("created_at", "desc");
 };
 
 // Exposed resolver functions
@@ -56,7 +52,7 @@ const getAnswersForQuestion = async (args, organization) => {
 
 const getQuestion = async (args, organization) => {
     let question = await getQuestionById(args.id, organization);
-    question.answers = getAnswersByQuestionId(args.id, organization);
+    question.answers = await getAnswersByQuestionId(args.id, organization);
     return question;
 };
 
@@ -87,15 +83,17 @@ const createQuestion = async (args, organization, user) => {
         .then(async (newQuestionIds) => getQuestionById(newQuestionIds[0], organization));
 };
 
-const createAnswer = async (args, organization) => {
-    let newAnswerIds = await knexClient("answers")
+const createAnswer = async (args, organization, user) => {
+    await ensureQuestionInOrga(args.questionId, organization);
+    return knexClient("answers")
         .insert({
             text: args.text,
+            question_id: args.questionId,
             organization_id: organization,
             creator_id: user,
         })
-        .returning("id");
-    return getAnswerById(newAnswerIds[0], organization);
+        .returning("id")
+        .then(async (newAnswerIds) => getAnswerById(newAnswerIds[0], organization));
 };
 
 module.exports = {
