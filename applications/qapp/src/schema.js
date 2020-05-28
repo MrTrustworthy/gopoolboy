@@ -2,7 +2,6 @@ const { gql } = require("apollo-server");
 const authRequired = require("./validate");
 const {
     getAnswersForQuestion,
-    getAnswerCountForQuestion,
     getQuestion,
     getQuestions,
     upvoteQuestion,
@@ -22,6 +21,7 @@ const typeDefs = gql`
         title: String
         text: String
         votes: Int
+        answers: [Answer!]
     }
 
     type Query {
@@ -30,7 +30,6 @@ const typeDefs = gql`
         getQuestions: [Question]
         getQuestion(id: ID!): Question
         getAnswersForQuestion(id: ID!): [Answer]
-        getAnswerCountForQuestion(id: ID!): Int
     }
 
     type Mutation {
@@ -50,7 +49,6 @@ const resolvers = {
         getQuestions: authRequired(getQuestions, "read:questions"),
         getQuestion: authRequired(getQuestion, "read:questions"),
         getAnswersForQuestion: authRequired(getAnswersForQuestion, "read:answers"),
-        getAnswerCountForQuestion: authRequired(getAnswerCountForQuestion, "read:answers"),
     },
     Mutation: {
         upvoteQuestion: authRequired(upvoteQuestion, "vote:questions"),

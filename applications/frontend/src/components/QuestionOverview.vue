@@ -16,7 +16,7 @@
 
             <div v-for="question of getQuestions" :key="question.id" class="message">
                 <router-link v-bind:to="'/q/' + question.id">{{ question.title }}</router-link>
-                : {{ question.answerCount }} Answer{{ question.answerCount !== 1 ? "s" : "" }}
+                : {{ question.answers.length }} Answer{{ question.answers.length !== 1 ? "s" : "" }}
             </div>
         </div>
 

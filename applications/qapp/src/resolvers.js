@@ -54,16 +54,19 @@ const getAnswersForQuestion = async (args, organization) => {
     return getAnswersByQuestionId(args.id, organization);
 };
 
-const getAnswerCountForQuestion = async (args, organization) => {
-    return getAnswerCountForQuestionId(args.id, organization);
-};
-
 const getQuestion = async (args, organization) => {
-    return getQuestionById(args.id, organization);
+    let question = await getQuestionById(args.id, organization);
+    question.answers = getAnswersByQuestionId(args.id, organization);
+    return question;
 };
 
 const getQuestions = async (args, organization) => {
-    return getQuestionsByOrganization(organization);
+    let mapper = async (question) => {
+        question.answers = await getAnswersByQuestionId(question.id, organization);
+        return question;
+    };
+    let questions = await getQuestionsByOrganization(organization);
+    return Promise.all(questions.map(mapper));
 };
 
 const upvoteQuestion = async (args, organization) => {
@@ -97,7 +100,6 @@ const createAnswer = async (args, organization) => {
 
 module.exports = {
     getAnswersForQuestion,
-    getAnswerCountForQuestion,
     getQuestion,
     getQuestions,
     upvoteQuestion,
