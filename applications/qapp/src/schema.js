@@ -2,11 +2,12 @@ const { gql } = require("apollo-server");
 const authRequired = require("./validate");
 const {
     getAnswersForQuestion,
+    getAnswerCountForQuestion,
     getQuestion,
     getQuestions,
     upvoteQuestion,
-    addQuestion,
-    addAnswer,
+    createQuestion,
+    createAnswer,
 } = require("./resolvers");
 
 const typeDefs = gql`
@@ -21,7 +22,6 @@ const typeDefs = gql`
         title: String
         text: String
         votes: Int
-        answerCount: Int
     }
 
     type Query {
@@ -30,12 +30,13 @@ const typeDefs = gql`
         getQuestions: [Question]
         getQuestion(id: ID!): Question
         getAnswersForQuestion(id: ID!): [Answer]
+        getAnswerCountForQuestion(id: ID!): Int
     }
 
     type Mutation {
         upvoteQuestion(id: ID!): Question!
-        addQuestion(title: String!, text: String!): Question!
-        addAnswer(questionId: ID!, text: String!): Answer!
+        createQuestion(title: String!, text: String!): Question!
+        createAnswer(questionId: ID!, text: String!): Answer!
     }
 `;
 
@@ -49,11 +50,12 @@ const resolvers = {
         getQuestions: authRequired(getQuestions, "read:questions"),
         getQuestion: authRequired(getQuestion, "read:questions"),
         getAnswersForQuestion: authRequired(getAnswersForQuestion, "read:answers"),
+        getAnswerCountForQuestion: authRequired(getAnswerCountForQuestion, "read:answers"),
     },
     Mutation: {
         upvoteQuestion: authRequired(upvoteQuestion, "vote:questions"),
-        addQuestion: authRequired(addQuestion, "create:questions"),
-        addAnswer: authRequired(addAnswer, "create:answers"),
+        createQuestion: authRequired(createQuestion, "create:questions"),
+        createAnswer: authRequired(createAnswer, "create:answers"),
     },
 };
 

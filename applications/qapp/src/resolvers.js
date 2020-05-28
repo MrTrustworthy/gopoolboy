@@ -2,21 +2,29 @@ const knexClient = require("./knexclient");
 const { AuthenticationError } = require("apollo-server");
 
 // Private utility functions
+
+// Scoping
 const ensureQuestionInOrga = async (questionId, organization) => {
     let orgaId = await knexClient("questions").select("organization_id").where({ id: questionId }).first();
     if (orgaId.organization_id !== organization)
         throw new AuthenticationError("Can't operate with question as it's organization ID doesn't match");
 };
 
-const getQuestionById = async (id, organization) => {
+// Answers
+const getAnswerCountForQuestionId = async (id, organization) => {
     return knexClient
-        .from("questions")
-        .join("answers", { "questions.id": "answers.question_id" })
-        .count("answers.id as answerCount")
-        .where({ "questions.id": id, "questions.organization_id": organization })
-        .select("questions.id", "questions.title", "questions.text", "questions.votes")
-        .groupBy("questions.id", "questions.title", "questions.text", "questions.votes")
-        .first();
+        .from("answers")
+        .where({ question_id: id, organization_id: organization })
+        .count("id as answerCount")
+        .first()
+        .then((v) => v.answerCount);
+};
+
+const getAnswersByQuestionId = async (id, organization) => {
+    return knexClient
+        .from("answers")
+        .select("id", "text", "votes")
+        .where({ question_id: id, organization_id: organization });
 };
 
 const getAnswerById = async (id, organization) => {
@@ -27,26 +35,27 @@ const getAnswerById = async (id, organization) => {
         .first();
 };
 
-const getAnswersByQuestionId = async (id, organization) => {
+// Questions
+const getQuestionById = async (id, organization) => {
     return knexClient
-        .from("answers")
-        .select("id", "text", "votes")
-        .where({ question_id: id, organization_id: organization });
+        .from("questions")
+        .where({ id: id, organization_id: organization })
+        .select("id", "title", "text", "votes")
+        .first();
 };
 
 const getQuestionsByOrganization = async (organization) => {
-    return knexClient
-        .from("questions")
-        .join("answers", { "questions.id": "answers.question_id" })
-        .count("answers.id as answerCount")
-        .where({ "questions.organization_id": organization })
-        .select("questions.id", "questions.title", "questions.text", "questions.votes")
-        .groupBy("questions.id", "questions.title", "questions.text", "questions.votes");
+    return knexClient.from("questions").where({ organization_id: organization }).select("id", "title", "text", "votes");
 };
 
 // Exposed resolver functions
+
 const getAnswersForQuestion = async (args, organization) => {
     return getAnswersByQuestionId(args.id, organization);
+};
+
+const getAnswerCountForQuestion = async (args, organization) => {
+    return getAnswerCountForQuestionId(args.id, organization);
 };
 
 const getQuestion = async (args, organization) => {
@@ -63,20 +72,20 @@ const upvoteQuestion = async (args, organization) => {
     return getQuestion(args, organization);
 };
 
-const addQuestion = async (args, organization, user) => {
-    let newQuestionIds = await knex("questions")
+const createQuestion = async (args, organization, user) => {
+    return knexClient("questions")
         .insert({
             title: args.title,
             text: args.text,
             organization_id: organization,
             creator_id: user,
         })
-        .returning("id");
-    return getQuestionById(newQuestionIds[0], organization);
+        .returning("id")
+        .then(async (newQuestionIds) => getQuestionById(newQuestionIds[0], organization));
 };
 
-const addAnswer = async (args, organization) => {
-    let newAnswerIds = await knex("answers")
+const createAnswer = async (args, organization) => {
+    let newAnswerIds = await knexClient("answers")
         .insert({
             text: args.text,
             organization_id: organization,
@@ -88,9 +97,10 @@ const addAnswer = async (args, organization) => {
 
 module.exports = {
     getAnswersForQuestion,
+    getAnswerCountForQuestion,
     getQuestion,
     getQuestions,
     upvoteQuestion,
-    addQuestion,
-    addAnswer,
+    createQuestion,
+    createAnswer,
 };

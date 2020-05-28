@@ -2,6 +2,6 @@ query GetQuestionOverview {
     getQuestions {
         id
         title
-        answerCount
+        getAnswerCountForQuestion(id: id)
     }
 }
