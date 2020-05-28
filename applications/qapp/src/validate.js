@@ -48,7 +48,7 @@ function authRequired(resolverFunction, requiredPermission = null) {
             throw new AuthenticationError(msg);
         }
         let { organization } = decoded[process.env.API_IDENTIFIER];
-        return resolverFunction(args, organization);
+        return resolverFunction(args, organization, decoded.sub);
     };
 }
 
