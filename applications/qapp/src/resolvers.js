@@ -14,7 +14,6 @@ const ensureObjectInOrga = async (objectId, organization, type = "question") => 
     let orgaId = result.organization_id;
     if (orgaId !== organization) {
         console.log("Error when trying to access", type, "with orgaId", orgaId, "as user from", organization);
-        console.log("Types are", typeof orgaId, "and", typeof organization);
         throw new AuthenticationError("Can't operate with this object as it's organization ID doesn't match");
     }
 };

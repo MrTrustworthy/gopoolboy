@@ -1,6 +1,9 @@
 <template>
     <div>
-        <p v-for="answer of getAnswers" :key="answer.id" class="answer-box">A: {{ answer.text }} [{{ answer.votes }} Votes]</p>
+        <p v-for="answer of getAnswers" :key="answer.id" class="answer-box">
+            A: {{ answer.text }} [{{ answer.votes }} Votes]
+            <button @click="() => upvoteAnswer(answer.id)">Upvote</button>
+        </p>
     </div>
 </template>
 
@@ -14,8 +17,7 @@ export default {
         };
     },
     watch: {
-        $route(to, from) {
-            // eslint-disable-line no-unused-vars
+        $route(to) {
             this.questionId = to.params.id;
         },
     },
@@ -27,6 +29,14 @@ export default {
                     questionId: this.questionId,
                 };
             },
+        },
+    },
+    methods: {
+        upvoteAnswer(answerId) {
+            this.$apollo.mutate({
+                mutation: require("../graphql/UpvoteAnswer.gql"),
+                variables: { answerId },
+            });
         },
     },
 };

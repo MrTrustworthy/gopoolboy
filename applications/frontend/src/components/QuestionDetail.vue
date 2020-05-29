@@ -21,8 +21,7 @@ export default {
         };
     },
     watch: {
-        $route(to, from) {
-            // eslint-disable-line no-unused-vars
+        $route(to) {
             this.questionId = to.params.id;
         },
     },
