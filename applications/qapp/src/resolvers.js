@@ -5,9 +5,13 @@ const { AuthenticationError } = require("apollo-server");
 
 // Scoping
 const ensureQuestionInOrga = async (questionId, organization) => {
-    let orgaId = await knexClient("questions").select("organization_id").where({ id: questionId }).first();
-    if (orgaId.organization_id !== organization)
+    let result = await knexClient("questions").select("organization_id").where({ id: questionId }).first();
+    let orgaId = result.organization_id;
+    console.log("ORGAs", orgaId, organization);
+    if (orgaId !== organization) {
+        console.log("Error when trying to access question with orgaId", orgaId, "as user from", organization);
         throw new AuthenticationError("Can't operate with question as it's organization ID doesn't match");
+    }
 };
 
 // Answers
