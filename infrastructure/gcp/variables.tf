@@ -57,3 +57,15 @@ variable "office_ips" {
   type    = list
   default = ["78.94.91.125/32"]
 }
+
+variable "qapp_db_password" {
+  type    = string
+  default = ""
+}
+
+variable "orgamon_db_password" {
+  type    = string
+  default = ""
+}
+
+
