@@ -4,9 +4,10 @@ const {
     getAnswersForQuestion,
     getQuestion,
     getQuestions,
-    upvoteQuestion,
     createQuestion,
+    upvoteQuestion,
     createAnswer,
+    upvoteAnswer,
 } = require("./resolvers");
 
 const typeDefs = gql`
@@ -33,9 +34,10 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        upvoteQuestion(id: ID!): Question!
         createQuestion(title: String!, text: String!): Question!
+        upvoteQuestion(id: ID!): Question!
         createAnswer(questionId: ID!, text: String!): Answer!
+        upvoteAnswer(id: ID!): Answer!
     }
 `;
 
@@ -51,9 +53,10 @@ const resolvers = {
         getAnswersForQuestion: authRequired(getAnswersForQuestion, "read:answers"),
     },
     Mutation: {
-        upvoteQuestion: authRequired(upvoteQuestion, "vote:questions"),
         createQuestion: authRequired(createQuestion, "create:questions"),
+        upvoteQuestion: authRequired(upvoteQuestion, "vote:questions"),
         createAnswer: authRequired(createAnswer, "create:answers"),
+        upvoteAnswer: authRequired(upvoteAnswer, "vote:answers"),
     },
 };
 
