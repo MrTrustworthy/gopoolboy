@@ -1,5 +1,5 @@
 const knexClient = require("./knexclient");
-const { AuthenticationError } = require("apollo-server");
+const { v4: uuidv4 } = require("uuid");
 
 const {
     createUser,
@@ -21,9 +21,9 @@ async function getUsers(args, organization) {
 }
 
 async function createOrganization(parent, args, context, info) {
+    const orgaId = uuidv4();
     console.log("Creating new organization with", args);
-    const queryResponse = await knexClient.insert({ name: args.name }).into("organizations").returning("id");
-    const orgaId = queryResponse[0];
+    await knexClient.insert({ name: args.name, id: orgaId }).into("organizations");
     console.log("created new org with id", orgaId);
     await createUser(orgaId, args.creatorEmail, "owner");
     return { id: orgaId, name: args.name };

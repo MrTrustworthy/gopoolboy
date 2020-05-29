@@ -3,8 +3,7 @@ exports.up = function (knex) {
         table.increments("id");
         table.string("title").notNullable();
         table.string("text").notNullable();
-        table.timestamp("created_at").defaultTo(knex.fn.now());
-        table.timestamp("updated_at").defaultTo(knex.fn.now());
+        table.timestamps(true, true);
         table.integer("votes").defaultTo(0);
         table.string("organization_id").notNullable();
         table.string("creator_id").notNullable();
