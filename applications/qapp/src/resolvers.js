@@ -1,16 +1,21 @@
 const knexClient = require("./knexclient");
 const { AuthenticationError } = require("apollo-server");
+const assert = require("assert");
 
 // Private utility functions
 
 // Scoping
-const ensureQuestionInOrga = async (questionId, organization) => {
-    let result = await knexClient("questions").select("organization_id").where({ id: questionId }).first();
+const ensureObjectInOrga = async (objectId, organization, type = "question") => {
+    assert(["question", "answer"].indexOf(type) !== -1, "ensureObjectInOrga can't be used with type " + type);
+    let result = await knexClient(type + "s")
+        .select("organization_id")
+        .where({ id: objectId })
+        .first();
     let orgaId = result.organization_id;
-    console.log("ORGAs", orgaId, organization);
     if (orgaId !== organization) {
-        console.log("Error when trying to access question with orgaId", orgaId, "as user from", organization);
-        throw new AuthenticationError("Can't operate with question as it's organization ID doesn't match");
+        console.log("Error when trying to access", type, "with orgaId", orgaId, "as user from", organization);
+        console.log("Types are", typeof orgaId, "and", typeof organization);
+        throw new AuthenticationError("Can't operate with this object as it's organization ID doesn't match");
     }
 };
 
@@ -69,12 +74,6 @@ const getQuestions = async (args, organization) => {
     return Promise.all(questions.map(mapper));
 };
 
-const upvoteQuestion = async (args, organization) => {
-    await ensureQuestionInOrga(args.id, organization);
-    await knexClient("questions").where({ id: args.id }).increment("votes", 1);
-    return getQuestion(args, organization);
-};
-
 const createQuestion = async (args, organization, user) => {
     return knexClient("questions")
         .insert({
@@ -87,8 +86,14 @@ const createQuestion = async (args, organization, user) => {
         .then(async (newQuestionIds) => getQuestionById(newQuestionIds[0], organization));
 };
 
+const upvoteQuestion = async (args, organization) => {
+    await ensureObjectInOrga(args.id, organization, "question");
+    await knexClient("questions").where({ id: args.id }).increment("votes", 1);
+    return getQuestion(args, organization);
+};
+
 const createAnswer = async (args, organization, user) => {
-    await ensureQuestionInOrga(args.questionId, organization);
+    await ensureObjectInOrga(args.questionId, organization, "question");
     return knexClient("answers")
         .insert({
             text: args.text,
@@ -100,11 +105,18 @@ const createAnswer = async (args, organization, user) => {
         .then(async (newAnswerIds) => getAnswerById(newAnswerIds[0], organization));
 };
 
+const upvoteAnswer = async (args, organization) => {
+    await ensureObjectInOrga(args.id, organization, "answer");
+    await knexClient("answers").where({ id: args.id }).increment("votes", 1);
+    return getAnswerById(args.id, organization);
+};
+
 module.exports = {
     getAnswersForQuestion,
     getQuestion,
     getQuestions,
-    upvoteQuestion,
     createQuestion,
+    upvoteQuestion,
     createAnswer,
+    upvoteAnswer,
 };
