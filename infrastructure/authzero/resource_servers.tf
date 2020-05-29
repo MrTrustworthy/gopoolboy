@@ -78,6 +78,10 @@ resource "auth0_resource_server" "management_api" {
     value       = "create:custom_domains"
   }
   scopes {
+    description = "Create Actions"
+    value       = "create:actions"
+  }
+  scopes {
     description = "Create Client Grants"
     value       = "create:client_grants"
   }
@@ -156,6 +160,10 @@ resource "auth0_resource_server" "management_api" {
   scopes {
     description = "Create signing keys"
     value       = "create:signing_keys"
+  }
+  scopes {
+    description = "Delete Actions"
+    value       = "delete:actions"
   }
   scopes {
     description = "Delete Anomaly Detection Blocks"
@@ -244,6 +252,10 @@ resource "auth0_resource_server" "management_api" {
   scopes {
     description = "Deletes password checking job and all its resources"
     value       = "delete:passwords_checking_job"
+  }
+  scopes {
+    description = "Read Actions"
+    value       = "read:actions"
   }
   scopes {
     description = "Read Anomaly Detection Blocks"
@@ -372,6 +384,10 @@ resource "auth0_resource_server" "management_api" {
   scopes {
     description = "Read signing keys"
     value       = "read:signing_keys"
+  }
+  scopes {
+    description = "Update Actions"
+    value       = "update:actions"
   }
   scopes {
     description = "Update Client Grants"
