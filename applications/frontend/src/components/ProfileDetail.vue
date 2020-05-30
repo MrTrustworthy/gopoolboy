@@ -1,15 +1,30 @@
 <template>
     <div>
         <div v-if="$auth.loading">
-            <p>Loading</p>
+            <md-progress-spinner class="md-accent" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
         </div>
         <div v-else>
-            <p>Nickname: {{ $auth.user.nickname }}</p>
-            <p>Name: {{ $auth.user.name }}</p>
-            <p>Sub: {{ $auth.user.sub }}</p>
-            <p>Email: {{ $auth.user.email }}</p>
-            <img width="64" height="64" :src="$auth.user.picture" />
-            <button @click="logout">Log out</button>
+            <md-card>
+                <md-card-header>
+                    <md-card-header-text>
+                        <div class="md-title">{{ $auth.user.nickname }}</div>
+                        <div class="md-subhead">ID: {{ $auth.user.sub }}</div>
+                    </md-card-header-text>
+
+                    <md-card-media md-small>
+                        <img :src="$auth.user.picture" alt="UserProfilePic" />
+                    </md-card-media>
+                </md-card-header>
+
+                <md-card-content>
+                    <div>Name: {{ $auth.user.name }}</div>
+                    <div>Email: {{ $auth.user.email }}</div>
+                </md-card-content>
+
+                <md-card-actions>
+                    <md-button class="md-raised md-accent" @click="logout">Logout</md-button>
+                </md-card-actions>
+            </md-card>
         </div>
     </div>
 </template>
