@@ -3,7 +3,7 @@
     <md-tabs md-sync-route class="md-primary" md-alignment="centered" md-elevation="3">
         <md-tab id="tab-new" to="/new" md-label="Ask" md-icon="add_box"></md-tab>
         <md-tab id="tab-home" to="/" md-label="Home" md-icon="article" exact></md-tab>
-        <md-tab id="tab-about" to="/about" md-label="About" md-icon="help"></md-tab>
+        <md-tab id="tab-about" to="/about" md-label="About" md-icon="help"> </md-tab>
         <md-tab
             id="tab-profile"
             md-label="Profile"
@@ -23,15 +23,5 @@
 <script>
 export default {
     name: "Header",
-    methods: {
-        login() {
-            this.$auth.loginWithRedirect();
-        },
-        logout() {
-            this.$auth.logout({
-                returnTo: window.location.origin,
-            });
-        },
-    },
 };
 </script>
