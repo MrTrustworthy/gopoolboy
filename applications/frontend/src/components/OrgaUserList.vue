@@ -38,7 +38,8 @@
                 </md-card-content>
 
                 <md-card-actions>
-                    <md-button class="md-primary" @click="() => changeUserRole(user.id)">Change user role</md-button>
+                    <md-button class="md-primary" @click="() => changeUserRole(user.id)">Update</md-button>
+                    <md-button class="md-primary" disabled>Reset password</md-button>
                     <md-button class="md-accent" @click="() => deleteUser(user.id)">Delete user</md-button>
                 </md-card-actions>
             </md-card>
