@@ -1,6 +1,9 @@
 <template>
-    <div>
-        <h3>Ask a Question</h3>
+    <md-card>
+        <md-card-header>
+            <div class="md-title">Ask a Question</div>
+        </md-card-header>
+
         <md-field>
             <label>Title</label>
             <md-input v-model="newQuestionTitle" type="text"></md-input>
@@ -11,7 +14,7 @@
         </md-field>
         <md-button @click="createQuestion" class="md-raised md-primary">Ask</md-button>
         <md-button class="md-raised md-accent" disabled>Find similar</md-button>
-    </div>
+    </md-card>
 </template>
 
 <script>

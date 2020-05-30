@@ -2,7 +2,14 @@ query GetOrgaUsers {
     getUsers {
         id
         name
+        nickname
         email
+        emailVerified
+        picture
+        organization
         organizationRole
+        lastLogin
+        createdAt
+        loginCount
     }
 }

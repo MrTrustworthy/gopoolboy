@@ -2,25 +2,41 @@
     <div>
         <h3>Users in this organization:</h3>
         <div v-for="user of getUsers" :key="user.id">
-            <p>User: {{ user.name }} {{ user.email === $auth.user.email ? "(You)" : "" }}</p>
-            <p>Email: {{ user.email }}</p>
-            <p>Role: {{ user.organizationRole }}</p>
-            <select v-model="changedUserRoles[user.id]">
-                <option disabled selected value="">Please select new role</option>
-                <option v-for="role in possibleRoles(user.id)" :key="role.name"> {{ role.name }} </option>
-            </select>
-            <button @click="() => changeUserRole(user.id)">Change user role</button>
-            <button @click="() => deleteUser(user.id)">Delete user</button>
-            <br />
-        </div>
+            <md-card>
+                <md-card-header>
+                    <md-card-header-text>
+                        <div class="md-title">
+                            {{ user.nickname }} {{ user.email === $auth.user.email ? "(You)" : "" }}
+                        </div>
+                        <div class="md-subhead">ID: {{ user.id }}</div>
+                    </md-card-header-text>
 
-        <div>
-            <input v-model="newUserEmail" type="email" placeholder="New user email" />
-            <select v-model="newUserRole">
-                <option disabled value="">Please select one</option>
-                <option v-for="role in getRoles" :key="role.name"> {{ role.name }} </option>
-            </select>
-            <button @click="invite">Invite new user</button>
+                    <md-card-media md-small>
+                        <img :src="user.picture" alt="UserProfilePic" />
+                    </md-card-media>
+                </md-card-header>
+
+                <md-card-content>
+                    <div>Name: {{ user.name }}</div>
+                    <div>Email: {{ user.email }}</div>
+                    <div>Role: {{ user.organizationRole }}</div>
+
+                    <md-field>
+                        <md-select v-model="changedUserRoles[user.id]" placeholder="New Role">
+                            <md-option v-for="role in possibleRoles(user.id)" :key="role.name" :value="role.name">
+                                {{ role.name }}
+                            </md-option>
+                        </md-select>
+                    </md-field>
+                </md-card-content>
+
+                <md-card-actions>
+                    <md-button class="md-primary" @click="() => changeUserRole(user.id)">Change user role</md-button>
+                    <md-button class="md-accent" @click="() => deleteUser(user.id)">Delete user</md-button>
+                </md-card-actions>
+            </md-card>
+
+            <br />
         </div>
     </div>
 </template>
@@ -76,22 +92,6 @@ export default {
                     userId: userId,
                 },
             });
-        },
-        invite() {
-            console.log("Inviting new user", this.newUserEmail, "with role", this.newUserRole);
-            if (!this.newUserRole || !this.newUserEmail) {
-                console.log("Can't create user without selecting a role & email first");
-                return;
-            }
-            this.$apollo
-                .mutate({
-                    mutation: require("../graphql/InviteUser.gql"),
-                    variables: {
-                        email: this.newUserEmail,
-                        role: this.newUserRole,
-                    },
-                })
-                .then((_) => (this.newUserEmail = ""));
         },
     },
 };

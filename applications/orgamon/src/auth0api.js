@@ -80,9 +80,15 @@ async function parseUserAttributes(userObject) {
     return {
         id: userObject.user_id,
         name: userObject.name,
+        nickname: userObject.nickname,
         email: userObject.email,
+        emailVerified: userObject.email_verified,
+        picture: userObject.picture,
         organization: userObject.app_metadata?.organization,
         organizationRole: await getRoleNameForUser(userObject.user_id),
+        lastLogin: userObject.last_login,
+        createdAt: userObject.created_at,
+        loginCount: userObject.logins_count,
     };
 }
 
