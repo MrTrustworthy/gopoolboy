@@ -5,6 +5,7 @@ import { createProvider } from "./vue-apollo";
 import { Auth0Plugin } from "./auth";
 import VueMaterial from "vue-material";
 import "vue-material/dist/vue-material.min.css";
+import "vue-material/dist/theme/default.css";
 
 Vue.config.productionTip = false;
 

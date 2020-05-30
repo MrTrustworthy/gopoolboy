@@ -1,12 +1,16 @@
 <template>
     <div>
         <h3>Ask a Question</h3>
-
-        <div>
-            <input v-model="newQuestionTitle" type="text" placeholder="Title" />
-            <input v-model="newQuestionText" type="text" placeholder="Text" />
-            <button @click="createQuestion">Ask</button>
-        </div>
+        <md-field>
+            <label>Title</label>
+            <md-input v-model="newQuestionTitle" type="text"></md-input>
+        </md-field>
+        <md-field>
+            <label>Text</label>
+            <md-input v-model="newQuestionText" type="text"></md-input>
+        </md-field>
+        <md-button @click="createQuestion" class="md-raised md-primary">Ask</md-button>
+        <md-button class="md-raised md-accent" disabled>Find similar</md-button>
     </div>
 </template>
 
