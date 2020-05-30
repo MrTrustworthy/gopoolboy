@@ -2,6 +2,7 @@
     <div id="organization">
         <OrgaOverview />
         <OrgaUserList />
+        <br />
         <InviteUser />
     </div>
 </template>

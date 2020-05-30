@@ -1,27 +1,27 @@
 <template>
     <div>
-        <h2>Most recent questions</h2>
+        <h3>Most recent questions</h3>
 
         <div v-if="$apollo.queries.getQuestions.loading">
-            Loading...
+            <md-progress-spinner class="md-accent" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
         </div>
 
         <!-- Error -->
         <div v-else-if="$apollo.queries.getQuestions.error">
-            An error occured
-        </div>
-
-        <div v-else-if="getQuestions">
-            <p>There's a total of {{ getQuestions.length }} Questions in your organization</p>
-
-            <div v-for="question of getQuestions" :key="question.id">
-                <router-link v-bind:to="'/q/' + question.id">{{ question.title }}</router-link>
-                : {{ question.answers.length }} Answer{{ question.answers.length !== 1 ? "s" : "" }}
-            </div>
+            An error occured :(
         </div>
 
         <div v-else>
-            Something went wrong :(
+            <p>There's a total of {{ getQuestions.length }} Questions in your organization</p>
+            <md-list>
+                <md-list-item v-for="question of getQuestions" :key="question.id">
+                    <md-button v-bind:to="'/q/' + question.id">{{ question.title }}</md-button>
+                    <md-badge
+                        v-bind:class="question.answers.length !== 0 ? 'md-primary' : 'md-accent'"
+                        v-bind:md-content="question.answers.length"
+                    />
+                </md-list-item>
+            </md-list>
         </div>
     </div>
 </template>
