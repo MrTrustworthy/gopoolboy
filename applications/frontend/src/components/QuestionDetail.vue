@@ -1,12 +1,34 @@
 <template>
     <div>
         <h1>Question {{ $route.params.id }}</h1>
-        <div v-if="$apollo.queries.getQuestion.loading" class="loading apollo">Loading...</div>
-        <div>
-            <h3>{{ getQuestion.title }} ({{ getQuestion.votes }} votes)</h3>
-            <button @click="upvoteQuestion">Upvote</button>
-            <p>{{ getQuestion.text }}</p>
+        <div v-if="$apollo.queries.getQuestion.loading" class="loading apollo">
+            <md-progress-spinner class="md-accent" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
         </div>
+        <div v-else>
+            <md-card>
+                <md-card-header>
+                    <md-card-header-text>
+                        <div class="md-title">{{ getQuestion.title }}</div>
+                        <div class="md-subhead">Author</div>
+                    </md-card-header-text>
+                    <md-card-media>
+                        <md-badge
+                            v-bind:class="getQuestion.votes !== 0 ? 'md-primary' : 'md-accent'"
+                            v-bind:md-content="getQuestion.votes"
+                        />
+                    </md-card-media>
+                </md-card-header>
+
+                <md-card-content>
+                    <div>{{ getQuestion.text }}</div>
+                </md-card-content>
+
+                <md-card-actions>
+                    <md-button class="md-primary" @click="upvoteQuestion"><md-icon>arrow_upward</md-icon> </md-button>
+                </md-card-actions>
+            </md-card>
+        </div>
+
         <br />
     </div>
 </template>
