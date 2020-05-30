@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import HomeView from "./views/Home.vue";
+import QuestionsView from "./views/Questions.vue";
 import AboutView from "./views/About.vue";
 import DetailView from "./views/Detail.vue";
 import ProfileView from "./views/Profile.vue";
@@ -15,9 +15,9 @@ Vue.use(VueRouter);
 export const router = new VueRouter({
     routes: [
         {
-            path: "/",
-            name: "home",
-            component: HomeView,
+            path: "/q",
+            name: "questions",
+            component: QuestionsView,
             meta: {
                 requiresLogin: true,
             },
@@ -39,7 +39,7 @@ export const router = new VueRouter({
             },
         },
         {
-            path: "/profile",
+            path: "/profile/:userId",
             name: "profile",
             component: ProfileView,
             meta: {
@@ -72,6 +72,10 @@ export const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+    if (to.name === null) {
+        next({ name: "questions" });
+        return;
+    }
     // could look for a better way that doesn't rely on simply a tokens existence, since it might be invalid
     if (to.name !== "welcome" && !localStorage.getItem(process.env.VUE_APP_QAPP_GRAPHQL_TOKEN_NAME))
         next({ name: "welcome" });

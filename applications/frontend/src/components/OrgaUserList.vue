@@ -9,9 +9,9 @@
             <md-card v-for="user of getUsers" :key="user.id">
                 <md-card-header>
                     <md-card-header-text>
-                        <div class="md-title">
+                        <md-button class="md-title" v-bind:to="'/profile/' + user.id">
                             {{ user.nickname }} {{ user.email === $auth.user.email ? "(You)" : "" }}
-                        </div>
+                        </md-button>
                         <div class="md-subhead">ID: {{ user.id }}</div>
                     </md-card-header-text>
 

@@ -7,18 +7,24 @@
             <md-card>
                 <md-card-header>
                     <md-card-header-text>
-                        <div class="md-title">{{ $auth.user.nickname }}</div>
-                        <div class="md-subhead">ID: {{ $auth.user.sub }}</div>
+                        <div class="md-title">
+                            {{ getUser.nickname }} {{ getUser.email === $auth.user.email ? "(You)" : "" }}
+                        </div>
+                        <div class="md-subhead">ID: {{ getUser.id }}</div>
                     </md-card-header-text>
 
                     <md-card-media md-small>
-                        <img :src="$auth.user.picture" alt="UserProfilePic" />
+                        <img :src="getUser.picture" alt="UserProfilePic" />
                     </md-card-media>
                 </md-card-header>
 
                 <md-card-content>
-                    <div>Name: {{ $auth.user.name }}</div>
-                    <div>Email: {{ $auth.user.email }}</div>
+                    <div>Name: {{ getUser.name }}</div>
+                    <div>Email: {{ getUser.email }}</div>
+                    <div>Role: {{ getUser.organizationRole }}</div>
+                    <div>Created at: {{ getUser.createdAt }}</div>
+                    <div>Last Login: {{ getUser.lastLogin }}</div>
+                    <div>Logins: {{ getUser.loginCount }}</div>
                 </md-card-content>
 
                 <md-card-actions>
@@ -32,11 +38,33 @@
 <script>
 export default {
     name: "ProfileDetail",
+    data() {
+        return {
+            getUser: {},
+            userId: this.$route.params.userId,
+        };
+    },
+    watch: {
+        $route(to) {
+            this.userId = to.params.userId;
+        },
+    },
     methods: {
         logout() {
             this.$auth.logout({
                 returnTo: window.location.origin,
             });
+        },
+    },
+    apollo: {
+        getUser: {
+            query: require("../graphql/GetUser.gql"),
+            client: "orgamonClient",
+            variables() {
+                return {
+                    userId: this.userId,
+                };
+            },
         },
     },
 };

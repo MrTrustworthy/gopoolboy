@@ -3,6 +3,7 @@ const authRequired = require("./validate");
 const {
     getOrganization,
     getUsers,
+    getUser,
     createOrganization,
     inviteUser,
     getRoles,
@@ -42,6 +43,7 @@ const typeDefs = gql`
     type Query {
         getOrganization: Organization
         getUsers: [User]
+        getUser(id: String!): User
         getRoles: [Role]
     }
 
@@ -57,6 +59,7 @@ const resolvers = {
     Query: {
         getOrganization: authRequired(getOrganization, "read:organization"),
         getUsers: authRequired(getUsers, "read:users"),
+        getUser: authRequired(getUser, "read:users"),
         getRoles: authRequired(getRoles, "read:users"),
     },
     Mutation: {

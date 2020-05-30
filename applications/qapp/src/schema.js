@@ -15,6 +15,8 @@ const typeDefs = gql`
         id: ID
         text: String
         votes: Int
+        createdAt: String
+        authorId: String
     }
 
     type Question {
@@ -22,6 +24,8 @@ const typeDefs = gql`
         title: String
         text: String
         votes: Int
+        createdAt: String
+        authorId: String
         answers: [Answer!]
     }
 

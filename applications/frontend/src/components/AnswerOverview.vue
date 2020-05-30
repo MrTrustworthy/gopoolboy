@@ -8,7 +8,10 @@
             <md-card v-for="answer of getAnswers" :key="answer.id">
                 <md-card-header>
                     <md-card-header-text>
-                        <div class="md-title">Author</div>
+                        <md-button class="md-subhead" v-bind:to="'/profile/' + answer.authorId">
+                            by {{ getUserNickName(answer.authorId) }}
+                        </md-button>
+                        <div class="md-subhead">{{ answer.createdAt.split("GMT")[0] }}</div>
                     </md-card-header-text>
                     <md-card-media>
                         <md-badge
@@ -40,6 +43,7 @@ export default {
     data() {
         return {
             getAnswers: {},
+            getUsers: [],
             questionId: this.$route.params.id,
         };
     },
@@ -57,8 +61,19 @@ export default {
                 };
             },
         },
+        getUsers: {
+            query: require("../graphql/OrganizationUserList.gql"),
+            client: "orgamonClient",
+        },
     },
     methods: {
+        getUserNickName(userId) {
+            let users = this.getUsers.filter((u) => u.id == userId).map((u) => u.nickname);
+            if (users.length === 0) {
+                return userId;
+            }
+            return users[0];
+        },
         upvoteAnswer(answerId) {
             this.$apollo.mutate({
                 mutation: require("../graphql/UpvoteAnswer.gql"),

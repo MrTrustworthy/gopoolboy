@@ -1,5 +1,5 @@
 <template>
-    <div id="home">
+    <div id="questions">
         <QuestionOverview />
     </div>
 </template>
@@ -7,7 +7,7 @@
 <script>
 import QuestionOverview from "@/components/QuestionOverview.vue";
 export default {
-    name: "Home",
+    name: "Questions",
     components: {
         QuestionOverview,
     },

@@ -9,7 +9,10 @@
                 <md-card-header>
                     <md-card-header-text>
                         <div class="md-title">{{ getQuestion.title }}</div>
-                        <div class="md-subhead">Author</div>
+                        <md-button class="md-subhead" v-bind:to="'/profile/' + getQuestion.authorId">
+                            by {{ getUserNickName(getQuestion.authorId) }}
+                        </md-button>
+                        <div class="md-subhead">{{ getQuestion.createdAt.split("GMT")[0] }}</div>
                     </md-card-header-text>
                     <md-card-media>
                         <md-badge
@@ -39,6 +42,7 @@ export default {
     data() {
         return {
             getQuestion: {},
+            getUsers: [],
             questionId: this.$route.params.id,
         };
     },
@@ -55,6 +59,10 @@ export default {
                     questionId: this.questionId,
                 };
             },
+        },
+        getUsers: {
+            query: require("../graphql/OrganizationUserList.gql"),
+            client: "orgamonClient",
         },
     },
     methods: {
@@ -73,6 +81,13 @@ export default {
                     },
                 },
             });
+        },
+        getUserNickName(userId) {
+            let users = this.getUsers.filter((u) => u.id == userId).map((u) => u.nickname);
+            if (users.length === 0) {
+                return userId;
+            }
+            return users[0];
         },
     },
 };

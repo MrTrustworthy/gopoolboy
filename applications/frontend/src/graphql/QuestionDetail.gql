@@ -4,5 +4,7 @@ query GetQuestion($questionId: ID!) {
         title
         text
         votes
+        createdAt
+        authorId
     }
 }

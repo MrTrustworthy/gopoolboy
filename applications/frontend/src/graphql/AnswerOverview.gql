@@ -3,5 +3,7 @@ query GetAnswers($questionId: ID!) {
         id
         text
         votes
+        createdAt
+        authorId
     }
 }

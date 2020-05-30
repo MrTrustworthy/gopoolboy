@@ -20,39 +20,65 @@ const ensureObjectInOrga = async (objectId, organization, type = "question") => 
 
 // Answers
 const getAnswersByQuestionId = async (id, organization) => {
-    return knexClient
+    let answers = await knexClient
         .from("answers")
-        .select("id", "text", "votes")
+        .select("id", "text", "votes", "created_at", "creator_id")
         .where({ question_id: id, organization_id: organization })
         .orderBy("votes", "desc");
+
+    return Promise.all(answers.map(parseAnswer));
 };
 
 const getAnswerById = async (id, organization) => {
-    return knexClient
+    let answer = await knexClient
         .from("answers")
         .where({ organization_id: organization, id: id })
         .select("id", "text", "votes")
         .first();
+    return parseAnswer(answer);
+};
+
+const parseAnswer = async (answer) => {
+    return {
+        id: answer.id,
+        text: answer.text,
+        votes: answer.votes,
+        createdAt: answer.created_at.toString(),
+        authorId: answer.creator_id,
+    };
 };
 
 // Questions
 const getQuestionById = async (id, organization) => {
-    return knexClient
+    let question = await knexClient
         .from("questions")
         .where({ id: id, organization_id: organization })
-        .select("id", "title", "text", "votes")
+        .select("id", "title", "text", "votes", "created_at", "creator_id")
         .first();
+    return parseQuestion(question);
 };
 
 const getQuestionsByOrganization = async (organization) => {
-    return knexClient
+    let questions = await knexClient
         .from("questions")
         .where({ organization_id: organization })
-        .select("id", "title", "text", "votes")
+        .select("id", "title", "text", "votes", "created_at", "creator_id")
         .orderBy("created_at", "desc");
+    return Promise.all(questions.map(parseQuestion));
 };
 
-// Exposed resolver functions
+const parseQuestion = async (question) => {
+    return {
+        id: question.id,
+        text: question.text,
+        title: question.title,
+        votes: question.votes,
+        createdAt: question.created_at.toString(),
+        authorId: question.creator_id,
+    };
+};
+
+// Exposed query functions
 
 const getAnswersForQuestion = async (args, organization) => {
     return getAnswersByQuestionId(args.id, organization);
@@ -72,6 +98,8 @@ const getQuestions = async (args, organization) => {
     let questions = await getQuestionsByOrganization(organization);
     return Promise.all(questions.map(mapper));
 };
+
+// Exposed mutation function
 
 const createQuestion = async (args, organization, user) => {
     return knexClient("questions")

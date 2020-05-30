@@ -1,0 +1,15 @@
+query GetOrgaUsers($userId: String!) {
+    getUser(id: $userId) {
+        id
+        name
+        nickname
+        email
+        emailVerified
+        picture
+        organization
+        organizationRole
+        lastLogin
+        createdAt
+        loginCount
+    }
+}

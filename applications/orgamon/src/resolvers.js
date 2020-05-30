@@ -20,6 +20,15 @@ async function getUsers(args, organization) {
     return (await getAllUsers()).filter((user) => user.organization === organization);
 }
 
+async function getUser(args, organization) {
+    let users = (await getUsers(args, organization)).filter((user) => args.id === user.id);
+    if (users.length !== 1) {
+        console.log("Couldn't find user with id", id);
+        return {};
+    }
+    return users[0];
+}
+
 async function createOrganization(parent, args, context, info) {
     const orgaId = uuidv4();
     console.log("Creating new organization with", args);
@@ -54,4 +63,13 @@ async function changeUserRole(args, organization) {
     return getUserDetails(args.id);
 }
 
-module.exports = { getOrganization, getUsers, createOrganization, inviteUser, getRoles, changeUserRole, deleteUser };
+module.exports = {
+    getOrganization,
+    getUsers,
+    getUser,
+    createOrganization,
+    inviteUser,
+    getRoles,
+    changeUserRole,
+    deleteUser,
+};
