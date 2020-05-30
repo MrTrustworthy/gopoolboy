@@ -1,5 +1,5 @@
 <template>
-    <div class="userlist-box">
+    <div>
         <h3>Users in this organization:</h3>
         <div v-for="user of getUsers" :key="user.id">
             <p>User: {{ user.name }} {{ user.email === $auth.user.email ? "(You)" : "" }}</p>
@@ -14,7 +14,7 @@
             <br />
         </div>
 
-        <div class="invite-user-box">
+        <div>
             <input v-model="newUserEmail" type="email" placeholder="New user email" />
             <select v-model="newUserRole">
                 <option disabled value="">Please select one</option>
@@ -96,11 +96,3 @@ export default {
     },
 };
 </script>
-
-<style scoped>
-.userlist-box {
-    background-color: azure;
-    padding: 5px;
-    margin: 5px;
-}
-</style>

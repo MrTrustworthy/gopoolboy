@@ -1,5 +1,5 @@
 <template>
-    <div class="profile">
+    <div id="profile">
         <ProfileDetail />
     </div>
 </template>
@@ -13,9 +13,3 @@ export default {
     },
 };
 </script>
-
-<style scoped>
-.profile {
-    margin-top: 60px;
-}
-</style>

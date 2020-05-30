@@ -1,5 +1,5 @@
 <template>
-    <div class="profileDetail">
+    <div>
         <div v-if="$auth.loading">
             <p>Loading</p>
         </div>
@@ -26,14 +26,3 @@ export default {
     },
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.profileDetail {
-    overflow: hidden;
-}
-
-.profileDetail {
-    background-color: darkslategrey;
-}
-</style>

@@ -1,5 +1,5 @@
 <template>
-    <div class="profileDetail">
+    <div>
         <!-- Check that the SDK client is not currently loading before accessing is methods -->
         <div v-if="$auth.loading">
             <p>Loading</p>
@@ -66,14 +66,3 @@ export default {
     },
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.profileDetail {
-    overflow: hidden;
-}
-
-.profileDetail {
-    background-color: darkslategrey;
-}
-</style>

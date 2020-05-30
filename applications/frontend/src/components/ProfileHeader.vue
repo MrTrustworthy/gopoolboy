@@ -1,5 +1,5 @@
 <template>
-    <div class="profile">
+    <div>
         <div v-if="$auth.loading">
             <p>Loading</p>
         </div>
@@ -16,13 +16,3 @@ export default {
     name: "ProfileHeader",
 };
 </script>
-
-<style scoped>
-.profile {
-    overflow: hidden;
-}
-
-.profile {
-    background-color: whitesmoke;
-}
-</style>

@@ -41,12 +41,3 @@ export default {
     },
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.answer-box {
-    background-color: aliceblue;
-    padding: 5px;
-    margin: 5px;
-}
-</style>

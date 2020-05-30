@@ -1,5 +1,5 @@
 <template>
-    <div class="welcome">
+    <div id="welcome">
         <SignUpIn />
     </div>
 </template>
@@ -13,9 +13,3 @@ export default {
     },
 };
 </script>
-
-<style scoped>
-.welcome {
-    margin-top: 60px;
-}
-</style>

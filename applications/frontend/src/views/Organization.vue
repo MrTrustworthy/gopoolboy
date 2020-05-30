@@ -1,5 +1,5 @@
 <template>
-    <div class="organization">
+    <div id="organization">
         <OrgaOverview />
         <OrgaUserList />
     </div>
@@ -16,9 +16,3 @@ export default {
     },
 };
 </script>
-
-<style scoped>
-.organization {
-    margin-top: 60px;
-}
-</style>

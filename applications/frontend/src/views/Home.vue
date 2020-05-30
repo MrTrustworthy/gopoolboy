@@ -1,5 +1,5 @@
 <template>
-    <div class="home">
+    <div id="home">
         <QuestionOverview />
         <NewQuestion />
     </div>
@@ -16,9 +16,3 @@ export default {
     },
 };
 </script>
-
-<style scoped>
-.home {
-    margin-top: 60px;
-}
-</style>

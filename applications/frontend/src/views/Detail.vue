@@ -20,9 +20,3 @@ export default {
     },
 };
 </script>
-
-<style>
-#detail {
-    margin-top: 60px;
-}
-</style>

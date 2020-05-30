@@ -1,5 +1,5 @@
 <template>
-    <div class="orga-box">{{ getOrganization.name }} [ID: {{ getOrganization.id }}]</div>
+    <div>{{ getOrganization.name }} [ID: {{ getOrganization.id }}]</div>
 </template>
 
 <script>
@@ -18,11 +18,3 @@ export default {
     },
 };
 </script>
-
-<style scoped>
-.orga-box {
-    background-color: aliceblue;
-    padding: 5px;
-    margin: 5px;
-}
-</style>

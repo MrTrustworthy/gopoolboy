@@ -1,8 +1,8 @@
 <template>
-    <div class="question-overview">
+    <div>
         <h1>Question {{ $route.params.id }}</h1>
         <div v-if="$apollo.queries.getQuestion.loading" class="loading apollo">Loading...</div>
-        <div class="question-box">
+        <div>
             <h3>{{ getQuestion.title }} ({{ getQuestion.votes }} votes)</h3>
             <button @click="upvoteQuestion">Upvote</button>
             <p>{{ getQuestion.text }}</p>
@@ -55,14 +55,3 @@ export default {
     },
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-    margin: 40px 0 0;
-}
-
-.question-box {
-    background-color: bisque;
-}
-</style>
