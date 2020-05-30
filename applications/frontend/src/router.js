@@ -6,6 +6,9 @@ import DetailView from "./views/Detail.vue";
 import ProfileView from "./views/Profile.vue";
 import WelcomeView from "./views/Welcome.vue";
 import OrganizationView from "./views/Organization.vue";
+import NewView from "./views/New.vue";
+
+export const linkActiveClass = "vue-material-link-active";
 
 Vue.use(VueRouter);
 
@@ -52,11 +55,20 @@ export const router = new VueRouter({
             },
         },
         {
+            path: "/new",
+            name: "new",
+            component: NewView,
+            meta: {
+                requiresLogin: true,
+            },
+        },
+        {
             path: "/welcome",
             name: "welcome",
             component: WelcomeView,
         },
     ],
+    linkActiveClass,
 });
 
 router.beforeEach((to, from, next) => {

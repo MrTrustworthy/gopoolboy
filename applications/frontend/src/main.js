@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { router } from "./router";
+import { router, linkActiveClass } from "./router";
 import App from "./App.vue";
 import { createProvider } from "./vue-apollo";
 import { Auth0Plugin } from "./auth";
@@ -15,6 +15,7 @@ Vue.use(Auth0Plugin, {
 });
 
 Vue.use(VueMaterial);
+Vue.material.router.linkActiveClass = linkActiveClass;
 
 new Vue({
     apolloProvider: createProvider(),
