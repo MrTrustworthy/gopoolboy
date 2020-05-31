@@ -42,7 +42,7 @@ jobs:
               uses: GoogleCloudPlatform/github-actions/get-secretmanager-secrets@master
               with:
                   secrets: |-
-                      auth0_spa_client_id:"$GKE_PROJECT"/staging-frontend_auth0_spa_client_id
+                      auth0_spa_client_id:staging-poolboy/staging-frontend_auth0_spa_client_id
             - run: |
                   gcloud auth configure-docker
             - name: Install and configure k14s

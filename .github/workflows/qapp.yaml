@@ -41,7 +41,7 @@ jobs:
               uses: GoogleCloudPlatform/github-actions/get-secretmanager-secrets@master
               with:
                   secrets: |-
-                      db_password:"$GKE_PROJECT"/staging-qapp_db_password
+                      db_password:staging-poolboy/staging-qapp_db_password
             - run: |
                   gcloud auth configure-docker
             - name: Install and configure k14s
