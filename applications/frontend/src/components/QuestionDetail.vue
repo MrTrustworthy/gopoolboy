@@ -37,18 +37,19 @@
 </template>
 
 <script>
+import { toId } from "@/urlids";
 export default {
     name: "QuestionDetail",
     data() {
         return {
             getQuestion: {},
             getUsers: [],
-            questionId: this.$route.params.id,
+            questionId: toId(this.$route.params.id),
         };
     },
     watch: {
         $route(to) {
-            this.questionId = to.params.id;
+            this.questionId = toId(to.params.id);
         },
     },
     apollo: {

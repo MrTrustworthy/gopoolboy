@@ -15,7 +15,7 @@
             <p>There's a total of {{ getQuestions.length }} Questions in your organization</p>
             <md-list>
                 <md-list-item v-for="question of getQuestions" :key="question.id">
-                    <md-button v-bind:to="'/q/' + question.id">{{ question.title }}</md-button>
+                    <md-button v-bind:to="'/q/' + fromId(question.id)">{{ question.title }}</md-button>
                     <md-badge
                         v-bind:class="question.answers.length !== 0 ? 'md-primary' : 'md-accent'"
                         v-bind:md-content="question.answers.length"
@@ -27,11 +27,14 @@
 </template>
 
 <script>
+import { fromId } from "@/urlids";
+
 export default {
     name: "QuestionOverview",
     data() {
         return {
             getQuestions: [],
+            fromId: fromId,
         };
     },
     apollo: {

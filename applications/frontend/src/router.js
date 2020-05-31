@@ -7,6 +7,7 @@ import ProfileView from "./views/Profile.vue";
 import WelcomeView from "./views/Welcome.vue";
 import OrganizationView from "./views/Organization.vue";
 import NewView from "./views/New.vue";
+import { fromId } from "@/urlids";
 
 export const linkActiveClass = "vue-material-link-active";
 
@@ -36,6 +37,15 @@ export const router = new VueRouter({
             component: DetailView,
             meta: {
                 requiresLogin: true,
+            },
+            beforeEnter: (to, from, next) => {
+                if (!isNaN(to.params.id)) {
+                    let id = fromId(to.params.id);
+                    console.log("Redirecting plain ID", to.params.id, "to nice ID", id);
+                    next({ name: "detail", params: { id: id } });
+                    return;
+                }
+                next();
             },
         },
         {
