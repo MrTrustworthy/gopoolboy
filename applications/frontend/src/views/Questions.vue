@@ -1,15 +1,16 @@
 <template>
     <div id="questions">
-        <QuestionOverview />
+        <SearchQuestion />
     </div>
 </template>
 
 <script>
-import QuestionOverview from "@/components/QuestionOverview.vue";
+import SearchQuestion from "@/components/SearchQuestion.vue";
+
 export default {
     name: "Questions",
     components: {
-        QuestionOverview,
+        SearchQuestion,
     },
 };
 </script>

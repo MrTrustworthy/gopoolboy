@@ -57,6 +57,8 @@ services:
             VUE_APP_QAPP_GRAPHQL_TOKEN_NAME: apollo-token
             VUE_APP_ORGAMON_GRAPHQL_HTTP: http://localhost:4040/graphql
             VUE_APP_ORGAMON_GRAPHQL_TOKEN_NAME: apollo-token
+            VUE_APP_FINDR_GRAPHQL_HTTP: http://localhost:4080/graphql
+            VUE_APP_FINDR_GRAPHQL_TOKEN_NAME: apollo-token
             VUE_APP_AUTH0_DOMAIN: dev-poolboy.eu.auth0.com
             VUE_APP_AUTH0_SPA_CLIENT_ID: "${AUTH0_SPA_CLIENT_ID}"
             VUE_APP_AUTH0_AUDIENCE: http://dev-poolboy-api
@@ -64,3 +66,19 @@ services:
             - ./applications/frontend:/app
         ports:
             - 8080:8080
+    findr:
+        build: applications/findr
+        volumes:
+            - ./applications/findr:/app
+        ports:
+            - 4080:4000
+        depends_on:
+            - pg-qapp
+        environment:
+            NODE_ENV: development
+            AUTH0_DOMAIN: dev-poolboy.eu.auth0.com
+            API_IDENTIFIER: http://dev-poolboy-api
+            DB_HOST: pg-qapp
+            DB_DATABASE: qapp
+            DB_USER: postgres
+            DB_PASSWORD: postgres

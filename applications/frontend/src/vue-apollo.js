@@ -21,6 +21,10 @@ const orgamonOptions = {
     httpEndpoint: process.env.VUE_APP_ORGAMON_GRAPHQL_HTTP,
 };
 
+const findrOptions = {
+    httpEndpoint: process.env.VUE_APP_FINDR_GRAPHQL_HTTP,
+};
+
 export function createProvider() {
     const { apolloClient: qappClient } = createApolloClient({
         ...defaultOptions,
@@ -30,9 +34,12 @@ export function createProvider() {
         ...defaultOptions,
         ...orgamonOptions,
     });
-
+    const { apolloClient: findrClient } = createApolloClient({
+        ...defaultOptions,
+        ...findrOptions,
+    });
     return new VueApollo({
-        clients: { qappClient, orgamonClient },
+        clients: { qappClient, orgamonClient, findrClient },
         defaultClient: qappClient,
         errorHandler(error) {
             // eslint-disable-next-line no-console

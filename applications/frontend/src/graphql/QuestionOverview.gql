@@ -1,9 +1,0 @@
-query GetQuestionOverview {
-    getQuestions {
-        id
-        title
-        answers {
-            id
-        }
-    }
-}

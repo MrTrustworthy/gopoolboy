@@ -1,0 +1,20 @@
+{
+    "name": "findr",
+    "version": "0.0.0",
+    "private": true,
+    "scripts": {
+        "server": "nodemon src/index.js"
+    },
+    "dependencies": {
+        "apollo-server": "^2.13.0",
+        "dotenv": "^8.2.0",
+        "graphql": "^15.0.0",
+        "jsonwebtoken": "^8.5.1",
+        "jwks-rsa": "^1.8.0",
+        "knex": "^0.21.1",
+        "pg": "^8.2.1"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.3"
+    }
+}

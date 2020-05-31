@@ -1,0 +1,26 @@
+#@data/values
+---
+findr:
+    appName: findr
+    imageName: findr-image
+    newImageName: eu.gcr.io/integration-poolboy/findr
+    serviceName: findr-service
+    secretName: findr-secret
+    ingressName: findr-ingress
+    staticIpName: nginx-ingress-static-global-ip
+    externalUrl: findr.gopoolboy.dev
+    sslCertSecretName: findr-ssl-secret
+    dockerfileFolder: applications/findr
+    namespace: findr
+    appPort: 4000
+    officeIps: "78.94.91.125/32"
+
+    env:
+        node_env: production
+        auth0_domain: dev-poolboy.eu.auth0.com
+        api_identifier: http://dev-poolboy-api
+        db_host: pg-qapp
+        db_database: qapp
+    secrets:
+        db_user: qapp
+        db_password: postgres
