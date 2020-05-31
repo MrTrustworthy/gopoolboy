@@ -22,10 +22,6 @@ env:
     YTTENV_orgamon__env__api_identifier: http://staging-poolboy-api
     YTTENV_orgamon__env__db_host: "10.135.0.3"
     YTTENV_orgamon__env__db_database: orgamon
-    YTTENV_orgamon__secrets__db_user: ${{ secrets.ORGAMON_PG_USERNAME }}
-    YTTENV_orgamon__secrets__db_password: ${{ secrets.ORGAMON_PG_PASSWORD }}
-    YTTENV_orgamon__secrets__auth0_client_id: ${{ secrets.ORGAMON_AUTH0_CLIENT_ID }}
-    YTTENV_orgamon__secrets__auth0_client_secret: ${{ secrets.ORGAMON_AUTH0_CLIENT_SECRET }}
 
 jobs:
     deploy-orgamon-staging:
@@ -37,12 +33,18 @@ jobs:
             - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
               with:
                   version: ${{ env.GCP_VERSION }}
-                  project_id: ${{ env.GKE_KEY }}
+                  project_id: ${{ env.GKE_PROJECT }}
                   service_account_key: ${{ secrets.GKE_KEY }}
                   export_default_credentials: true
+            - id: secrets
+              uses: GoogleCloudPlatform/github-actions/get-secretmanager-secrets@master
+              with:
+                  secrets: |-
+                      db_password:"$GKE_PROJECT"/staging-orgamon_db_password
+                      auth0_client_id:"$GKE_PROJECT"/staging-orgamon_auth0_client_id
+                      auth0_client_secret:"$GKE_PROJECT"/staging-orgamon_auth0_client_secret
             - run: |
                   gcloud auth configure-docker
-
             - name: Install and configure k14s
               run: |
                   sudo wget -O /bin/ytt https://github.com/k14s/ytt/releases/download/"$YTT_VERSION"/ytt-linux-amd64 \
@@ -53,6 +55,10 @@ jobs:
                       && sudo chmod +x /bin/kbld
 
             - name: Build and Deploy via k14s
+              env:
+                  YTTENV_orgamon__secrets__db_password: ${{ steps.secrets.outputs.db_password }}
+                  YTTENV_orgamon__secrets__auth0_client_id: ${{ steps.secrets.outputs.auth0_client_id }}
+                  YTTENV_orgamon__secrets__auth0_client_secret: ${{ steps.secrets.outputs.auth0_client_secret }}
               run: |
                   gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
                   ytt -f services/orgamon --data-values-env YTTENV | kbld -f - | kapp deploy -a orgamon -f - -n orgamon --diff-summary --yes

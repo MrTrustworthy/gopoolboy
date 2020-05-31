@@ -23,8 +23,6 @@ env:
     YTTENV_qapp__env__api_identifier: http://staging-poolboy-api
     YTTENV_qapp__env__db_host: "10.135.0.3"
     YTTENV_qapp__env__db_database: qapp
-    YTTENV_qapp__secrets__db_user: ${{ secrets.QAPP_PG_USERNAME }}
-    YTTENV_qapp__secrets__db_password: ${{ secrets.QAPP_PG_PASSWORD }}
 
 jobs:
     deploy-qapp-staging:
@@ -36,12 +34,16 @@ jobs:
             - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
               with:
                   version: ${{ env.GCP_VERSION }}
-                  project_id: ${{ env.GKE_KEY }}
+                  project_id: ${{ env.GKE_PROJECT }}
                   service_account_key: ${{ secrets.GKE_KEY }}
                   export_default_credentials: true
+            - id: secrets
+              uses: GoogleCloudPlatform/github-actions/get-secretmanager-secrets@master
+              with:
+                  secrets: |-
+                      db_password:"$GKE_PROJECT"/staging-qapp_db_password
             - run: |
                   gcloud auth configure-docker
-
             - name: Install and configure k14s
               run: |
                   sudo wget -O /bin/ytt https://github.com/k14s/ytt/releases/download/"$YTT_VERSION"/ytt-linux-amd64 \
@@ -52,6 +54,8 @@ jobs:
                       && sudo chmod +x /bin/kbld
 
             - name: Build and Deploy via k14s
+              env:
+                  YTTENV_qapp__secrets__db_password: ${{ steps.secrets.outputs.db_password }}
               run: |
                   gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
                   ytt -f services/qapp --data-values-env YTTENV | kbld -f - | kapp deploy -a qapp -f - -n qapp --diff-summary --yes

@@ -24,7 +24,6 @@ env:
     VUE_APP_ORGAMON_GRAPHQL_TOKEN_NAME: apollo-token
     VUE_APP_AUTH0_DOMAIN: staging-poolboy.eu.auth0.com
     VUE_APP_AUTH0_AUDIENCE: http://staging-poolboy-api
-    VUE_APP_AUTH0_SPA_CLIENT_ID: ${{ secrets.FRONTEND_AUTH0_SPA_CLIENT_ID }}
 
 jobs:
     deploy-frontend-staging:
@@ -36,12 +35,16 @@ jobs:
             - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
               with:
                   version: ${{ env.GCP_VERSION }}
-                  project_id: ${{ env.GKE_KEY }}
+                  project_id: ${{ env.GKE_PROJECT }}
                   service_account_key: ${{ secrets.GKE_KEY }}
                   export_default_credentials: true
+            - id: secrets
+              uses: GoogleCloudPlatform/github-actions/get-secretmanager-secrets@master
+              with:
+                  secrets: |-
+                      auth0_spa_client_id:"$GKE_PROJECT"/staging-frontend_auth0_spa_client_id
             - run: |
                   gcloud auth configure-docker
-
             - name: Install and configure k14s
               run: |
                   sudo wget -O /bin/ytt https://github.com/k14s/ytt/releases/download/"$YTT_VERSION"/ytt-linux-amd64 \
@@ -52,6 +55,8 @@ jobs:
                       && sudo chmod +x /bin/kbld
 
             - name: Build and Deploy via k14s
+              env:
+                  VUE_APP_AUTH0_SPA_CLIENT_ID: ${{ steps.secrets.outputs.auth0_spa_client_id }}
               run: |
                   gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
 

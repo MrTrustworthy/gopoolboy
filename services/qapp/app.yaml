@@ -22,5 +22,5 @@ qapp:
         db_host: pg-qapp
         db_database: qapp
     secrets:
-        db_user: postgres
+        db_user: qapp
         db_password: postgres
