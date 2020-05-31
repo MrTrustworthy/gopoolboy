@@ -12,18 +12,20 @@
 </template>
 
 <script>
+import { toId } from "@/urlids";
+
 export default {
     name: "NewAnswer",
     data() {
         return {
             newAnswerText: "",
-            questionId: this.$route.params.id,
+            questionId: toId(this.$route.params.id),
         };
     },
     watch: {
         $route(to, from) {
             // eslint-disable-line no-unused-vars
-            this.questionId = to.params.id;
+            this.questionId = toId(to.params.id);
         },
     },
     methods: {
