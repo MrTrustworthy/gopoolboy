@@ -20,6 +20,8 @@ env:
     GCP_VERSION: "293.0.0"
     VUE_APP_QAPP_GRAPHQL_HTTP: https://qapp.gopoolboy.dev
     VUE_APP_QAPP_GRAPHQL_TOKEN_NAME: apollo-token
+    VUE_APP_FINDR_GRAPHQL_HTTP: https://findr.gopoolboy.dev
+    VUE_APP_FINDR_GRAPHQL_TOKEN_NAME: apollo-token
     VUE_APP_ORGAMON_GRAPHQL_HTTP: https://orgamon.gopoolboy.dev
     VUE_APP_ORGAMON_GRAPHQL_TOKEN_NAME: apollo-token
     VUE_APP_AUTH0_DOMAIN: staging-poolboy.eu.auth0.com
@@ -62,6 +64,8 @@ jobs:
 
                   echo "VUE_APP_QAPP_GRAPHQL_HTTP=$VUE_APP_QAPP_GRAPHQL_HTTP" > applications/frontend/.env
                   echo "VUE_APP_QAPP_GRAPHQL_TOKEN_NAME=$VUE_APP_QAPP_GRAPHQL_TOKEN_NAME" >> applications/frontend/.env
+                  echo "VUE_APP_FINDR_GRAPHQL_HTTP=$VUE_APP_FINDR_GRAPHQL_HTTP" > applications/frontend/.env
+                  echo "VUE_APP_FINDR_GRAPHQL_TOKEN_NAME=$VUE_APP_FINDR_GRAPHQL_TOKEN_NAME" >> applications/frontend/.env
                   echo "VUE_APP_ORGAMON_GRAPHQL_HTTP=$VUE_APP_ORGAMON_GRAPHQL_HTTP" >> applications/frontend/.env
                   echo "VUE_APP_ORGAMON_GRAPHQL_TOKEN_NAME=$VUE_APP_ORGAMON_GRAPHQL_TOKEN_NAME" >> applications/frontend/.env
                   echo "VUE_APP_AUTH0_DOMAIN=$VUE_APP_AUTH0_DOMAIN" >> applications/frontend/.env
