@@ -7,9 +7,7 @@
             <md-card>
                 <md-card-header>
                     <md-card-header-text>
-                        <div class="md-title">
-                            {{ getUser.nickname }} {{ getUser.email === $auth.user.email ? "(You)" : "" }}
-                        </div>
+                        <div class="md-title">{{ getUser.nickname }} {{ isSelf() ? "(You)" : "" }}</div>
                         <div class="md-subhead">ID: {{ getUser.id }}</div>
                     </md-card-header-text>
 
@@ -27,7 +25,7 @@
                     <div>Logins: {{ getUser.loginCount }}</div>
                 </md-card-content>
 
-                <md-card-actions>
+                <md-card-actions v-if="isSelf()">
                     <md-button class="md-raised md-accent" @click="logout">Logout</md-button>
                 </md-card-actions>
             </md-card>
@@ -54,6 +52,9 @@ export default {
             this.$auth.logout({
                 returnTo: window.location.origin,
             });
+        },
+        isSelf() {
+            return this.getUser.email === this.$auth.user.email;
         },
     },
     apollo: {
