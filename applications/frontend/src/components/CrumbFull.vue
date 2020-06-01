@@ -18,7 +18,7 @@
                         <md-button class="md-subhead" v-bind:to="'/profile/' + getCrumb.authorId">
                             by {{ getUserNickName(getCrumb.authorId) }}
                         </md-button>
-                        <div class="md-subhead">{{ getCrumb.createdAt.split("GMT")[0] }}</div>
+                        <div class="md-subhead">{{ relativeMicrosTS(getCrumb.createdAt) }}</div>
                     </md-card-header-text>
                     <md-card-media>
                         <md-badge
@@ -42,6 +42,7 @@
 
 <script>
 import { fromId } from "@/urlids";
+import moment from "moment";
 
 export default {
     name: "CrumbFull",
@@ -70,6 +71,9 @@ export default {
         },
     },
     methods: {
+        relativeMicrosTS(ts) {
+            return moment(ts, "x").fromNow();
+        },
         upvoteCrumb() {
             this.$apollo.mutate({
                 mutation: require("../graphql/UpvoteCrumb.gql"),

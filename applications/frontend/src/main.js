@@ -1,5 +1,4 @@
 import Vue from "vue";
-import { store } from "./store";
 import { router, linkActiveClass } from "./router";
 import App from "./App.vue";
 import { createProvider } from "./vue-apollo";
@@ -23,5 +22,4 @@ new Vue({
     apolloProvider: createProvider(),
     router,
     render: (h) => h(App),
-    store,
 }).$mount("#app");

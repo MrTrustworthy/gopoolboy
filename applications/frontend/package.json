@@ -11,11 +11,11 @@
         "@auth0/auth0-spa-js": "^1.8.1",
         "core-js": "^3.6.4",
         "hashids": "^2.2.1",
+        "moment": "^2.26.0",
         "vue": "^2.6.11",
         "vue-apollo": "^3.0.0-beta.11",
         "vue-material": "^1.0.0-beta-14",
-        "vue-router": "^3.1.6",
-        "vuex": "^3.4.0"
+        "vue-router": "^3.1.6"
     },
     "devDependencies": {
         "@vue/cli-plugin-babel": "~4.3.0",
