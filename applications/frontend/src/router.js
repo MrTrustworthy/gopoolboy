@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import QuestionsView from "./views/Questions.vue";
+import CrumbsView from "./views/Crumbs.vue";
 import AboutView from "./views/About.vue";
 import DetailView from "./views/Detail.vue";
 import ProfileView from "./views/Profile.vue";
@@ -15,14 +16,6 @@ Vue.use(VueRouter);
 
 export const router = new VueRouter({
     routes: [
-        {
-            path: "/q",
-            name: "questions",
-            component: QuestionsView,
-            meta: {
-                requiresLogin: true,
-            },
-        },
         {
             path: "/about",
             name: "about",
@@ -46,6 +39,22 @@ export const router = new VueRouter({
                     return;
                 }
                 next();
+            },
+        },
+        {
+            path: "/q",
+            name: "questions",
+            component: QuestionsView,
+            meta: {
+                requiresLogin: true,
+            },
+        },
+        {
+            path: "/crumbs",
+            name: "crumbs",
+            component: CrumbsView,
+            meta: {
+                requiresLogin: true,
             },
         },
         {
@@ -83,7 +92,7 @@ export const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     if (to.name === null) {
-        next({ name: "questions" });
+        next({ name: "crumbs" });
         return;
     }
     // could look for a better way that doesn't rely on simply a tokens existence, since it might be invalid

@@ -1,29 +1,29 @@
 <template>
     <div>
         <h1>Question {{ $route.params.id }}</h1>
-        <div v-if="$apollo.queries.getQuestion.loading" class="loading apollo">
+        <div v-if="$apollo.queries.getCrumb.loading" class="loading apollo">
             <md-progress-spinner class="md-accent" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
         </div>
         <div v-else>
             <md-card>
                 <md-card-header>
                     <md-card-header-text>
-                        <div class="md-title">{{ getQuestion.title }}</div>
-                        <md-button class="md-subhead" v-bind:to="'/profile/' + getQuestion.authorId">
-                            by {{ getUserNickName(getQuestion.authorId) }}
+                        <div class="md-title">{{ getCrumb.title }}</div>
+                        <md-button class="md-subhead" v-bind:to="'/profile/' + getCrumb.authorId">
+                            by {{ getUserNickName(getCrumb.authorId) }}
                         </md-button>
-                        <div class="md-subhead">{{ getQuestion.createdAt.split("GMT")[0] }}</div>
+                        <div class="md-subhead">{{ getCrumb.createdAt.split("GMT")[0] }}</div>
                     </md-card-header-text>
                     <md-card-media>
                         <md-badge
-                            v-bind:class="getQuestion.votes !== 0 ? 'md-primary' : 'md-accent'"
-                            v-bind:md-content="getQuestion.votes"
+                            v-bind:class="getCrumb.votes !== 0 ? 'md-primary' : 'md-accent'"
+                            v-bind:md-content="getCrumb.votes"
                         />
                     </md-card-media>
                 </md-card-header>
 
                 <md-card-content>
-                    <div>{{ getQuestion.text }}</div>
+                    <div>{{ getCrumb.text }}</div>
                 </md-card-content>
 
                 <md-card-actions>
@@ -42,7 +42,7 @@ export default {
     name: "QuestionDetail",
     data() {
         return {
-            getQuestion: {},
+            getCrumb: {},
             getUsers: [],
             questionId: toId(this.$route.params.id),
         };
@@ -53,13 +53,14 @@ export default {
         },
     },
     apollo: {
-        getQuestion: {
-            query: require("../graphql/QuestionDetail.gql"),
+        getCrumb: {
+            query: require("../graphql/GetCrumb.gql"),
             variables() {
                 return {
-                    questionId: this.questionId,
+                    id: this.questionId,
                 };
             },
+            client: "crumblerClient",
         },
         getUsers: {
             query: require("../graphql/OrganizationUserList.gql"),
@@ -78,7 +79,7 @@ export default {
                     upvoteQuestion: {
                         __typename: "Question",
                         id: this.questionId,
-                        votes: this.getQuestion.votes + 1,
+                        votes: this.getCrumb.votes + 1,
                     },
                 },
             });

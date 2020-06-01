@@ -1,0 +1,5 @@
+query FindCrumbs($type: String!, $like: String!) {
+    findCrumbs(type: $type, like: $like) {
+        id
+    }
+}

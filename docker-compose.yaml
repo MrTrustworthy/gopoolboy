@@ -97,6 +97,6 @@ services:
             AUTH0_DOMAIN: dev-poolboy.eu.auth0.com
             API_IDENTIFIER: http://dev-poolboy-api
             DB_HOST: pg-qapp
-            DB_DATABASE: qapp
+            DB_DATABASE: crumbler
             DB_USER: postgres
             DB_PASSWORD: postgres

@@ -1,5 +1,0 @@
-query FindQuestions($like: String!) {
-    findQuestions(like: $like) {
-        questionId
-    }
-}

@@ -1,15 +1,15 @@
 const knexClient = require("./knexclient");
 
-const findQuestions = async (args, organization) => {
+const findCrumbs = async (args, organization) => {
     return await knexClient
-        .from("questions")
-        .where({ organization_id: organization })
+        .from("crumbs")
+        .where({ organization_id: organization, type: args.type.toLowerCase() })
         .andWhere(function () {
             this.where("text", "ilike", `%${args.like}%`).orWhere("title", "ilike", `%${args.like}%`);
         })
-        .select("id as questionId");
+        .select("id");
 };
 
 module.exports = {
-    findQuestions,
+    findCrumbs,
 };

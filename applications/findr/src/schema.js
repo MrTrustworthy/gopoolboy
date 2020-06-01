@@ -1,20 +1,20 @@
 const { gql } = require("apollo-server");
 const authRequired = require("./validate");
-const { findQuestions } = require("./resolvers");
+const { findCrumbs } = require("./resolvers");
 
 const typeDefs = gql`
-    type QuestionResult {
-        questionId: ID
+    type QueryResult {
+        id: ID
     }
 
     type Query {
-        findQuestions(like: String!): [QuestionResult]
+        findCrumbs(type: String!, like: String!): [QueryResult]
     }
 `;
 
 const resolvers = {
     Query: {
-        findQuestions: authRequired(findQuestions, "read:questions"),
+        findCrumbs: authRequired(findCrumbs, "read:questions"),
     },
 };
 
