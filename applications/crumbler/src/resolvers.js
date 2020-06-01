@@ -72,10 +72,12 @@ const createQuestionCrumb = (args, organization, user) => {
         .then(async (newCrumbIds) => getCrumb({ id: newCrumbIds[0] }, organization, user));
 };
 
-const createLinkedAnswerCrumb = (args, organization, user) => {
+const createLinkedAnswerCrumb = async (args, organization, user) => {
     let type = args.type.toLowerCase();
     // need to save this here in the context to get it after the last transaction step
     let newCrumbId = null;
+
+    await ensureCrumbInOrga(args.linkTo, organization, user);
 
     return knexClient
         .transaction(function (t) {

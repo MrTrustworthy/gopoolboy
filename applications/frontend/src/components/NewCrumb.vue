@@ -73,6 +73,7 @@ export default {
                     client: "crumblerClient",
                 })
                 .then((data) => {
+                    console.log("New crumb created with id", data.data.createCrumb.id);
                     if (this.crumbType.toLowerCase() === "question")
                         this.$router.push({ name: "crumbdetail", params: { id: data.data.createCrumb.id } });
                 });
