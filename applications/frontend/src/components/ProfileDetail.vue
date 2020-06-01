@@ -8,7 +8,7 @@
                 <md-card-header>
                     <md-card-header-text>
                         <md-button class="md-title" v-bind:to="'/profile/' + getUser.id">
-                            {{ getUser.nickname }} {{ isSelf() ? "(You)" : "" }}
+                            {{ getUser.nickname }} {{ isSelf ? "(You)" : "" }}
                         </md-button>
                         <div class="md-subhead">ID: {{ getUser.id }}</div>
                     </md-card-header-text>
@@ -31,7 +31,7 @@
                     <md-card-content>
                         <md-field>
                             <md-select v-model="newUserRole" placeholder="New Role">
-                                <md-option v-for="role in possibleRoles()" :key="role.name" :value="role.name">
+                                <md-option v-for="role in possibleRoles" :key="role.name" :value="role.name">
                                     {{ role.name }}
                                 </md-option>
                             </md-select>
@@ -44,7 +44,7 @@
                     </md-card-actions>
                 </div>
 
-                <md-card-actions v-if="isSelf()">
+                <md-card-actions v-if="isSelf">
                     <md-button class="md-raised md-accent" @click="logout">Logout</md-button>
                 </md-card-actions>
             </md-card>
@@ -72,7 +72,14 @@ export default {
             newUserRole: null,
         };
     },
-
+    computed: {
+        isSelf: function() {
+            return this.getUser.email === this.$auth.user.email;
+        },
+        possibleRoles: function() {
+            return this.getRoles.filter((r) => r.name !== this.getUser.organizationRole);
+        },
+    },
     apollo: {
         getUser: {
             query: require("../graphql/GetUser.gql"),
@@ -93,12 +100,7 @@ export default {
                 returnTo: window.location.origin,
             });
         },
-        isSelf() {
-            return this.getUser.email === this.$auth.user.email;
-        },
-        possibleRoles() {
-            return this.getRoles.filter((r) => r.name !== this.getUser.organizationRole);
-        },
+
         changeUserRole() {
             if (!this.newUserRole) {
                 console.log("Can't change the role of an user if no role is selected");

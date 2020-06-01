@@ -81,6 +81,11 @@ export default {
                 });
         },
         formatTag(str) {
+            /*
+             * Turns arbitrary strings into "clean" tags
+             * "  hello YOU :   friend" -> "hello_you:friend"
+             * "whatsup" -> "whatsup:true"
+             */
             let tagKV = str
                 .replace(/,/g, "")
                 .split(":")
