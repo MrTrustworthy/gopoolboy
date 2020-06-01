@@ -14,7 +14,9 @@
                     </md-card-header-text>
 
                     <md-card-media md-small>
-                        <img :src="getUser.picture" alt="UserProfilePic" />
+                        <md-avatar class="md-large">
+                            <img :src="getUser.picture" alt="UserProfilePic" />
+                        </md-avatar>
                     </md-card-media>
                 </md-card-header>
 
