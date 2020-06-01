@@ -1,0 +1,3 @@
+query GetLinkedCrumbIds($id: ID!, $type: String!) {
+    getLinkedCrumbIds(id: $id, type: $type)
+}

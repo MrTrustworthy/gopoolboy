@@ -7,7 +7,7 @@
         <Header />
         <div class="md-layout">
             <div class="md-layout-item"></div>
-            <div class="md-layout-item">
+            <div class="md-layout-item md-size-50">
                 <router-view />
             </div>
             <div class="md-layout-item"></div>

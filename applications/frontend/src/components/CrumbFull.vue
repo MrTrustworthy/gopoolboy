@@ -1,0 +1,98 @@
+<template>
+    <div>
+        <div v-if="$apollo.queries.getCrumb.loading">
+            <md-progress-spinner class="md-accent" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
+        </div>
+
+        <!-- Error -->
+        <div v-else-if="$apollo.queries.getCrumb.error">
+            An error occured :(
+        </div>
+
+        <div v-else>
+            <md-card>
+                <md-card-header>
+                    <md-card-header-text>
+                        <div class="md-title">{{ getCrumb.title }}</div>
+                        <div class="md-subhead">Type: {{ getCrumb.type }}</div>
+                        <md-button class="md-subhead" v-bind:to="'/profile/' + getCrumb.authorId">
+                            by {{ getUserNickName(getCrumb.authorId) }}
+                        </md-button>
+                        <div class="md-subhead">{{ getCrumb.createdAt.split("GMT")[0] }}</div>
+                    </md-card-header-text>
+                    <md-card-media>
+                        <md-badge
+                            v-bind:class="getCrumb.votes !== 0 ? 'md-primary' : 'md-accent'"
+                            v-bind:md-content="getCrumb.votes"
+                        />
+                    </md-card-media>
+                </md-card-header>
+
+                <md-card-content>
+                    <div>{{ getCrumb.text }}</div>
+                </md-card-content>
+
+                <md-card-actions>
+                    <md-button class="md-primary" @click="upvoteQuestion"><md-icon>arrow_upward</md-icon> </md-button>
+                </md-card-actions>
+            </md-card>
+        </div>
+    </div>
+</template>
+
+<script>
+import { fromId } from "@/urlids";
+
+export default {
+    name: "CrumbFull",
+    props: {
+        id: { type: [String, Number], required: true },
+    },
+    data() {
+        return {
+            getCrumb: {},
+            fromId: fromId,
+            getUsers: [],
+            linkedCrumbs: 0,
+        };
+    },
+    apollo: {
+        getCrumb: {
+            query: require("../graphql/GetCrumb.gql"),
+            variables() {
+                return { id: this.id };
+            },
+            client: "crumblerClient",
+        },
+        getUsers: {
+            query: require("../graphql/OrganizationUserList.gql"),
+            client: "orgamonClient",
+        },
+    },
+    methods: {
+        upvoteQuestion() {
+            this.$apollo.mutate({
+                mutation: require("../graphql/UpvoteQuestion.gql"),
+                variables: {
+                    questionId: this.questionId,
+                },
+                optimisticResponse: {
+                    __typename: "Mutation",
+                    upvoteQuestion: {
+                        __typename: "Question",
+                        id: this.questionId,
+                        votes: this.getCrumb.votes + 1,
+                    },
+                },
+            });
+        },
+        getUserNickName(userId) {
+            let users = this.getUsers.filter((u) => u.id == userId).map((u) => u.nickname);
+            if (users.length === 0) {
+                return userId;
+            }
+            return users[0];
+        },
+    },
+};
+</script>

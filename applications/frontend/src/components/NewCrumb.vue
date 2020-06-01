@@ -1,23 +1,23 @@
 <template>
     <md-card>
         <md-card-header>
-            <div class="md-title">Ask a Question</div>
+            <div class="md-title">New Crumb of type {{ crumbType }}</div>
         </md-card-header>
 
         <md-card-content>
             <md-field>
                 <label>Title</label>
-                <md-input v-model="newQuestionTitle" type="text"></md-input>
+                <md-input v-model="newCrumbTitle" type="text"></md-input>
             </md-field>
             <md-field>
                 <label>Text</label>
-                <md-input v-model="newQuestionText" type="text"></md-input>
+                <md-input v-model="newCrumbText" type="text"></md-input>
             </md-field>
             <md-field>
                 <!-- Can use md-static-->
                 <md-chips
                     class="md-primary pulse-on-error"
-                    v-model="newQuestionTags"
+                    v-model="newCrumbTags"
                     :md-auto-insert="true"
                     md-check-duplicated
                     :md-format="formatTag"
@@ -29,7 +29,7 @@
         </md-card-content>
 
         <md-card-actions>
-            <md-button @click="createCrumb" class="md-raised md-primary">Ask</md-button>
+            <md-button @click="createCrumb" class="md-raised md-primary">Post {{ crumbType }}</md-button>
             <md-button class="md-raised md-accent" disabled>Find similar</md-button>
         </md-card-actions>
     </md-card>
@@ -37,27 +37,45 @@
 
 <script>
 export default {
-    name: "NewQuestion",
+    name: "NewCrumb",
+    props: {
+        crumbType: {
+            type: String,
+            required: true,
+        },
+        linkTo: {
+            required: false,
+            type: [String, Number],
+        },
+    },
     data() {
         return {
-            newQuestionTitle: "",
-            newQuestionText: "",
-            newQuestionTags: [],
+            newCrumbTitle: "",
+            newCrumbText: "",
+            newCrumbTags: [],
         };
     },
     methods: {
         createCrumb() {
+            if (this.crumbType.toLowerCase() === "answer" && !this.linkTo) {
+                console.error("Can't create answer-crumb with no link to anything!");
+                return;
+            }
             this.$apollo
                 .mutate({
                     mutation: require("../graphql/CreateCrumb.gql"),
                     variables: {
-                        title: this.newQuestionTitle,
-                        text: this.newQuestionText,
-                        type: "question",
+                        title: this.newCrumbTitle,
+                        text: this.newCrumbText,
+                        type: this.crumbType,
+                        linkTo: this.linkTo ? this.linkTo : null,
                     },
                     client: "crumblerClient",
                 })
-                .then((data) => this.$router.push({ name: "detail", params: { id: data.data.createCrumb.id } }));
+                .then((data) => {
+                    if (this.crumbType.toLowerCase() === "question")
+                        this.$router.push({ name: "crumbdetail", params: { id: data.data.createCrumb.id } });
+                });
         },
         formatTag(str) {
             let tagKV = str

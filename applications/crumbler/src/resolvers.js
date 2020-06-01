@@ -6,14 +6,14 @@ const sayHello = async (args, organization) => {
 };
 
 const selectMappings = {
-    id: "id",
-    title: "title",
-    text: "text",
-    type: "type",
-    source: "source",
-    votes: "votes",
-    createdAt: "created_at",
-    authorId: "creator_id",
+    id: "crumbs.id",
+    title: "crumbs.title",
+    text: "crumbs.text",
+    type: "crumbs.type",
+    source: "crumbs.source",
+    votes: "crumbs.votes",
+    createdAt: "crumbs.created_at",
+    authorId: "crumbs.creator_id",
 };
 
 const getCrumbs = async (args, organization, user) => {
@@ -26,17 +26,32 @@ const getCrumb = async (args, organization, user) => {
         .select(selectMappings)
         .first();
 };
-const getLinkedCrumbs = async (args, organization, user) => {
-    return [];
+const getLinkedCrumbIds = async (args, organization, user) => {
+    return knexClient
+        .from("crumblinks")
+        .leftJoin("crumbs", { "crumblinks.to": "crumbs.id" })
+        .where({ "crumblinks.from": args.id, "crumbs.organization_id": organization, "crumbs.type": args.type })
+        .select({ id: "crumbs.id" })
+        .then((res) => res.map((r) => r.id));
 };
 
 const createCrumb = async (args, organization, user) => {
-    assert(["question", "answer"].indexOf(args.type.toLowerCase()) !== -1, "Type can't be: " + args.type);
+    let type = args.type.toLowerCase();
+    assert(["question", "answer"].indexOf(type) !== -1, "Type can't be: " + args.type);
+    assert(type !== "answer" || args.linkTo, "Answers need to provide a link!");
+
+    if (args.linkTo) return createLinkedAnswerCrumb(args, organization, user);
+    return createQuestionCrumb(args, organization, user);
+};
+
+const createQuestionCrumb = (args, organization, user) => {
+    let type = args.type.toLowerCase();
+
     return knexClient("crumbs")
         .insert({
             title: args.title,
             text: args.text,
-            type: args.type.toLowerCase(),
+            type: type,
             source: "web",
             organization_id: organization,
             creator_id: user,
@@ -45,10 +60,47 @@ const createCrumb = async (args, organization, user) => {
         .then(async (newCrumbIds) => getCrumb({ id: newCrumbIds[0] }, organization, user));
 };
 
+const createLinkedAnswerCrumb = (args, organization, user) => {
+    let type = args.type.toLowerCase();
+
+    // need to save this here in the context to get it after the last transaction step
+    let newCrumbId = null;
+    return knexClient
+        .transaction(function (t) {
+            return knexClient("crumbs")
+                .transacting(t)
+                .insert({
+                    title: args.title,
+                    text: args.text,
+                    type: type,
+                    source: "web",
+                    organization_id: organization,
+                    creator_id: user,
+                })
+                .returning("id")
+                .then(function (newCrumbIds) {
+                    newCrumbId = newCrumbIds[0];
+                    return knexClient("crumblinks").transacting(t).insert({
+                        from: args.linkTo,
+                        to: newCrumbId,
+                        creator_id: user,
+                    });
+                })
+                .then(t.commit)
+                .catch(t.rollback);
+        })
+        .then(function (data) {
+            return getCrumb({ id: newCrumbId }, organization, user);
+        })
+        .catch(function (data) {
+            console.log("Failed to insert data:", args);
+        });
+};
+
 module.exports = {
     sayHello,
     getCrumbs,
     getCrumb,
-    getLinkedCrumbs,
+    getLinkedCrumbIds,
     createCrumb,
 };

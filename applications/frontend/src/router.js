@@ -4,10 +4,10 @@ import QuestionsView from "./views/Questions.vue";
 import CrumbsView from "./views/Crumbs.vue";
 import AboutView from "./views/About.vue";
 import DetailView from "./views/Detail.vue";
+import CrumbDetailView from "./views/CrumbDetail.vue";
 import ProfileView from "./views/Profile.vue";
 import WelcomeView from "./views/Welcome.vue";
 import OrganizationView from "./views/Organization.vue";
-import NewView from "./views/New.vue";
 import { fromId } from "@/urlids";
 
 export const linkActiveClass = "vue-material-link-active";
@@ -58,6 +58,23 @@ export const router = new VueRouter({
             },
         },
         {
+            path: "/crumbs/:id",
+            name: "crumbdetail",
+            component: CrumbDetailView,
+            meta: {
+                requiresLogin: true,
+            },
+            beforeEnter: (to, from, next) => {
+                if (!isNaN(to.params.id)) {
+                    let id = fromId(to.params.id);
+                    console.log("Redirecting plain ID", to.params.id, "to nice ID", id);
+                    next({ name: "crumbdetail", params: { id: id } });
+                    return;
+                }
+                next();
+            },
+        },
+        {
             path: "/profile/:userId",
             name: "profile",
             component: ProfileView,
@@ -69,14 +86,6 @@ export const router = new VueRouter({
             path: "/organization",
             name: "organization",
             component: OrganizationView,
-            meta: {
-                requiresLogin: true,
-            },
-        },
-        {
-            path: "/new",
-            name: "new",
-            component: NewView,
             meta: {
                 requiresLogin: true,
             },

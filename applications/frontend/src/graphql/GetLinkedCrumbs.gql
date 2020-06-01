@@ -1,5 +1,0 @@
-query GetLinkedCrumbs($id: String!) {
-    getLinkedCrumbs(id: $id) {
-        id
-    }
-}
