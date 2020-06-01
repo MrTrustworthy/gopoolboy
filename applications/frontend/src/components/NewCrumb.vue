@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import { fromId } from "@/urlids";
+
 export default {
     name: "NewCrumb",
     props: {
@@ -75,7 +77,7 @@ export default {
                 .then((data) => {
                     console.log("New crumb created with id", data.data.createCrumb.id);
                     if (this.crumbType.toLowerCase() === "question")
-                        this.$router.push({ name: "crumbdetail", params: { id: data.data.createCrumb.id } });
+                        this.$router.push({ name: "crumbdetail", params: { id: fromId(data.data.createCrumb.id) } });
                 });
         },
         formatTag(str) {
