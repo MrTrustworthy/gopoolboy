@@ -68,4 +68,7 @@ variable "orgamon_db_password" {
   default = ""
 }
 
-
+variable "crumbler_db_password" {
+  type    = string
+  default = ""
+}

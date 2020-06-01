@@ -25,6 +25,10 @@ const findrOptions = {
     httpEndpoint: process.env.VUE_APP_FINDR_GRAPHQL_HTTP,
 };
 
+const crumblerOptions = {
+    httpEndpoint: process.env.VUE_APP_CRUMBLER_GRAPHQL_HTTP,
+};
+
 export function createProvider() {
     const { apolloClient: qappClient } = createApolloClient({
         ...defaultOptions,
@@ -38,8 +42,13 @@ export function createProvider() {
         ...defaultOptions,
         ...findrOptions,
     });
+
+    const { apolloClient: crumblerClient } = createApolloClient({
+        ...defaultOptions,
+        ...crumblerOptions,
+    });
     return new VueApollo({
-        clients: { qappClient, orgamonClient, findrClient },
+        clients: { qappClient, orgamonClient, findrClient, crumblerClient },
         defaultClient: qappClient,
         errorHandler(error) {
             // eslint-disable-next-line no-console

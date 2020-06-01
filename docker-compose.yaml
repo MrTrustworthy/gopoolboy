@@ -27,6 +27,22 @@ services:
             DB_DATABASE: qapp
             DB_USER: postgres
             DB_PASSWORD: postgres
+    crumbler:
+        build: applications/crumbler
+        volumes:
+            - ./applications/crumbler:/app
+        ports:
+            - 4120:4000
+        depends_on:
+            - pg-qapp
+        environment:
+            NODE_ENV: development
+            AUTH0_DOMAIN: dev-poolboy.eu.auth0.com
+            API_IDENTIFIER: http://dev-poolboy-api
+            DB_HOST: pg-qapp
+            DB_DATABASE: crumbler
+            DB_USER: postgres
+            DB_PASSWORD: postgres
     orgamon:
         build: applications/orgamon
         volumes:
@@ -59,6 +75,8 @@ services:
             VUE_APP_ORGAMON_GRAPHQL_TOKEN_NAME: apollo-token
             VUE_APP_FINDR_GRAPHQL_HTTP: http://localhost:4080/graphql
             VUE_APP_FINDR_GRAPHQL_TOKEN_NAME: apollo-token
+            VUE_APP_CRUMBLER_GRAPHQL_HTTP: http://localhost:4120/graphql
+            VUE_APP_CRUMBLER_GRAPHQL_TOKEN_NAME: apollo-token
             VUE_APP_AUTH0_DOMAIN: dev-poolboy.eu.auth0.com
             VUE_APP_AUTH0_SPA_CLIENT_ID: "${AUTH0_SPA_CLIENT_ID}"
             VUE_APP_AUTH0_AUDIENCE: http://dev-poolboy-api

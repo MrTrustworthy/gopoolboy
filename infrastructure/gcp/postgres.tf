@@ -51,3 +51,14 @@ resource "google_sql_user" "orgamon_user" {
   instance = google_sql_database_instance.app_postgres.name
   password = var.orgamon_db_password
 }
+
+resource "google_sql_database" "crumbler_database" {
+  name     = "crumbler"
+  instance = google_sql_database_instance.app_postgres.name
+}
+
+resource "google_sql_user" "crumbler_user" {
+  name     = "crumbler"
+  instance = google_sql_database_instance.app_postgres.name
+  password = var.crumbler_db_password
+}
