@@ -14,8 +14,8 @@
                 <md-list-item>
                     <md-button v-bind:to="'/crumbs/' + fromId(getCrumb.id)">{{ getCrumb.title }}</md-button>
                     <md-badge
-                        v-bind:class="linkedCrumbs !== 0 ? 'md-primary' : 'md-accent'"
-                        v-bind:md-content="linkedCrumbs"
+                        v-bind:class="getLinkedCrumbIds.length !== 0 ? 'md-primary' : 'md-accent'"
+                        v-bind:md-content="getLinkedCrumbIds.length"
                     />
                 </md-list-item>
             </md-list>
@@ -35,7 +35,7 @@ export default {
         return {
             getCrumb: {},
             fromId: fromId,
-            linkedCrumbs: 0,
+            getLinkedCrumbIds: [],
         };
     },
     apollo: {
@@ -43,6 +43,16 @@ export default {
             query: require("../graphql/GetCrumb.gql"),
             variables() {
                 return { id: this.id };
+            },
+            client: "crumblerClient",
+        },
+        getLinkedCrumbIds: {
+            query: require("../graphql/GetLinkedCrumbIds.gql"),
+            variables() {
+                return {
+                    id: this.id,
+                    type: "answer",
+                };
             },
             client: "crumblerClient",
         },
