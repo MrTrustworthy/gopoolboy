@@ -29,7 +29,7 @@
         </md-card-content>
 
         <md-card-actions>
-            <md-button @click="createQuestion" class="md-raised md-primary">Ask</md-button>
+            <md-button @click="createCrumb" class="md-raised md-primary">Ask</md-button>
             <md-button class="md-raised md-accent" disabled>Find similar</md-button>
         </md-card-actions>
     </md-card>
@@ -46,16 +46,18 @@ export default {
         };
     },
     methods: {
-        createQuestion() {
+        createCrumb() {
             this.$apollo
                 .mutate({
-                    mutation: require("../graphql/CreateQuestion.gql"),
+                    mutation: require("../graphql/CreateCrumb.gql"),
                     variables: {
                         title: this.newQuestionTitle,
                         text: this.newQuestionText,
+                        type: "question",
                     },
+                    client: "crumblerClient",
                 })
-                .then((data) => this.$router.push({ name: "detail", params: { id: data.data.createQuestion.id } }));
+                .then((data) => this.$router.push({ name: "detail", params: { id: data.data.createCrumb.id } }));
         },
         formatTag(str) {
             let tagKV = str

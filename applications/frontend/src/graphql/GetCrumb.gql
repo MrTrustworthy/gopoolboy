@@ -1,0 +1,12 @@
+query GetCrumb($id: ID!) {
+    getCrumb(id: $id) {
+        id
+        title
+        text
+        type
+        source
+        votes
+        createdAt
+        authorId
+    }
+}

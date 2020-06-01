@@ -1,0 +1,5 @@
+mutation CreateCrumb($title: String!, $text: String!, $type: String!) {
+    createCrumb(title: $title, text: $text, type: $type) {
+        id
+    }
+}

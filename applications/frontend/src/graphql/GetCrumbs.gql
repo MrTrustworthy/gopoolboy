@@ -1,0 +1,8 @@
+query GetCrumbs($type: String!) {
+    getCrumbs(type: $type) {
+        id
+        votes
+        createdAt
+        authorId
+    }
+}
