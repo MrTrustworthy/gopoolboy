@@ -13,10 +13,6 @@ const defaultOptions = {
     ssr: false,
 };
 
-const qappOptions = {
-    httpEndpoint: process.env.VUE_APP_QAPP_GRAPHQL_HTTP,
-};
-
 const orgamonOptions = {
     httpEndpoint: process.env.VUE_APP_ORGAMON_GRAPHQL_HTTP,
 };
@@ -30,10 +26,6 @@ const crumblerOptions = {
 };
 
 export function createProvider() {
-    const { apolloClient: qappClient } = createApolloClient({
-        ...defaultOptions,
-        ...qappOptions,
-    });
     const { apolloClient: orgamonClient } = createApolloClient({
         ...defaultOptions,
         ...orgamonOptions,
@@ -48,8 +40,8 @@ export function createProvider() {
         ...crumblerOptions,
     });
     return new VueApollo({
-        clients: { qappClient, orgamonClient, findrClient, crumblerClient },
-        defaultClient: qappClient,
+        clients: { orgamonClient, findrClient, crumblerClient },
+        defaultClient: crumblerClient,
         errorHandler(error) {
             // eslint-disable-next-line no-console
             console.log(

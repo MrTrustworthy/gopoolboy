@@ -1,9 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import QuestionsView from "./views/Questions.vue";
 import CrumbsView from "./views/Crumbs.vue";
 import AboutView from "./views/About.vue";
-import DetailView from "./views/Detail.vue";
 import CrumbDetailView from "./views/CrumbDetail.vue";
 import ProfileView from "./views/Profile.vue";
 import WelcomeView from "./views/Welcome.vue";
@@ -20,31 +18,6 @@ export const router = new VueRouter({
             path: "/about",
             name: "about",
             component: AboutView,
-            meta: {
-                requiresLogin: true,
-            },
-        },
-        {
-            path: "/q/:id",
-            name: "detail",
-            component: DetailView,
-            meta: {
-                requiresLogin: true,
-            },
-            beforeEnter: (to, from, next) => {
-                if (!isNaN(to.params.id)) {
-                    let id = fromId(to.params.id);
-                    console.log("Redirecting plain ID", to.params.id, "to nice ID", id);
-                    next({ name: "detail", params: { id: id } });
-                    return;
-                }
-                next();
-            },
-        },
-        {
-            path: "/q",
-            name: "questions",
-            component: QuestionsView,
             meta: {
                 requiresLogin: true,
             },

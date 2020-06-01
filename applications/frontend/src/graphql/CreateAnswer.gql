@@ -1,7 +1,0 @@
-mutation CreateAnswer($questionId: ID!, $text: String!) {
-    createAnswer(questionId: $questionId, text: $text) {
-        id
-        text
-        votes
-    }
-}

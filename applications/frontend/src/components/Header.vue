@@ -2,7 +2,6 @@
     <!--img class="md-layout-item" alt="Poolboy logo" src="../assets/icon.png" width="32" height="32" /-->
     <md-tabs md-sync-route class="md-primary" md-alignment="centered" md-elevation="3">
         <md-tab id="tab-crumbs" to="/crumbs" md-label="Crumbs" md-icon="article"></md-tab>
-        <md-tab id="tab-questions" to="/q" md-label="Questions" md-icon="article"></md-tab>
         <md-tab id="tab-about" to="/about" md-label="About" md-icon="help"> </md-tab>
         <md-tab
             id="tab-profile"

@@ -1,8 +1,0 @@
-mutation CreateQuestion($title: String!, $text: String!) {
-    createQuestion(title: $title, text: $text) {
-        id
-        title
-        text
-        votes
-    }
-}

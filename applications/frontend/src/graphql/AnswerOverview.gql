@@ -1,9 +1,0 @@
-query GetAnswers($questionId: ID!) {
-    getAnswers: getAnswersForQuestion(id: $questionId) {
-        id
-        text
-        votes
-        createdAt
-        authorId
-    }
-}
