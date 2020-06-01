@@ -19,7 +19,7 @@ findr:
         node_env: production
         auth0_domain: dev-poolboy.eu.auth0.com
         api_identifier: http://dev-poolboy-api
-        db_host: pg-qapp
+        db_host: pg-crumbler
         db_database: crumbler
     secrets:
         db_user: crumbler

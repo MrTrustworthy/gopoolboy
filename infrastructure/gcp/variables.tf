@@ -58,10 +58,6 @@ variable "office_ips" {
   default = ["78.94.91.125/32"]
 }
 
-variable "qapp_db_password" {
-  type    = string
-  default = ""
-}
 
 variable "orgamon_db_password" {
   type    = string

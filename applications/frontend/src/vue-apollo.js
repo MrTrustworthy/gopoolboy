@@ -7,7 +7,7 @@ Vue.use(VueApollo);
 // Config
 const defaultOptions = {
     wsEndpoint: null,
-    tokenName: process.env.VUE_APP_QAPP_GRAPHQL_TOKEN_NAME,
+    tokenName: process.env.VUE_APP_GRAPHQL_TOKEN_NAME,
     persisting: false,
     websocketsOnly: false,
     ssr: false,

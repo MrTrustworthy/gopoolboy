@@ -29,18 +29,6 @@ resource "google_service_networking_connection" "pg_private_vpc_connection" {
 }
 
 
-resource "google_sql_database" "qapp_database" {
-  name     = "qapp"
-  instance = google_sql_database_instance.app_postgres.name
-}
-
-resource "google_sql_user" "qapp_user" {
-  name     = "qapp"
-  instance = google_sql_database_instance.app_postgres.name
-  password = var.qapp_db_password
-}
-
-
 resource "google_sql_database" "orgamon_database" {
   name     = "orgamon"
   instance = google_sql_database_instance.app_postgres.name

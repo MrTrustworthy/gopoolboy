@@ -1,7 +1,7 @@
 version: "3"
 
 services:
-    pg-qapp:
+    app-postgres:
         image: postgres:12.2
         environment:
             - POSTGRES_DB=qapp
@@ -11,22 +11,6 @@ services:
             - ./postgres-data:/var/lib/postgresql/data
         ports:
             - 5432:5432
-    qapp:
-        build: applications/qapp
-        volumes:
-            - ./applications/qapp:/app
-        ports:
-            - 4000:4000
-        depends_on:
-            - pg-qapp
-        environment:
-            NODE_ENV: development
-            AUTH0_DOMAIN: dev-poolboy.eu.auth0.com
-            API_IDENTIFIER: http://dev-poolboy-api
-            DB_HOST: pg-qapp
-            DB_DATABASE: qapp
-            DB_USER: postgres
-            DB_PASSWORD: postgres
     crumbler:
         build: applications/crumbler
         volumes:
@@ -34,12 +18,12 @@ services:
         ports:
             - 4120:4000
         depends_on:
-            - pg-qapp
+            - app-postgres
         environment:
             NODE_ENV: development
             AUTH0_DOMAIN: dev-poolboy.eu.auth0.com
             API_IDENTIFIER: http://dev-poolboy-api
-            DB_HOST: pg-qapp
+            DB_HOST: app-postgres
             DB_DATABASE: crumbler
             DB_USER: postgres
             DB_PASSWORD: postgres
@@ -50,12 +34,12 @@ services:
         ports:
             - 4040:4000
         depends_on:
-            - pg-qapp
+            - app-postgres
         environment:
             NODE_ENV: development
             AUTH0_DOMAIN: dev-poolboy.eu.auth0.com
             API_IDENTIFIER: http://dev-poolboy-api
-            DB_HOST: pg-qapp
+            DB_HOST: app-postgres
             DB_DATABASE: orgamon
             DB_USER: postgres
             DB_PASSWORD: postgres
@@ -91,12 +75,12 @@ services:
         ports:
             - 4080:4000
         depends_on:
-            - pg-qapp
+            - app-postgres
         environment:
             NODE_ENV: development
             AUTH0_DOMAIN: dev-poolboy.eu.auth0.com
             API_IDENTIFIER: http://dev-poolboy-api
-            DB_HOST: pg-qapp
+            DB_HOST: app-postgres
             DB_DATABASE: crumbler
             DB_USER: postgres
             DB_PASSWORD: postgres

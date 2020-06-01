@@ -18,14 +18,10 @@ env:
     KAPP_VERSION: v0.27.0
     KBLD_VERSION: v0.22.0
     GCP_VERSION: "293.0.0"
-    VUE_APP_QAPP_GRAPHQL_HTTP: https://qapp.gopoolboy.dev
-    VUE_APP_QAPP_GRAPHQL_TOKEN_NAME: apollo-token
+    VUE_APP_GRAPHQL_TOKEN_NAME: apollo-token
     VUE_APP_FINDR_GRAPHQL_HTTP: https://findr.gopoolboy.dev
-    VUE_APP_FINDR_GRAPHQL_TOKEN_NAME: apollo-token
     VUE_APP_CRUMBLER_GRAPHQL_HTTP: https://crumbler.gopoolboy.dev
-    VUE_APP_CRUMBLER_GRAPHQL_TOKEN_NAME: apollo-token
     VUE_APP_ORGAMON_GRAPHQL_HTTP: https://orgamon.gopoolboy.dev
-    VUE_APP_ORGAMON_GRAPHQL_TOKEN_NAME: apollo-token
     VUE_APP_AUTH0_DOMAIN: staging-poolboy.eu.auth0.com
     VUE_APP_AUTH0_AUDIENCE: http://staging-poolboy-api
 
@@ -64,14 +60,10 @@ jobs:
               run: |
                   gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
 
-                  echo "VUE_APP_QAPP_GRAPHQL_HTTP=$VUE_APP_QAPP_GRAPHQL_HTTP" > applications/frontend/.env
-                  echo "VUE_APP_QAPP_GRAPHQL_TOKEN_NAME=$VUE_APP_QAPP_GRAPHQL_TOKEN_NAME" >> applications/frontend/.env
+                  echo "VUE_APP_GRAPHQL_TOKEN_NAME=$VUE_APP_GRAPHQL_TOKEN_NAME" > applications/frontend/.env
                   echo "VUE_APP_FINDR_GRAPHQL_HTTP=$VUE_APP_FINDR_GRAPHQL_HTTP" >> applications/frontend/.env
-                  echo "VUE_APP_FINDR_GRAPHQL_TOKEN_NAME=$VUE_APP_FINDR_GRAPHQL_TOKEN_NAME" >> applications/frontend/.env
                   echo "VUE_APP_CRUMBLER_GRAPHQL_HTTP=$VUE_APP_CRUMBLER_GRAPHQL_HTTP" >> applications/frontend/.env
-                  echo "VUE_APP_CRUMBLER_GRAPHQL_TOKEN_NAME=$VUE_APP_CRUMBLER_GRAPHQL_TOKEN_NAME" >> applications/frontend/.env
                   echo "VUE_APP_ORGAMON_GRAPHQL_HTTP=$VUE_APP_ORGAMON_GRAPHQL_HTTP" >> applications/frontend/.env
-                  echo "VUE_APP_ORGAMON_GRAPHQL_TOKEN_NAME=$VUE_APP_ORGAMON_GRAPHQL_TOKEN_NAME" >> applications/frontend/.env
                   echo "VUE_APP_AUTH0_DOMAIN=$VUE_APP_AUTH0_DOMAIN" >> applications/frontend/.env
                   echo "VUE_APP_AUTH0_AUDIENCE=$VUE_APP_AUTH0_AUDIENCE" >> applications/frontend/.env
                   echo "VUE_APP_AUTH0_SPA_CLIENT_ID=$VUE_APP_AUTH0_SPA_CLIENT_ID" >> applications/frontend/.env

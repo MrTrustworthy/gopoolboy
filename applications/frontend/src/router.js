@@ -78,7 +78,7 @@ router.beforeEach((to, from, next) => {
         return;
     }
     // could look for a better way that doesn't rely on simply a tokens existence, since it might be invalid
-    if (to.name !== "welcome" && !localStorage.getItem(process.env.VUE_APP_QAPP_GRAPHQL_TOKEN_NAME))
+    if (to.name !== "welcome" && !localStorage.getItem(process.env.VUE_APP_GRAPHQL_TOKEN_NAME))
         next({ name: "welcome" });
     else next();
 });
