@@ -33,7 +33,7 @@
                 </md-card-content>
 
                 <md-card-actions>
-                    <md-button class="md-primary" @click="upvoteQuestion"><md-icon>arrow_upward</md-icon> </md-button>
+                    <md-button class="md-primary" @click="upvoteCrumb"><md-icon>arrow_upward</md-icon> </md-button>
                 </md-card-actions>
             </md-card>
         </div>
@@ -70,20 +70,21 @@ export default {
         },
     },
     methods: {
-        upvoteQuestion() {
+        upvoteCrumb() {
             this.$apollo.mutate({
-                mutation: require("../graphql/UpvoteQuestion.gql"),
+                mutation: require("../graphql/UpvoteCrumb.gql"),
                 variables: {
-                    questionId: this.questionId,
+                    id: this.id,
                 },
                 optimisticResponse: {
                     __typename: "Mutation",
-                    upvoteQuestion: {
-                        __typename: "Question",
-                        id: this.questionId,
+                    upvoteCrumb: {
+                        __typename: "Crumb",
+                        id: this.id,
                         votes: this.getCrumb.votes + 1,
                     },
                 },
+                client: "crumblerClient",
             });
         },
         getUserNickName(userId) {

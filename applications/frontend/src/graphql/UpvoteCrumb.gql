@@ -1,0 +1,6 @@
+mutation UpvoteCrumb($id: ID!) {
+    upvoteCrumb(id: $id) {
+        id
+        votes
+    }
+}

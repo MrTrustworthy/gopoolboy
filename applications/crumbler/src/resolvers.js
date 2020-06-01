@@ -1,9 +1,8 @@
 const knexClient = require("./knexclient");
 const { AuthenticationError } = require("apollo-server");
 const assert = require("assert");
-const sayHello = async (args, organization) => {
-    return "Hello World again!";
-};
+
+// Utilities
 
 const selectMappings = {
     id: "crumbs.id",
@@ -15,6 +14,17 @@ const selectMappings = {
     createdAt: "crumbs.created_at",
     authorId: "crumbs.creator_id",
 };
+
+const ensureCrumbInOrga = async (objectId, organization, user) => {
+    let result = await knexClient("crumbs").select("organization_id").where({ id: objectId }).first();
+    let orgaId = result.organization_id;
+    if (orgaId !== organization) {
+        console.log("Error when trying to access crumb with orgaId", orgaId, "as user from", organization);
+        throw new AuthenticationError("Can't operate with this object as it's organization ID doesn't match");
+    }
+};
+
+// Queries
 
 const getCrumbs = async (args, organization, user) => {
     return knexClient.from("crumbs").where({ organization_id: organization }).select(selectMappings);
@@ -34,6 +44,8 @@ const getLinkedCrumbIds = async (args, organization, user) => {
         .select({ id: "crumbs.id" })
         .then((res) => res.map((r) => r.id));
 };
+
+// Mutations
 
 const createCrumb = async (args, organization, user) => {
     let type = args.type.toLowerCase();
@@ -62,9 +74,9 @@ const createQuestionCrumb = (args, organization, user) => {
 
 const createLinkedAnswerCrumb = (args, organization, user) => {
     let type = args.type.toLowerCase();
-
     // need to save this here in the context to get it after the last transaction step
     let newCrumbId = null;
+
     return knexClient
         .transaction(function (t) {
             return knexClient("crumbs")
@@ -97,10 +109,16 @@ const createLinkedAnswerCrumb = (args, organization, user) => {
         });
 };
 
+const upvoteCrumb = async (args, organization, user) => {
+    await ensureCrumbInOrga(args.id, organization, user);
+    await knexClient("crumbs").where({ id: args.id }).increment("votes", 1);
+    return getCrumb(args, organization, user);
+};
+
 module.exports = {
-    sayHello,
     getCrumbs,
     getCrumb,
     getLinkedCrumbIds,
     createCrumb,
+    upvoteCrumb,
 };
