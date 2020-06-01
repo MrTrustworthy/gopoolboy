@@ -1,6 +1,6 @@
 <template>
     <div id="profile">
-        <ProfileDetail />
+        <ProfileDetail :userId="userId" :editable="false" />
     </div>
 </template>
 
@@ -10,6 +10,17 @@ export default {
     name: "Profile",
     components: {
         ProfileDetail,
+    },
+    data() {
+        return {
+            getUser: {},
+            userId: this.$route.params.userId,
+        };
+    },
+    watch: {
+        $route(to) {
+            this.userId = to.params.userId;
+        },
     },
 };
 </script>

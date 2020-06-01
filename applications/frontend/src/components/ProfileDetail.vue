@@ -7,7 +7,9 @@
             <md-card>
                 <md-card-header>
                     <md-card-header-text>
-                        <div class="md-title">{{ getUser.nickname }} {{ isSelf() ? "(You)" : "" }}</div>
+                        <md-button class="md-title" v-bind:to="'/profile/' + getUser.id">
+                            {{ getUser.nickname }} {{ isSelf() ? "(You)" : "" }}
+                        </md-button>
                         <div class="md-subhead">ID: {{ getUser.id }}</div>
                     </md-card-header-text>
 
@@ -25,6 +27,23 @@
                     <div>Logins: {{ getUser.loginCount }}</div>
                 </md-card-content>
 
+                <div v-if="editable">
+                    <md-card-content>
+                        <md-field>
+                            <md-select v-model="newUserRole" placeholder="New Role">
+                                <md-option v-for="role in possibleRoles()" :key="role.name" :value="role.name">
+                                    {{ role.name }}
+                                </md-option>
+                            </md-select>
+                        </md-field>
+                    </md-card-content>
+                    <md-card-actions>
+                        <md-button class="md-primary" @click="changeUserRole">Update</md-button>
+                        <md-button class="md-primary" disabled>Reset password</md-button>
+                        <md-button class="md-accent" @click="deleteUser">Delete user</md-button>
+                    </md-card-actions>
+                </div>
+
                 <md-card-actions v-if="isSelf()">
                     <md-button class="md-raised md-accent" @click="logout">Logout</md-button>
                 </md-card-actions>
@@ -36,16 +55,37 @@
 <script>
 export default {
     name: "ProfileDetail",
+    props: {
+        userId: {
+            type: String,
+            required: true,
+        },
+        editable: {
+            type: Boolean,
+            required: true,
+        },
+    },
     data() {
         return {
             getUser: {},
-            userId: this.$route.params.userId,
+            getRoles: [],
+            newUserRole: null,
         };
     },
-    watch: {
-        $route(to) {
-            this.userId = to.params.userId;
+
+    apollo: {
+        getUser: {
+            query: require("../graphql/GetUser.gql"),
+            variables() {
+                return {
+                    userId: this.userId,
+                };
+            },
         },
+        getRoles: {
+            query: require("../graphql/GetRoles.gql"),
+        },
+        $client: "orgamonClient",
     },
     methods: {
         logout() {
@@ -56,16 +96,33 @@ export default {
         isSelf() {
             return this.getUser.email === this.$auth.user.email;
         },
-    },
-    apollo: {
-        getUser: {
-            query: require("../graphql/GetUser.gql"),
-            client: "orgamonClient",
-            variables() {
-                return {
+        possibleRoles() {
+            return this.getRoles.filter((r) => r.name !== this.getUser.organizationRole);
+        },
+        changeUserRole() {
+            if (!this.newUserRole) {
+                console.log("Can't change the role of an user if no role is selected");
+                return;
+            }
+            console.log("Changing role for user", this.userId, "to", this.newUserRole);
+            this.$apollo
+                .mutate({
+                    mutation: require("../graphql/ChangeUserRole.gql"),
+                    variables: {
+                        userId: this.userId,
+                        role: this.newUserRole,
+                    },
+                })
+                .then((_) => (this.newUserRole = null));
+        },
+        deleteUser() {
+            console.log("Deleting user", this.userId);
+            this.$apollo.mutate({
+                mutation: require("../graphql/DeleteUser.gql"),
+                variables: {
                     userId: this.userId,
-                };
-            },
+                },
+            });
         },
     },
 };

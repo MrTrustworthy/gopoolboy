@@ -65,7 +65,7 @@ export default {
             client: "crumblerClient",
         },
         getUsers: {
-            query: require("../graphql/OrganizationUserList.gql"),
+            query: require("../graphql/GetUsers.gql"),
             client: "orgamonClient",
         },
     },

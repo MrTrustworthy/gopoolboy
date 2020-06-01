@@ -23,7 +23,7 @@ export default {
     },
     apollo: {
         getOrganization: {
-            query: require("../graphql/OrganizationOverview.gql"),
+            query: require("../graphql/GetOrganization.gql"),
         },
         $client: "orgamonClient",
     },
