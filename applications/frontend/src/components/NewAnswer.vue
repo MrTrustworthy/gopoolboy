@@ -3,11 +3,16 @@
         <md-card-header>
             <div class="md-title">Post an answer</div>
         </md-card-header>
-        <md-field>
-            <label>Answer</label>
-            <md-input v-model="newAnswerText" type="text"></md-input>
-        </md-field>
-        <md-button @click="createAnswer" class="md-raised md-primary">Post</md-button>
+        <md-card-content>
+            <md-field>
+                <label>Answer</label>
+                <md-input v-model="newAnswerText" type="text"></md-input>
+            </md-field>
+        </md-card-content>
+
+        <md-card-actions>
+            <md-button @click="createAnswer" class="md-raised md-primary">Post</md-button>
+        </md-card-actions>
     </md-card>
 </template>
 
