@@ -51,6 +51,11 @@
                 </md-card-actions>
             </md-card>
         </div>
+
+        <md-snackbar :md-duration="5000" :md-active.sync="notify">
+            <span>{{ notifyMessage }}</span>
+            <md-button class="md-primary" @click="notify = false">OK</md-button>
+        </md-snackbar>
     </div>
 </template>
 
@@ -72,6 +77,8 @@ export default {
             getUser: {},
             getRoles: [],
             newUserRole: null,
+            notify: false,
+            notifyMessage: "",
         };
     },
     computed: {
@@ -105,7 +112,8 @@ export default {
 
         changeUserRole() {
             if (!this.newUserRole) {
-                console.log("Can't change the role of an user if no role is selected");
+                this.notifyMessage = "Can't change the role of an user if no role is selected";
+                this.notify = true;
                 return;
             }
             console.log("Changing role for user", this.userId, "to", this.newUserRole);
