@@ -1,17 +1,17 @@
 <template>
     <md-card>
         <md-card-header>
-            <div class="md-title">New Crumb of type {{ crumbType }}</div>
+            <div class="md-title">New {{ crumbTypeCapitalized }}</div>
         </md-card-header>
 
         <md-card-content>
             <md-field>
                 <label>Title</label>
-                <md-input v-model="newCrumbTitle" type="text"></md-input>
+                <md-input v-model="newCrumbTitle" type="text" maxlength="120" md-autogrow></md-input>
             </md-field>
             <md-field>
                 <label>Text</label>
-                <md-input v-model="newCrumbText" type="text"></md-input>
+                <md-textarea v-model="newCrumbText" type="text" md-autogrow></md-textarea>
             </md-field>
             <md-field>
                 <!-- Can use md-static-->
@@ -49,6 +49,15 @@ export default {
             required: false,
             type: [String, Number],
         },
+        confirmedActionEvent: {
+            type: String,
+            default: "confirmed-action",
+        },
+    },
+    computed: {
+        crumbTypeCapitalized: function() {
+            return this.crumbType.charAt(0).toUpperCase() + this.crumbType.slice(1);
+        },
     },
     data() {
         return {
@@ -79,6 +88,7 @@ export default {
                     if (this.crumbType.toLowerCase() === "question")
                         this.$router.push({ name: "crumbdetail", params: { id: fromId(data.data.createCrumb.id) } });
                 });
+            this.$emit(this.confirmedActionEvent);
         },
         formatTag(str) {
             /*

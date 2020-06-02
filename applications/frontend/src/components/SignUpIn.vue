@@ -7,24 +7,22 @@
         <div v-else>
             <template v-if="$auth.isAuthenticated">
                 You're signed in and ready to go {{ $auth.user.nickname }} :)
-                <button @click="logout">Log out</button>
             </template>
+            <button @click="logout">Log out</button>
 
+            <template v-if="!newOrgaCreated">
+                <button @click="login">Login with existing account</button>
+                <br />
+                <input v-model="orgaName" placeholder="Organization Name" />
+                <input v-model="creatorEmail" type="email" placeholder="Your Email" />
+                <button @click="signup">
+                    Sign up for a new organization
+                </button>
+            </template>
             <template v-else>
-                <template v-if="!newOrgaCreated">
-                    <button @click="login">Login with existing account</button>
-                    <br />
-                    <input v-model="orgaName" placeholder="Organization Name" />
-                    <input v-model="creatorEmail" type="email" placeholder="Your Email" />
-                    <button @click="signup">
-                        Sign up for a new organization
-                    </button>
-                </template>
-                <template v-else>
-                    <p>
-                        Thank you for signing up! Please check your emails to sign into Poolboy
-                    </p>
-                </template>
+                <p>
+                    Thank you for signing up! Please check your emails to sign into Poolboy
+                </p>
             </template>
         </div>
     </div>

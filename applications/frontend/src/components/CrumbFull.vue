@@ -18,7 +18,12 @@
                         <md-button class="md-subhead" v-bind:to="'/profile/' + getCrumb.authorId">
                             by {{ getUserNickName(getCrumb.authorId) }}
                         </md-button>
-                        <div class="md-subhead">{{ relativeMicrosTS(getCrumb.createdAt) }}</div>
+                        <div class="md-subhead">
+                            {{ relativeMicrosTS(getCrumb.createdAt) }}
+                            <md-tooltip md-direction="left" md-delay="150">
+                                {{ prettyTime(getCrumb.createdAt) }}
+                            </md-tooltip>
+                        </div>
                     </md-card-header-text>
                     <md-card-media>
                         <md-badge
@@ -73,6 +78,9 @@ export default {
     methods: {
         relativeMicrosTS(ts) {
             return moment(ts, "x").fromNow();
+        },
+        prettyTime(ts) {
+            return moment(ts, "x").calendar();
         },
         upvoteCrumb() {
             this.$apollo.mutate({
