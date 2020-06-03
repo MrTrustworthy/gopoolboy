@@ -26,3 +26,15 @@ locals {
   }
   env = lookup(local.envs, terraform.workspace)
 }
+
+// Provided via tfvars file
+
+variable "auth0_client_id" {
+  type    = string
+  default = ""
+}
+
+variable "auth0_client_secret" {
+  type    = string
+  default = ""
+}

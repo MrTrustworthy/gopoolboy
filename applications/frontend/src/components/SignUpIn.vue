@@ -2,17 +2,23 @@
     <div>
         <!-- Check that the SDK client is not currently loading before accessing is methods -->
         <div v-if="$auth.loading">
-            <p>Loading</p>
+            <md-progress-spinner class="md-accent" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
         </div>
         <div v-else>
-            <template v-if="$auth.isAuthenticated">
-                You're signed in and ready to go {{ $auth.user.nickname }} :)
-            </template>
-            <button @click="logout">Log out</button>
+            <md-card>
+                <md-card-header v-if="$auth.isAuthenticated">
+                    <div class="md-subhead">
+                        You're signed in as user "{{ $auth.user.nickname }}" and ready to go :)
+                    </div>
+                </md-card-header>
 
-            <template>
-                <button @click="login">Login with existing account</button>
-            </template>
+                <md-card-actions>
+                    <md-button class="md-primary" @click="login">Login</md-button>
+                    <md-button class="md-accent" @click="logout">Log out</md-button>
+                </md-card-actions>
+            </md-card>
+
+            <template> </template>
         </div>
     </div>
 </template>

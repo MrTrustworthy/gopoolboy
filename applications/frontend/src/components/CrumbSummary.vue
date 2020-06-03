@@ -1,7 +1,12 @@
 <template>
     <div>
         <div v-if="$apollo.queries.getCrumb.loading">
-            <md-progress-spinner class="md-accent" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
+            <md-progress-spinner
+                class="md-accent"
+                :md-stroke="3"
+                :md-diameter="30"
+                md-mode="indeterminate"
+            ></md-progress-spinner>
         </div>
 
         <!-- Error -->

@@ -3,6 +3,8 @@ import createAuth0Client from "@auth0/auth0-spa-js";
 
 let instance;
 
+// See docs from https://auth0.com/docs/libraries/auth0-spa-js
+
 /** Returns the current instance of the SDK */
 export const getInstance = () => instance;
 
@@ -90,6 +92,7 @@ export const useAuth0 = ({ redirectUri = window.location.origin, ...options }) =
                 client_id: options.clientId,
                 audience: options.audience,
                 redirect_uri: redirectUri,
+                cacheLocation: "localstorage",
             });
 
             try {

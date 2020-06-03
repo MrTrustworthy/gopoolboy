@@ -6,11 +6,8 @@ You'll need to create a new auth0 tenant manually and add the `auth0-deploy-cli-
 
 ## Secrets
 
-You'll need an `.env`-file that you can source before running any `terraform plan/apply` commands, such as
+To apply, you'll have to provide confidential data for DB passwords via
 
-```
-    export AUTH0_CLIENT_ID=cli-client-id
-    export AUTH0_CLIENT_SECRET=cli-secret
-```
+`tf apply -var-file="staging.tfvars"`
 
 And you also need a `service-account.json` file to connect to the GCS backend (use the `terraform@` service account).

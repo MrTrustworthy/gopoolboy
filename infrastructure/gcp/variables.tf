@@ -58,6 +58,7 @@ variable "office_ips" {
   default = ["78.94.91.125/32"]
 }
 
+// Provided via tfvars file
 
 variable "orgamon_db_password" {
   type    = string
