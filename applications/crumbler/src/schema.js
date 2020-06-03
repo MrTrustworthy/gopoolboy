@@ -3,6 +3,16 @@ const authRequired = require("./validate");
 const { getCrumbs, getCrumb, getLinkedCrumbIds, createCrumb, upvoteCrumb } = require("./resolvers");
 
 const typeDefs = gql`
+    type Tag {
+        key: String!
+        value: String!
+    }
+
+    input TagInput {
+        key: String!
+        value: String!
+    }
+
     type Crumb {
         id: ID
         title: String
@@ -12,6 +22,7 @@ const typeDefs = gql`
         votes: Int
         createdAt: String
         authorId: String
+        tags: [Tag]
     }
 
     type Query {
@@ -21,7 +32,7 @@ const typeDefs = gql`
     }
 
     type Mutation {
-        createCrumb(title: String!, text: String!, type: String!, linkTo: ID): Crumb!
+        createCrumb(title: String!, text: String!, type: String!, linkTo: ID, tags: [TagInput]): Crumb!
         upvoteCrumb(id: ID!): Crumb!
     }
 `;

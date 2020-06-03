@@ -53,6 +53,10 @@ export default {
             type: String,
             default: "confirmed-action",
         },
+        failedActionEvent: {
+            type: String,
+            default: "failed-action",
+        },
     },
     computed: {
         crumbTypeCapitalized: function() {
@@ -80,38 +84,34 @@ export default {
                         text: this.newCrumbText,
                         type: this.crumbType,
                         linkTo: this.linkTo ? this.linkTo : null,
+                        tags: this.parseTags(),
                     },
                     client: "crumblerClient",
                 })
                 .then((data) => {
                     console.log("New crumb created with id", data.data.createCrumb.id);
+                    this.$emit(this.confirmedActionEvent);
                     if (this.crumbType.toLowerCase() === "question")
                         this.$router.push({ name: "crumbdetail", params: { id: fromId(data.data.createCrumb.id) } });
+                })
+                .catch((data) => {
+                    console.log("Failed to create crumb!", data);
+                    this.$emit(this.failedActionEvent);
                 });
-            this.$emit(this.confirmedActionEvent);
+        },
+        parseTags() {
+            return this.newCrumbTags.map((tag) => ({ key: tag.split(":")[0], value: tag.split(":")[1] }));
         },
         formatTag(str) {
             /*
              * Turns arbitrary strings into "clean" tags
-             * "  hello YOU :   friend" -> "hello_you:friend"
-             * "whatsup" -> "whatsup:true"
+             * "  hello YOU :   friend" -> "helloyou:friend"
+             * "whatsup" -> "whatsup:yes"
              */
-            let tagKV = str
-                .replace(/,/g, "")
-                .split(":")
-                .map((kv) => {
-                    return kv
-                        .trim()
-                        .toLowerCase()
-                        .split(" ")
-                        .filter((s) => s)
-                        .join("_");
-                })
-                .filter((s) => s);
-            let tags = tagKV.join(":");
-            if (tags.length === 0) return "";
-            else if (tags.indexOf(":") === -1) return tags + ":true";
-            else return tags;
+            if (!str) return "";
+            let tag = str.replace(/ /g, "").toLowerCase();
+            if (tag.indexOf(":") === -1) tag += ":yes";
+            return tag;
         },
     },
 };

@@ -32,12 +32,15 @@
                         />
                     </md-card-media>
                 </md-card-header>
-
+                <md-divider></md-divider>
                 <md-card-content>
                     <div>{{ getCrumb.text }}</div>
                 </md-card-content>
-
+                <md-divider></md-divider>
                 <md-card-actions>
+                    <md-chip class="md-primary" v-for="tag in getCrumb.tags" :key="tag.key + tag.value">
+                        {{ tag.key }}:{{ tag.value }}
+                    </md-chip>
                     <md-button class="md-primary" @click="upvoteCrumb"><md-icon>arrow_upward</md-icon> </md-button>
                 </md-card-actions>
             </md-card>

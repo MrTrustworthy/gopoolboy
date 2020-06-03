@@ -13,8 +13,17 @@
             </md-speed-dial-content>
         </md-speed-dial>
         <md-dialog :md-active.sync="showDialog">
-            <NewCrumb crumbType="question" v-on:confirmed-action="showDialog = false" />
+            <NewCrumb
+                crumbType="question"
+                v-on:confirmed-action="showDialog = false"
+                v-on:failed-action="notifyFailure = true"
+            />
         </md-dialog>
+
+        <md-snackbar :md-duration="5000" :md-active.sync="notifyFailure">
+            <span>Failed to create a crumb!</span>
+            <md-button class="md-primary" @click="notify = false">OK</md-button>
+        </md-snackbar>
     </div>
 </template>
 
@@ -27,7 +36,7 @@ export default {
         NewCrumb,
     },
     data() {
-        return { showDialog: false };
+        return { showDialog: false, notifyFailure: false };
     },
 };
 </script>

@@ -13,6 +13,7 @@ const selectMappings = {
     votes: "crumbs.votes",
     createdAt: "crumbs.created_at",
     authorId: "crumbs.creator_id",
+    tags: "crumbs.tags",
 };
 
 const ensureCrumbInOrga = async (objectId, organization, user) => {
@@ -67,6 +68,7 @@ const createQuestionCrumb = (args, organization, user) => {
             source: "web",
             organization_id: organization,
             creator_id: user,
+            tags: JSON.stringify(args.tags),
         })
         .returning("id")
         .then(async (newCrumbIds) => getCrumb({ id: newCrumbIds[0] }, organization, user));
@@ -90,6 +92,7 @@ const createLinkedAnswerCrumb = async (args, organization, user) => {
                     source: "web",
                     organization_id: organization,
                     creator_id: user,
+                    tags: JSON.stringify(args.tags),
                 })
                 .returning("id")
                 .then(function (newCrumbIds) {
