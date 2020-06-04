@@ -1,7 +1,5 @@
 <template>
     <div>
-        <!--img class="md-layout-item" alt="Poolboy logo" src="../assets/icon.png" width="32" height="32" /-->
-
         <md-list md-sync-route class="md-primary" md-alignment="centered" md-elevation="3">
             <md-list-item id="tab-crumbs" to="/crumbs">
                 <md-icon>dynamic_feed</md-icon>
