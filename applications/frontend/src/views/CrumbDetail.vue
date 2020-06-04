@@ -1,5 +1,7 @@
 <template>
     <div id="crumbdetail">
+        <CreateWidgetSnackbar />
+
         <CrumbFull v-bind:id="crumbId" />
         <h2>Found a total of {{ getLinkedCrumbIds.length }} linked Crumbs</h2>
         <CrumbFull v-for="qId of getLinkedCrumbIds" :key="qId" v-bind:id="qId" />
@@ -11,6 +13,8 @@
 <script>
 import CrumbFull from "@/components/CrumbFull.vue";
 import NewCrumb from "@/components/NewCrumb.vue";
+import CreateWidgetSnackbar from "@/components/CreateWidgetSnackbar.vue";
+
 import { toId } from "@/urlids";
 
 export default {
@@ -18,6 +22,7 @@ export default {
     components: {
         CrumbFull,
         NewCrumb,
+        CreateWidgetSnackbar,
     },
     data() {
         return {

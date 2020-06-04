@@ -13,24 +13,21 @@
                 <label>Text</label>
                 <md-textarea v-model="newCrumbText" type="text" md-autogrow></md-textarea>
             </md-field>
-            <md-field>
-                <!-- Can use md-static-->
-                <md-chips
-                    class="md-primary pulse-on-error"
-                    v-model="newCrumbTags"
-                    :md-auto-insert="true"
-                    md-check-duplicated
-                    :md-format="formatTag"
-                    placeholder="Tags as key:value"
-                >
-                    <label>Tags as key:value</label>
-                </md-chips>
-            </md-field>
+            <!-- Can use md-static-->
+            <md-chips
+                class="md-primary pulse-on-error"
+                v-model="newCrumbTags"
+                :md-auto-insert="true"
+                md-check-duplicated
+                :md-format="formatTag"
+                placeholder="Tags as key:value"
+            >
+                <label>Tags as key:value</label>
+            </md-chips>
         </md-card-content>
 
         <md-card-actions>
             <md-button @click="createCrumb" class="md-raised md-primary">Post {{ crumbType }}</md-button>
-            <md-button class="md-raised md-accent" disabled>Find similar</md-button>
         </md-card-actions>
     </md-card>
 </template>
