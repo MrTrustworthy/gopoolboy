@@ -9,6 +9,11 @@
             {{ like === "" ? "in your organization" : "for your search" }}
         </p>
 
+        <p>sort by</p>
+        <md-radio v-model="sortBy" value="date">Date</md-radio>
+        <md-radio v-model="sortBy" value="votes">Votes</md-radio>
+        <md-radio v-model="sortBy" value="linked">Linked</md-radio>
+
         <CrumbSummary v-for="found of findCrumbs" :key="found.id" v-bind:id="found.id" />
     </div>
 </template>
@@ -28,6 +33,7 @@ export default {
         return {
             like: "",
             findCrumbs: [],
+            sortBy: "votes",
         };
     },
     apollo: {
@@ -37,6 +43,7 @@ export default {
                 return {
                     type: this.crumbType,
                     like: this.like,
+                    sortBy: this.sortBy,
                 };
             },
             client: "findrClient",

@@ -8,7 +8,7 @@ const typeDefs = gql`
     }
 
     type Query {
-        findCrumbs(type: String!, like: String!): [QueryResult]
+        findCrumbs(type: String!, like: String!, sortBy: String): [QueryResult]
     }
 `;
 
