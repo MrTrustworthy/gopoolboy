@@ -6,10 +6,12 @@
             <md-list-item id="tab-crumbs" to="/crumbs">
                 <md-icon>dynamic_feed</md-icon>
                 <span class="md-list-item-text">Crumbs</span>
+                <md-tooltip md-size="large" md-direction="right">Crumbs</md-tooltip>
             </md-list-item>
             <md-list-item id="tab-about" to="/about">
                 <md-icon>help</md-icon>
                 <span class="md-list-item-text">About</span>
+                <md-tooltip md-size="large" md-direction="right">About</md-tooltip>
             </md-list-item>
             <md-list-item
                 id="tab-profile"
@@ -18,10 +20,12 @@
             >
                 <md-icon>{{ $auth.loading ? "perm_identity" : "face" }}</md-icon>
                 <span class="md-list-item-text">Profile</span>
+                <md-tooltip md-size="large" md-direction="right">Profile</md-tooltip>
             </md-list-item>
             <md-list-item id="tab-organization" to="/organization">
                 <md-icon>admin_panel_settings</md-icon>
                 <span class="md-list-item-text">Organization</span>
+                <md-tooltip md-size="large" md-direction="right">Organization</md-tooltip>
             </md-list-item>
         </md-list>
     </div>
