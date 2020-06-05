@@ -55,7 +55,7 @@ variable "k8s-services-range-ip" {
 
 variable "office_ips" {
   type    = list
-  default = ["78.94.91.125/32"]
+  default = ["78.94.91.125/32", "78.35.144.135/32"]
 }
 
 // Provided via tfvars file
