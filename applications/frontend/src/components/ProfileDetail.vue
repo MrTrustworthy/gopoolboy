@@ -42,7 +42,7 @@
                     <md-card-actions>
                         <md-button class="md-primary" @click="changeUserRole">Update</md-button>
                         <md-button class="md-primary" disabled>Reset password</md-button>
-                        <md-button class="md-accent" @click="deleteUser">Delete user</md-button>
+                        <md-button class="md-accent" @click="() => (confirmRemoveUser = true)">Remove user</md-button>
                     </md-card-actions>
                 </div>
 
@@ -56,6 +56,16 @@
             <span>{{ notifyMessage }}</span>
             <md-button class="md-primary" @click="notify = false">OK</md-button>
         </md-snackbar>
+
+        <md-dialog-confirm
+            :md-active.sync="confirmRemoveUser"
+            :md-title="'Do you really want to remove the user' + getUser.name"
+            md-content="This will remove this user. Content of that user, such as crumbs or votes, will not be deleted. This operation can't be reversed."
+            md-confirm-text="Agree"
+            md-cancel-text="Disagree"
+            @md-cancel="onCancelRemoveUser"
+            @md-confirm="onConfirmRemoveUser"
+        />
     </div>
 </template>
 
@@ -78,6 +88,7 @@ export default {
             getRoles: [],
             newUserRole: null,
             notify: false,
+            confirmRemoveUser: false,
             notifyMessage: "",
         };
     },
@@ -127,7 +138,7 @@ export default {
                 })
                 .then((_) => (this.newUserRole = null));
         },
-        deleteUser() {
+        onConfirmRemoveUser() {
             console.log("Deleting user", this.userId);
             this.$apollo.mutate({
                 mutation: require("../graphql/DeleteUser.gql"),
@@ -135,6 +146,12 @@ export default {
                     userId: this.userId,
                 },
             });
+        },
+        onCancelRemoveUser() {
+            console.log("Aborted deleting user", this.userId);
+            this.notifyMessage = "Removal of user cancelled";
+            this.notify = true;
+            return;
         },
     },
 };
