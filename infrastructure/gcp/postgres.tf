@@ -50,3 +50,14 @@ resource "google_sql_user" "crumbler_user" {
   instance = google_sql_database_instance.app_postgres.name
   password = var.crumbler_db_password
 }
+
+resource "google_sql_database" "zelda_database" {
+  name     = "zelda"
+  instance = google_sql_database_instance.app_postgres.name
+}
+
+resource "google_sql_user" "zelda_user" {
+  name     = "zelda"
+  instance = google_sql_database_instance.app_postgres.name
+  password = var.zelda_db_password
+}

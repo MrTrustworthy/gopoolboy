@@ -27,6 +27,22 @@ services:
             DB_DATABASE: crumbler
             DB_USER: postgres
             DB_PASSWORD: postgres
+    zelda:
+        build: applications/zelda
+        volumes:
+            - ./applications/zelda:/app
+        ports:
+            - 4160:4000
+        depends_on:
+            - app-postgres
+        environment:
+            NODE_ENV: development
+            AUTH0_DOMAIN: dev-poolboy.eu.auth0.com
+            API_IDENTIFIER: http://dev-poolboy-api
+            DB_HOST: app-postgres
+            DB_DATABASE: zelda
+            DB_USER: postgres
+            DB_PASSWORD: postgres
     orgamon:
         build: applications/orgamon
         volumes:
@@ -53,10 +69,10 @@ services:
             dockerfile: dev.Dockerfile
         environment:
             NODE_ENV: development
-            VUE_APP_QAPP_GRAPHQL_HTTP: http://localhost:4000/graphql
             VUE_APP_ORGAMON_GRAPHQL_HTTP: http://localhost:4040/graphql
             VUE_APP_FINDR_GRAPHQL_HTTP: http://localhost:4080/graphql
             VUE_APP_CRUMBLER_GRAPHQL_HTTP: http://localhost:4120/graphql
+            VUE_APP_ZELDA_GRAPHQL_HTTP: http://localhost:4160/graphql
             VUE_APP_GRAPHQL_TOKEN_NAME: apollo-token
             VUE_APP_AUTH0_DOMAIN: dev-poolboy.eu.auth0.com
             VUE_APP_AUTH0_SPA_CLIENT_ID: "${AUTH0_SPA_CLIENT_ID}"

@@ -1,0 +1,61 @@
+# This workflow will build a docker container, publish it to Google Container Registry, and deploy it to GKE.
+name: Deploy zelda
+
+on:
+    push:
+        branches:
+            - master
+        paths:
+            - "applications/zelda/**"
+            - "services/zelda/**"
+            - ".github/workflows/zelda.yaml"
+
+env:
+    GKE_PROJECT: staging-poolboy
+    GKE_ZONE: europe-west3-b
+    GKE_CLUSTER: kubernetes-cluster
+    YTT_VERSION: v0.27.2
+    KAPP_VERSION: v0.27.0
+    KBLD_VERSION: v0.22.0
+    GCP_VERSION: "293.0.0"
+
+    YTTENV_zelda__env__auth0_domain: staging-poolboy.eu.auth0.com
+    YTTENV_zelda__env__api_identifier: http://staging-poolboy-api
+    YTTENV_zelda__env__db_host: "10.135.0.3"
+    YTTENV_zelda__env__db_database: zelda
+
+jobs:
+    deploy-zelda-staging:
+        name: Deploy zelda staging
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+              with:
+                  version: ${{ env.GCP_VERSION }}
+                  project_id: ${{ env.GKE_PROJECT }}
+                  service_account_key: ${{ secrets.GKE_KEY }}
+                  export_default_credentials: true
+            - id: secrets
+              uses: GoogleCloudPlatform/github-actions/get-secretmanager-secrets@master
+              with:
+                  secrets: |-
+                      db_password:staging-poolboy/staging-zelda_db_password
+            - run: |
+                  gcloud auth configure-docker
+            - name: Install and configure k14s
+              run: |
+                  sudo wget -O /bin/ytt https://github.com/k14s/ytt/releases/download/"$YTT_VERSION"/ytt-linux-amd64 \
+                      && sudo chmod +x /bin/ytt
+                  sudo wget -O /bin/kapp https://github.com/k14s/kapp/releases/download/"$KAPP_VERSION"/kapp-linux-amd64 \
+                      && sudo chmod +x /bin/kapp
+                  sudo wget -O /bin/kbld https://github.com/k14s/kbld/releases/download/"$KBLD_VERSION"/kbld-linux-amd64 \
+                      && sudo chmod +x /bin/kbld
+
+            - name: Build and Deploy via k14s
+              env:
+                  YTTENV_zelda__secrets__db_password: ${{ steps.secrets.outputs.db_password }}
+              run: |
+                  gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
+                  ytt -f services/zelda --data-values-env YTTENV | kbld -f - | kapp deploy -a zelda -f - -n zelda --diff-summary --yes

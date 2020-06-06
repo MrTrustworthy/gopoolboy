@@ -69,3 +69,8 @@ variable "crumbler_db_password" {
   type    = string
   default = ""
 }
+
+variable "zelda_db_password" {
+  type    = string
+  default = ""
+}
