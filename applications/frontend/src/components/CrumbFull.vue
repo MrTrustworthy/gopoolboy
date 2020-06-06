@@ -62,7 +62,6 @@ export default {
             getCrumb: {},
             fromId: fromId,
             getUsers: [],
-            linkedCrumbs: 0,
         };
     },
     apollo: {

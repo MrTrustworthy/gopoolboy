@@ -1,31 +1,48 @@
 const knexClient = require("./knexclient");
-const { AuthenticationError } = require("apollo-server");
-const assert = require("assert");
 
-// Utilities
+const selectMappings = {
+    id: "crumblinks.id",
+    links: "crumblinks.to",
+    votes: "crumblinks.votes",
+    createdAt: "crumblinks.created_at",
+    authorId: "crumblinks.creator_id",
+};
 
-const ensureCrumbLinkInOrga = async (objectId, organization, user) => {
-    let result = await knexClient("crumblinks").select("organization_id").where({ id: objectId }).first();
-    let orgaId = result.organization_id;
-    if (orgaId !== organization) {
-        console.log("Error when trying to access crumb with orgaId", orgaId, "as user from", organization);
-        throw new AuthenticationError("Can't operate with this object as it's organization ID doesn't match");
-    }
+const getCrumbLink = async (args, organization, user) => {
+    return knexClient
+        .from("crumblinks")
+        .where({ organization_id: organization, id: args.id })
+        .select(selectMappings)
+        .first();
 };
 
 const getLinkedCrumbIds = async (args, organization, user) => {
     return knexClient
         .from("crumblinks")
-        .where({ from: args.from, organization_id: organization })
-        .select({ to })
+        .where({ from: args.id, organization_id: organization })
+        .select("to")
         .then((res) => res.map((r) => r.to));
 };
 
 // Mutations
 
-const createCrumbLink = async (args, organization, user) => {};
+const createCrumbLink = async (args, organization, user) => {
+    return knexClient("crumblinks")
+        .insert({
+            from: args.from,
+            to: args.to,
+            creator_id: user,
+            organization_id: organization,
+        }).returning("id")
+        .then(async (newIds) => getCrumbLink({ id: newIds[0] }, organization, user));
+};
 
-const upvoteCrumbLink = async (args, organization, user) => {};
+const upvoteCrumbLink = async (args, organization, user) => {
+    return knexClient("crumbs")
+        .where({ id: args.id })
+        .increment("votes", 1)
+        .then(() => getCrumb(args, organization, user));
+};
 
 module.exports = {
     getLinkedCrumbIds,

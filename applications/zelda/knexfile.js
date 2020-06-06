@@ -2,7 +2,7 @@
 
 module.exports = {
     main: {
-        client: 'postgresql',
+        client: "postgresql",
         connection: {
             host: process.env.DB_HOST,
             database: process.env.DB_DATABASE,
@@ -11,11 +11,10 @@ module.exports = {
         },
         pool: {
             min: 2,
-            max: 10
+            max: 10,
         },
         migrations: {
-            tableName: 'knex_migrations'
-        }
+            tableName: "knex_migrations",
+        },
     },
-
 };

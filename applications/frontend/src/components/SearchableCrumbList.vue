@@ -12,7 +12,6 @@
         <p>sort by</p>
         <md-radio v-model="sortBy" value="votes">Votes</md-radio>
         <md-radio v-model="sortBy" value="date">Date</md-radio>
-        <md-radio v-model="sortBy" value="linked">Linked</md-radio>
 
         <CrumbSummary v-for="found of findCrumbs" :key="found.id" v-bind:id="found.id" />
     </div>

@@ -1,0 +1,5 @@
+mutation CreateCrumbLink($from: ID!, $to: ID!) {
+  createCrumbLink(from: $from, to: $to){
+    id
+  }
+}

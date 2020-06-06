@@ -41,10 +41,9 @@ export default {
             variables() {
                 return {
                     id: this.crumbId,
-                    type: "answer",
                 };
             },
-            client: "crumblerClient",
+            client: "zeldaClient",
         },
     },
 };

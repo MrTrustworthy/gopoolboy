@@ -25,6 +25,10 @@ const crumblerOptions = {
     httpEndpoint: process.env.VUE_APP_CRUMBLER_GRAPHQL_HTTP,
 };
 
+const zeldaOptions = {
+    httpEndpoint: process.env.VUE_APP_ZELDA_GRAPHQL_HTTP,
+};
+
 export function createProvider() {
     const { apolloClient: orgamonClient } = createApolloClient({
         ...defaultOptions,
@@ -34,13 +38,16 @@ export function createProvider() {
         ...defaultOptions,
         ...findrOptions,
     });
-
     const { apolloClient: crumblerClient } = createApolloClient({
         ...defaultOptions,
         ...crumblerOptions,
     });
+    const { apolloClient: zeldaClient } = createApolloClient({
+        ...defaultOptions,
+        ...zeldaOptions,
+    });
     return new VueApollo({
-        clients: { orgamonClient, findrClient, crumblerClient },
+        clients: { orgamonClient, findrClient, crumblerClient, zeldaClient },
         defaultClient: crumblerClient,
         errorHandler(error) {
             console.log(

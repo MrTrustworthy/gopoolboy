@@ -56,10 +56,9 @@ export default {
             variables() {
                 return {
                     id: this.id,
-                    type: "answer",
                 };
             },
-            client: "crumblerClient",
+            client: "zeldaClient",
         },
     },
 };

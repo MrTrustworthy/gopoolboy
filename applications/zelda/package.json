@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "private": true,
     "scripts": {
-        "server": "nodemon src/index.js",
+        "server": "nodemon -L src/index.js",
         "migrate": "knex migrate:latest --env main"
     },
     "dependencies": {
@@ -16,6 +16,6 @@
         "pg": "^8.0.3"
     },
     "devDependencies": {
-        "nodemon": "^2.0.3"
+        "nodemon": "2.0.3"
     }
 }

@@ -5,7 +5,7 @@ const findCrumbs = async (args, organization) => {
         .from("crumbs")
         .where({ organization_id: organization, type: args.type.toLowerCase() })
         .andWhere(function () {
-            this.where("text", "ilike", `%${args.like}%`).orWhere("title", "ilike", `%${args.like}%`);
+            this.where("text", "ilike", `%${ args.like }%`).orWhere("title", "ilike", `%${ args.like }%`);
         })
         .select("crumbs.id");
 
@@ -13,12 +13,8 @@ const findCrumbs = async (args, organization) => {
         query = query.orderBy("created_at", "desc");
     } else if (args.sortBy === "votes") {
         query = query.orderBy("votes", "desc");
-    } else if (args.sortBy === "linked") {
-        query = query
-            .leftJoin("crumblinks", { "crumbs.id": "crumblinks.from" })
-            .groupBy("crumbs.id")
-            .sum({ totalLinks: knexClient.raw("CASE WHEN crumblinks.from IS NULL THEN 0 ELSE 1 END") })
-            .orderBy("totalLinks", "desc");
+    } else {
+        throw new Error("Can't sort by " + args.sortBy);
     }
     return await query;
 };
