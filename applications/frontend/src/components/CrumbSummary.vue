@@ -22,8 +22,7 @@
             <md-list-item :to="'/crumbs/' + fromId(getCrumb.id)">
                 <div class="md-list-item-text">
                     <span>{{ getCrumb.title }}</span>
-                                        <span>{{ getCrumb.text }}</span>
-
+                    <span>{{ getCrumb.text }}</span>
                 </div>
                 <md-badge
                         v-bind:class="'md-square ' + (getCrumb.votes !== 0 ? 'md-primary' : 'md-accent')"
@@ -33,8 +32,6 @@
                         v-bind:class="'md-square ' + (getLinkedCrumbIds.length !== 0 ? 'md-primary' : 'md-accent')"
                         v-bind:md-content="getLinkedCrumbIds.length + ' Linked'"
                 />
-
-
             </md-list-item>
         </div>
     </div>
