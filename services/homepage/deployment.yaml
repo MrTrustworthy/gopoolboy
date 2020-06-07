@@ -1,0 +1,34 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:struct", "struct")
+
+#@ app = data.values.homepage
+#@ appName = app.appName
+---
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+    name: #@ appName
+    namespace: #@ appName
+    labels:
+        name: #@ appName
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            name: #@ appName
+    template:
+        metadata:
+            name: #@ appName
+            labels:
+                name: #@ appName
+        spec:
+            containers:
+                - name: #@ appName
+                  image: #@ app.imageName
+                  ports:
+                      - containerPort: #@ app.appPort
+                  resources:
+                      requests:
+                          memory: 256Mi
+                      limits:
+                          memory: 256Mi

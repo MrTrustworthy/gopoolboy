@@ -1,0 +1,28 @@
+#@ load("@ytt:data", "data")
+
+#@ app = data.values.homepage
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+    name: #@ app.ingressName
+    annotations:
+        kubernetes.io/ingress.class: "nginx"
+        kubernetes.io/ingress.allow-http: "false"
+        kubernetes.io/ingress.global-static-ip-name: #@ app.staticIpName
+        cert-manager.io/cluster-issuer: "letsencrypt-prod"
+        nginx.ingress.kubernetes.io/whitelist-source-range: #@ app.officeIps
+
+spec:
+    tls:
+        - hosts:
+              -  #@ app.externalUrl
+          secretName: #@ app.sslCertSecretName
+    rules:
+        - host: #@ app.externalUrl
+          http:
+              paths:
+                  - path: "/"
+                    backend:
+                        serviceName: #@ app.serviceName
+                        servicePort: http

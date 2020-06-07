@@ -81,6 +81,17 @@ services:
             - ./applications/frontend:/app
         ports:
             - 8080:8080
+    homepage:
+        build:
+            context: applications/homepage
+            dockerfile: dev.Dockerfile
+        environment:
+            NODE_ENV: development
+            VUE_APP_ORGAMON_GRAPHQL_HTTP: http://localhost:4040/graphql
+        volumes:
+            - ./applications/homepage:/app
+        ports:
+            - 8040:8080
     findr:
         build: applications/findr
         volumes:
