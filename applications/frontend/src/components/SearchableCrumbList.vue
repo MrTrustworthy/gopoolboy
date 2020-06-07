@@ -1,17 +1,27 @@
 <template>
     <div>
-        <md-field>
-            <md-input v-model="like"></md-input>
-            <span class="md-helper-text">Search</span>
-        </md-field>
-        <p>
-            There's a total of {{ findCrumbs.length }} Crumbs of type "{{ crumbType }}"
-            {{ like === "" ? "in your organization" : "for your search" }}
-        </p>
+        <md-card>
+            <md-card-header>
+                <div class="md-title">Search</div>
+            </md-card-header>
 
-        <p>sort by</p>
-        <md-radio v-model="sortBy" value="votes">Votes</md-radio>
-        <md-radio v-model="sortBy" value="date">Date</md-radio>
+            <md-card-content>
+                <md-field>
+                    <md-input v-model="like"></md-input>
+                    <span class="md-helper-text">Search</span>
+                </md-field>
+                <div>
+                    There's a total of {{ findCrumbs.length }} Crumbs of type "{{ crumbType }}"
+                    {{ like === "" ? "in your organization" : "for your search" }}
+                </div>
+            </md-card-content>
+            <md-card-actions>
+                <div class="md-subheader">sort by</div>
+                <md-radio v-model="sortBy" value="votes">Votes</md-radio>
+                <md-radio v-model="sortBy" value="date">Date</md-radio>
+            </md-card-actions>
+        </md-card>
+
         <md-list class="md-double-line md-dense">
             <template v-for="found of findCrumbs">
 
