@@ -20,7 +20,7 @@
             <md-app-content>
                 <div class="md-layout">
                     <div class="md-layout-item"></div>
-                    <div class="md-layout-item md-size-50">
+                    <div class="md-layout-item md-large-size-40 md-medium-size-50 md-small-size-75 md-xsmall-size-90">
                         <router-view/>
                     </div>
                     <div class="md-layout-item"></div>

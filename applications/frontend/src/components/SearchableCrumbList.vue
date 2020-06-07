@@ -12,8 +12,13 @@
         <p>sort by</p>
         <md-radio v-model="sortBy" value="votes">Votes</md-radio>
         <md-radio v-model="sortBy" value="date">Date</md-radio>
+        <md-list class="md-double-line md-dense">
+            <template v-for="found of findCrumbs">
 
-        <CrumbSummary v-for="found of findCrumbs" :key="found.id" v-bind:id="found.id"/>
+                <CrumbSummary :key="found.id" v-bind:id="found.id"/>
+                <md-divider class="md-inset" :key="found.id + '_inset'"></md-divider>
+            </template>
+        </md-list>
     </div>
 </template>
 

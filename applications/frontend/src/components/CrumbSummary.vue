@@ -1,65 +1,77 @@
 <template>
     <div>
         <div v-if="$apollo.queries.getCrumb.loading">
-            <md-progress-spinner
-                class="md-accent"
-                :md-stroke="3"
-                :md-diameter="30"
-                md-mode="indeterminate"
-            ></md-progress-spinner>
+            <md-list-item>
+                <md-progress-spinner
+                        class="md-accent"
+                        :md-stroke="3"
+                        :md-diameter="30"
+                        md-mode="indeterminate"
+                />
+            </md-list-item>
         </div>
 
         <!-- Error -->
         <div v-else-if="$apollo.queries.getCrumb.error">
-            An error occured :(
+            <md-list-item>
+                An error occured :(
+            </md-list-item>
         </div>
 
         <div v-else>
-            <md-list>
-                <md-list-item>
-                    <md-button v-bind:to="'/crumbs/' + fromId(getCrumb.id)">{{ getCrumb.title }}</md-button>
-                    <md-badge
-                        v-bind:class="getLinkedCrumbIds.length !== 0 ? 'md-primary' : 'md-accent'"
-                        v-bind:md-content="getLinkedCrumbIds.length"
-                    />
-                </md-list-item>
-            </md-list>
+            <md-list-item :to="'/crumbs/' + fromId(getCrumb.id)">
+                <div class="md-list-item-text">
+                    <span>{{ getCrumb.title }}</span>
+                                        <span>{{ getCrumb.text }}</span>
+
+                </div>
+                <md-badge
+                        v-bind:class="'md-square ' + (getCrumb.votes !== 0 ? 'md-primary' : 'md-accent')"
+                        v-bind:md-content="getCrumb.votes + ' Votes'"
+                />
+                <md-badge
+                        v-bind:class="'md-square ' + (getLinkedCrumbIds.length !== 0 ? 'md-primary' : 'md-accent')"
+                        v-bind:md-content="getLinkedCrumbIds.length + ' Linked'"
+                />
+
+
+            </md-list-item>
         </div>
     </div>
 </template>
 
 <script>
-import { fromId } from "@/urlids";
+    import { fromId } from "@/urlids";
 
-export default {
-    name: "CrumbSummary",
-    props: {
-        id: String,
-    },
-    data() {
-        return {
-            getCrumb: {},
-            fromId: fromId,
-            getLinkedCrumbIds: [],
-        };
-    },
-    apollo: {
-        getCrumb: {
-            query: require("../graphql/GetCrumb.gql"),
-            variables() {
-                return { id: this.id };
-            },
-            client: "crumblerClient",
+    export default {
+        name: "CrumbSummary",
+        props: {
+            id: String,
         },
-        getLinkedCrumbIds: {
-            query: require("../graphql/GetLinkedCrumbIds.gql"),
-            variables() {
-                return {
-                    id: this.id,
-                };
-            },
-            client: "zeldaClient",
+        data() {
+            return {
+                getCrumb: {},
+                fromId: fromId,
+                getLinkedCrumbIds: [],
+            };
         },
-    },
-};
+        apollo: {
+            getCrumb: {
+                query: require("../graphql/GetCrumb.gql"),
+                variables() {
+                    return { id: this.id };
+                },
+                client: "crumblerClient",
+            },
+            getLinkedCrumbIds: {
+                query: require("../graphql/GetLinkedCrumbIds.gql"),
+                variables() {
+                    return {
+                        id: this.id,
+                    };
+                },
+                client: "zeldaClient",
+            },
+        },
+    };
 </script>
