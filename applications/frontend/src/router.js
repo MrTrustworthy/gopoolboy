@@ -4,9 +4,9 @@ import CrumbsView from "./views/Crumbs.vue";
 import AboutView from "./views/About.vue";
 import CrumbDetailView from "./views/CrumbDetail.vue";
 import ProfileView from "./views/Profile.vue";
-import WelcomeView from "./views/Welcome.vue";
 import OrganizationView from "./views/Organization.vue";
 import { fromId } from "@/urlids";
+import { authGuard } from "./auth/authGuard";
 
 export const linkActiveClass = "vue-material-link-active";
 
@@ -63,22 +63,16 @@ export const router = new VueRouter({
                 requiresLogin: true,
             },
         },
-        {
-            path: "/welcome",
-            name: "welcome",
-            component: WelcomeView,
-        },
     ],
     linkActiveClass,
 });
+
+router.beforeEach(authGuard);
 
 router.beforeEach((to, from, next) => {
     if (to.name === null) {
         next({ name: "crumbs" });
         return;
     }
-    // could look for a better way that doesn't rely on simply a tokens existence, since it might be invalid
-    if (to.name !== "welcome" && !localStorage.getItem(process.env.VUE_APP_GRAPHQL_TOKEN_NAME))
-        next({ name: "welcome" });
-    else next();
+    next();
 });
