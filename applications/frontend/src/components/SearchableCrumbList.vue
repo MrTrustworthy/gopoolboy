@@ -13,40 +13,40 @@
         <md-radio v-model="sortBy" value="votes">Votes</md-radio>
         <md-radio v-model="sortBy" value="date">Date</md-radio>
 
-        <CrumbSummary v-for="found of findCrumbs" :key="found.id" v-bind:id="found.id" />
+        <CrumbSummary v-for="found of findCrumbs" :key="found.id" v-bind:id="found.id"/>
     </div>
 </template>
 
 <script>
-import CrumbSummary from "@/components/CrumbSummary.vue";
+    import CrumbSummary from "@/components/CrumbSummary.vue";
 
-export default {
-    name: "SearchableCrumbList",
-    props: {
-        crumbType: String,
-    },
-    components: {
-        CrumbSummary,
-    },
-    data() {
-        return {
-            like: "",
-            findCrumbs: [],
-            sortBy: "votes",
-        };
-    },
-    apollo: {
-        findCrumbs: {
-            query: require("../graphql/FindCrumbs.gql"),
-            variables() {
-                return {
-                    type: this.crumbType,
-                    like: this.like,
-                    sortBy: this.sortBy,
-                };
-            },
-            client: "findrClient",
+    export default {
+        name: "SearchableCrumbList",
+        props: {
+            crumbType: String,
         },
-    },
-};
+        components: {
+            CrumbSummary,
+        },
+        data() {
+            return {
+                like: "",
+                findCrumbs: [],
+                sortBy: "votes",
+            };
+        },
+        apollo: {
+            findCrumbs: {
+                query: require("../graphql/FindCrumbs.gql"),
+                variables() {
+                    return {
+                        type: this.crumbType,
+                        like: this.like,
+                        sortBy: this.sortBy,
+                    };
+                },
+                client: "findrClient",
+            },
+        },
+    };
 </script>

@@ -7,7 +7,7 @@
 
 <script>
 import SearchableCrumbList from "@/components/SearchableCrumbList.vue";
-import CreateWidgetSnackbar from "@/components/CreateWidgetSnackbar.vue";
+import CreateWidgetSnackbar from "@/components/Speeddial.vue";
 
 export default {
     name: "Crumbs",

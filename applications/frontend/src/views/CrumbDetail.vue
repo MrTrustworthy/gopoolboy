@@ -13,7 +13,7 @@
 <script>
 import CrumbFull from "@/components/CrumbFull.vue";
 import NewCrumb from "@/components/NewCrumb.vue";
-import CreateWidgetSnackbar from "@/components/CreateWidgetSnackbar.vue";
+import CreateWidgetSnackbar from "@/components/Speeddial.vue";
 
 import { toId } from "@/urlids";
 

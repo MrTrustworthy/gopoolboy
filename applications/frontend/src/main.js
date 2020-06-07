@@ -1,8 +1,9 @@
 import Vue from "vue";
-import { router, linkActiveClass } from "./router";
+import { linkActiveClass, router } from "./router";
 import App from "./App.vue";
 import { createProvider } from "./vue-apollo";
 import { Auth0Plugin } from "./auth";
+import { store } from "./store";
 import VueMaterial from "vue-material";
 import "vue-material/dist/vue-material.min.css";
 import "vue-material/dist/theme/default.css";
@@ -21,5 +22,6 @@ Vue.material.router.linkActiveClass = linkActiveClass;
 new Vue({
     apolloProvider: createProvider(),
     router,
+    store,
     render: (h) => h(App),
 }).$mount("#app");
