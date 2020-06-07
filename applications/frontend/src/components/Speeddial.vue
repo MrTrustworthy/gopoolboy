@@ -1,5 +1,5 @@
 <template>
-    <div id="createwidgetsnackbar">
+    <div id="speeddial">
         <md-speed-dial class="md-top-right" md-direction="bottom">
             <md-speed-dial-target>
                 <md-icon class="md-morph-initial">add</md-icon>
