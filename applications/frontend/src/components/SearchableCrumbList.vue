@@ -11,8 +11,7 @@
                     <span class="md-helper-text">Search</span>
                 </md-field>
                 <div>
-                    There's a total of {{ findCrumbs.length }} Crumbs of type "{{ crumbType }}"
-                    {{ like === "" ? "in your organization" : "for your search" }}
+                    Found a total of {{ findCrumbs.length }} {{ crumbType }}s {{ outputSuffix }}
                 </div>
             </md-card-content>
             <md-card-actions>
@@ -49,6 +48,11 @@
                 findCrumbs: [],
                 sortBy: "votes",
             };
+        },
+        computed: {
+          outputSuffix(){
+              return this.like === "" ? "in your organization" : "for your search"
+          }
         },
         apollo: {
             findCrumbs: {
