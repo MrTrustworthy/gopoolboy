@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import LandingPage from "./views/LandingPage";
+import SignupPage from "./views/SignupPage";
 
 export const linkActiveClass = "vue-material-link-active";
 
@@ -10,8 +11,13 @@ export const router = new VueRouter({
     routes: [
         {
             path: "/",
-            name: "LandingPage",
+            name: "landingpage",
             component: LandingPage,
+        },
+                {
+            path: "/signup",
+            name: "signup",
+            component: SignupPage,
         },
     ],
     scrollBehavior(to, from, savedPosition) {

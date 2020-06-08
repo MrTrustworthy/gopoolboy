@@ -1,18 +1,16 @@
 <template>
     <div id="landingpage">
-        <span>Sign up now!</span>
-        <NewOrganization/>
+        <Pricing/>
     </div>
 </template>
 
 <script>
-    import NewOrganization from "../components/NewOrganization";
+    import Pricing from "../components/Pricing";
 
     export default {
         name: "LandingPage",
         components: {
-            NewOrganization,
+            Pricing,
         },
-
     };
 </script>

@@ -20,6 +20,12 @@
                 <md-button @click="signup" class="md-raised md-primary" :disabled="inputDisabled">Sign up</md-button>
             </md-card-actions>
         </md-card>
+
+
+        <md-snackbar :md-duration="Infinity" :md-active="notify">
+            <span>Thank you for signing up! Please check your emails to login.</span>
+            <md-button class="md-primary" @click="() => notify = false">OK</md-button>
+        </md-snackbar>
     </div>
 </template>
 
@@ -31,6 +37,7 @@
                 orgaName: "",
                 creatorEmail: "",
                 inputDisabled: false,
+                notify: false,
             };
         },
         apollo: {
@@ -46,10 +53,8 @@
                         creatorEmail: this.creatorEmail,
                     },
                 });
-                this.orgaName = "";
-                this.creatorEmail = "";
                 this.inputDisabled = true;
-                this.$store.commit("addPendingNotification", "Thank you for creating an organization! Please check your emails to login");
+                this.notify = true;
             },
         },
     };
