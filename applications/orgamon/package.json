@@ -7,7 +7,7 @@
         "migrate": "knex migrate:latest --env main"
     },
     "dependencies": {
-        "apollo-server": "^2.13.0",
+        "apollo-server": "^2.14.2",
         "auth0": "^2.25.1",
         "dotenv": "^8.2.0",
         "generate-password": "^1.5.1",
