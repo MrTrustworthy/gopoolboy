@@ -1,6 +1,6 @@
-const { gql } = require("apollo-server");
+const {gql} = require("apollo-server");
 const authRequired = require("./validate");
-const { getLinkedCrumbIds, upvoteCrumbLink, createCrumbLink } = require("./resolvers");
+const {getLinkedCrumbIds, getCrumbLinkBetween, upvoteCrumbLink, createCrumbLink} = require("./resolvers");
 
 const typeDefs = gql`
     type CrumbLink {
@@ -13,10 +13,11 @@ const typeDefs = gql`
 
     type Query {
         getLinkedCrumbIds(id: ID!): [ID!]
+        getCrumbLinkBetween(fromId: ID!, toId: ID!): CrumbLink
     }
 
     type Mutation {
-        createCrumbLink(from: ID!, to: ID!): CrumbLink!
+        createCrumbLink(fromId: ID!, toId: ID!): CrumbLink!
         upvoteCrumbLink(id: ID!): CrumbLink!
     }
 `;
@@ -24,6 +25,8 @@ const typeDefs = gql`
 const resolvers = {
     Query: {
         getLinkedCrumbIds: authRequired(getLinkedCrumbIds, "read:questions"),
+        getCrumbLinkBetween: authRequired(getCrumbLinkBetween, "read:questions"),
+
     },
     Mutation: {
         createCrumbLink: authRequired(createCrumbLink, "create:questions"),
@@ -31,4 +34,4 @@ const resolvers = {
     },
 };
 
-module.exports = { typeDefs, resolvers };
+module.exports = {typeDefs, resolvers};

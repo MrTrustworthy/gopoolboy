@@ -95,8 +95,8 @@
                                 .mutate({
                                     mutation: require("../graphql/CreateCrumbLink.gql"),
                                     variables: {
-                                        from: this.linkTo,
-                                        to: crumbId,
+                                        fromId: this.linkTo,
+                                        toId: crumbId,
                                     },
                                     client: "zeldaClient",
                                 });
