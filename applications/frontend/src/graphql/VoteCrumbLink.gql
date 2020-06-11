@@ -1,0 +1,7 @@
+mutation VoteCrumbLink($id: ID!, $vote: Int!) {
+  voteCrumbLink(id: $id, vote: $vote){
+    id
+    votes
+    ownVote
+  }
+}

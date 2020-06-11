@@ -2,6 +2,7 @@ query GetCrumbLinkBetween($fromId: ID!, $toId: ID!) {
     getCrumbLinkBetween(fromId: $fromId, toId: $toId){
         id
         votes
+        ownVote
         authorId
         createdAt
     }

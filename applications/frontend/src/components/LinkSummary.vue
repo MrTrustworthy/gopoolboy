@@ -34,11 +34,14 @@
                     </md-card-header-text>
                     <md-card-media>
                         <md-badge
-                                v-bind:class="getCrumbLinkBetween.votes !== 0 ? 'md-primary' : 'md-accent'"
+                                v-bind:class="getCrumbLinkBetween.votes > 0 ? 'md-primary' : 'md-accent'"
                                 v-bind:md-content="getCrumbLinkBetween.votes"
                         />
-                        <md-button class="md-primary" @click="() => console.log('no')">
-                            <md-icon>arrow_upward</md-icon>
+                        <md-button class="md-primary" @click="() => voteCrumbLink(1)">
+                            <md-icon :style="getVoteStyle(1)">arrow_upward</md-icon>
+                        </md-button>
+                        <md-button class="md-primary" @click="() => voteCrumbLink(-1)">
+                            <md-icon :style="getVoteStyle(-1)">arrow_downward</md-icon>
                         </md-button>
                     </md-card-media>
                 </md-card-header>
@@ -96,7 +99,22 @@
             prettyTime(ts) {
                 return moment(ts, "x").calendar();
             },
+            getVoteStyle(vote) {
+                return vote === this.getCrumbLinkBetween.ownVote ? 'color:red;' : 'color:blue;';
+            },
+            voteCrumbLink(vote) {
+                // remove vote if it's the already-active vote
+                if (vote === this.getCrumbLinkBetween.ownVote) vote = 0;
 
+                this.$apollo.mutate({
+                    mutation: require("../graphql/VoteCrumbLink.gql"),
+                    variables: {
+                        id: this.getCrumbLinkBetween.id,
+                        vote: vote
+                    },
+                    client: "zeldaClient",
+                });
+            },
         }
     };
 </script>
