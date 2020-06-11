@@ -1,25 +1,7 @@
 const knexClient = require("./knexclient");
-const {AuthenticationError} = require("apollo-server");
-const assert = require("assert");
+const {produce, topics} = require("./kafka");
 
-// Utilities
-
-const selectMappings = {
-    id: "crumbs.id",
-    title: "crumbs.title",
-    text: "crumbs.text",
-    type: "crumbs.type",
-    source: "crumbs.source",
-    votes: "crumbs.votes",
-    createdAt: "crumbs.created_at",
-    authorId: "crumbs.creator_id",
-    tags: "crumbs.tags",
-};
-
-
-// Queries
-
-
+// ORM for Crumb
 const getCrumbDataById = async (id, organization, user) => {
     let crumbData = await knexClient
         .from("crumbs")
@@ -70,27 +52,36 @@ const createCrumb = async (args, organization, user) => {
         })
         .returning("id");
 
-    return getCrumbDataById(newIds[0], organization, user);
+    const crumb = await getCrumbDataById(newIds[0], organization, user);
+    await produce(topics.CRUMBS_TOPIC, crumb);
+
+    return crumb;
 };
 
 const voteCrumb = async (args, organization, user) => {
     if (![1, 0, -1].includes(args.vote)) throw new Error("Vote must be +/- 1!");
-    console.log("Changing vote to", args.vote)
+
+    // Clear any existing votes
     await knexClient("upvotes")
         .where({organization_id: organization, user: user, crumb: args.id})
         .delete();
 
-    if (args.vote !== 0) await knexClient("upvotes")
-        .insert({
-            crumb: args.id,
-            votes: args.vote,
-            user: user,
-            organization_id: organization,
-        });
+    const payload = {
+        crumb: args.id,
+        votes: args.vote,
+        user: user,
+        organization_id: organization,
+    };
+
+    // only +/-1 votes are created, which means a 0-vote simply acts as delete
+    if (args.vote !== 0) await knexClient("upvotes").insert(payload);
+
+    await produce(topics.VOTES_TOPIC, payload);
 
     return getCrumbDataById(args.id, organization, user);
 };
 
+// Queries
 
 const getCrumb = async (args, organization, user) => {
     return getCrumbDataById(args.id, organization, user);

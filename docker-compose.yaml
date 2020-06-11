@@ -27,6 +27,9 @@ services:
             DB_DATABASE: crumbler
             DB_USER: postgres
             DB_PASSWORD: postgres
+            KAFKA_BROKER_ENDPOINT: "${KAFKA_BROKER_ENDPOINT}"
+            KAFKA_API_KEY: "${KAFKA_API_KEY}"
+            KAFKA_API_SECRET: "${KAFKA_API_SECRET}"
     zelda:
         build: applications/zelda
         volumes:
