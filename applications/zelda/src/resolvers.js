@@ -45,7 +45,6 @@ const upvoteCrumbLink = async (args, organization, user) => {
 
 
 const getCrumbLinkBetween = async (args, organization, user) => {
-    console.log("ARGS", args)
     return knexClient
         .from("crumblinks")
         .where({organization_id: organization})
