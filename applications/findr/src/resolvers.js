@@ -12,7 +12,7 @@ const findCrumbs = async (args, organization) => {
     if (args.sortBy === "date") {
         query = query.orderBy("created_at", "desc");
     } else if (args.sortBy === "votes") {
-        query = query.orderBy("votes", "desc");
+        query = query.orderBy("created_at", "desc");
     } else {
         throw new Error("Can't sort by " + args.sortBy);
     }
