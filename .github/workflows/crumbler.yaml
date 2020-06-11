@@ -23,6 +23,7 @@ env:
     YTTENV_crumbler__env__api_identifier: http://staging-poolboy-api
     YTTENV_crumbler__env__db_host: "10.135.0.3"
     YTTENV_crumbler__env__db_database: crumbler
+    YTTENV_crumbler__env__kafka_broker_endpoint: pkc-4ygn6.europe-west3.gcp.confluent.cloud:9092
 
 jobs:
     deploy-crumbler-staging:
@@ -42,6 +43,8 @@ jobs:
               with:
                   secrets: |-
                       db_password:staging-poolboy/staging-crumbler_db_password
+                      kafka_api_key:staging-poolboy/staging-kafka_api_key
+                      kafka_api_secret:staging-poolboy/staging-kafka_api_secret
             - run: |
                   gcloud auth configure-docker
             - name: Install and configure k14s
@@ -56,6 +59,8 @@ jobs:
             - name: Build and Deploy via k14s
               env:
                   YTTENV_crumbler__secrets__db_password: ${{ steps.secrets.outputs.db_password }}
+                  YTTENV_crumbler__secrets__kafka_api_key: ${{ steps.secrets.outputs.kafka_api_key }}
+                  YTTENV_crumbler__secrets__kafka_api_secret: ${{ steps.secrets.outputs.kafka_api_secret }}
               run: |
                   gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
                   ytt -f services/crumbler --data-values-env YTTENV | kbld -f - | kapp deploy -a crumbler -f - -n crumbler --diff-summary --yes

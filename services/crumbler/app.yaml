@@ -21,6 +21,9 @@ crumbler:
         api_identifier: http://dev-poolboy-api
         db_host: pg-crumbler
         db_database: crumbler
+        kafka_broker_endpoint: kafka:9092
     secrets:
         db_user: crumbler
         db_password: postgres
+        kafka_api_key: omlette
+        kafka_api_secret: omlette
