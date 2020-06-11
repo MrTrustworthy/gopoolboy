@@ -107,10 +107,10 @@ services:
             NODE_ENV: development
             AUTH0_DOMAIN: dev-poolboy.eu.auth0.com
             API_IDENTIFIER: http://dev-poolboy-api
-            DB_HOST: app-postgres
-            DB_DATABASE: crumbler
-            DB_USER: postgres
-            DB_PASSWORD: postgres
+            ES_CLOUD_ID: "${ES_CLOUD_ID}"
+            ES_AUTH_USER: "${ES_AUTH_USER}"
+            ES_AUTH_PW: "${ES_AUTH_PW}"
+            ES_INDEX_PREFIX: "${ES_INDEX_PREFIX}"
     findr-updater:
         build: applications/findr-updater
         volumes:

@@ -16,11 +16,11 @@ findr:
     officeIps: "78.94.91.125/32,78.35.144.135/32"
 
     env:
-        node_env: production
-        auth0_domain: dev-poolboy.eu.auth0.com
-        api_identifier: http://dev-poolboy-api
-        db_host: pg-crumbler
-        db_database: crumbler
+        node_env: bananas
+        auth0_domain: bananas
+        api_identifier: bananas
+        es_index_prefix: bananas
     secrets:
-        db_user: crumbler
-        db_password: postgres
+        es_cloud_id: bananas
+        es_auth_user: bananas
+        es_auth_pw: bananas

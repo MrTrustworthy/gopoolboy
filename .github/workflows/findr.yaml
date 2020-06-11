@@ -22,7 +22,7 @@ env:
     YTTENV_findr__env__auth0_domain: staging-poolboy.eu.auth0.com
     YTTENV_findr__env__api_identifier: http://staging-poolboy-api
     YTTENV_findr__env__db_host: "10.135.0.3"
-    YTTENV_findr__env__db_database: crumbler
+    YTTENV_findr__env__es_index_prefix: "staging-findr-search-crumbs-"
 
 jobs:
     deploy-findr-staging:
@@ -41,7 +41,9 @@ jobs:
               uses: GoogleCloudPlatform/github-actions/get-secretmanager-secrets@master
               with:
                   secrets: |-
-                      db_password:staging-poolboy/staging-findr_db_password
+                      es_cloud_id:staging-poolboy/staging-es_cloud_id
+                      es_auth_user:staging-poolboy/staging-es_auth_user
+                      es_auth_pw:staging-poolboy/staging-es_auth_pw
             - run: |
                   gcloud auth configure-docker
             - name: Install and configure k14s
@@ -55,7 +57,9 @@ jobs:
 
             - name: Build and Deploy via k14s
               env:
-                  YTTENV_findr__secrets__db_password: ${{ steps.secrets.outputs.db_password }}
+                  YTTENV_findr__secrets__es_cloud_id: ${{ steps.secrets.outputs.es_cloud_id }}
+                  YTTENV_findr__secrets__es_auth_user: ${{ steps.secrets.outputs.es_auth_user }}
+                  YTTENV_findr__secrets__es_auth_pw: ${{ steps.secrets.outputs.es_auth_pw }}
               run: |
                   gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
                   ytt -f services/findr --data-values-env YTTENV | kbld -f - | kapp deploy -a findr -f - -n findr --diff-summary --yes
