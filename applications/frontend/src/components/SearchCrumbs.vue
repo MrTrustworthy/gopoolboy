@@ -20,27 +20,15 @@
                 <md-radio v-model="sortBy" value="date">Date</md-radio>
             </md-card-actions>
         </md-card>
-
-        <md-list class="md-double-line md-dense">
-            <template v-for="found of findCrumbs">
-
-                <CrumbSummary :key="found.id" v-bind:id="found.id"/>
-                <md-divider class="md-inset" :key="found.id + '_inset'"></md-divider>
-            </template>
-        </md-list>
     </div>
 </template>
 
 <script>
-    import CrumbSummary from "@/components/CrumbSummary.vue";
 
     export default {
-        name: "SearchableCrumbList",
+        name: "SearchCrumb",
         props: {
             crumbType: String,
-        },
-        components: {
-            CrumbSummary,
         },
         data() {
             return {
@@ -50,6 +38,9 @@
             };
         },
         computed: {
+            crumbIds() {
+                return this.findCrumbs.map(c => c.id);
+            },
             outputSuffix() {
                 return this.like === "" ? "in your organization" : "for your search";
             }
@@ -66,6 +57,11 @@
                 },
                 fetchPolicy: "no-cache", // disable cache so navigating back will reload it
                 client: "findrClient",
+                result: function (result, key) {
+                    const ids = result.data[key].map(found => found.id);
+                    this.$emit("found-ids", ids);
+
+                }
             },
         },
     };
