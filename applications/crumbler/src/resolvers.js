@@ -1,5 +1,5 @@
 const knexClient = require("./knexclient");
-const { AuthenticationError } = require("apollo-server");
+const {AuthenticationError} = require("apollo-server");
 const assert = require("assert");
 
 // Utilities
@@ -16,35 +16,49 @@ const selectMappings = {
     tags: "crumbs.tags",
 };
 
-const ensureCrumbInOrga = async (objectId, organization, user) => {
-    let result = await knexClient("crumbs").select("organization_id").where({ id: objectId }).first();
-    let orgaId = result.organization_id;
-    if (orgaId !== organization) {
-        console.log("Error when trying to access crumb with orgaId", orgaId, "as user from", organization);
-        throw new AuthenticationError("Can't operate with this object as it's organization ID doesn't match");
-    }
-};
 
 // Queries
 
-const getCrumbs = async (args, organization, user) => {
-    return knexClient.from("crumbs").where({ organization_id: organization }).select(selectMappings);
-};
-const getCrumb = async (args, organization, user) => {
-    return knexClient
+
+const getCrumbDataById = async (id, organization, user) => {
+    let crumbData = await knexClient
         .from("crumbs")
-        .where({ organization_id: organization, id: args.id })
-        .select(selectMappings)
+        .where({organization_id: organization, id: id})
+        .select(["id", "title", "text", "type", "source", "created_at", "creator_id", "tags"])
         .first();
+
+    const voteData = await knexClient
+        .from("upvotes")
+        .where({organization_id: organization, crumb: crumbData.id})
+        .sum({votes: "votes"})
+        .first();
+
+    const ownVote = await knexClient
+        .from("upvotes")
+        .where({organization_id: organization, crumb: crumbData.id, user: user})
+        .sum({votes: "votes"})
+        .first();
+
+    return {
+        id: crumbData.id,
+        title: crumbData.title,
+        text: crumbData.text,
+        type: crumbData.type,
+        source: crumbData.source,
+        votes: voteData.votes || 0,
+        ownVote: ownVote.votes || 0,
+        authorId: crumbData.creator_id,
+        createdAt: crumbData.created_at,
+        tags: crumbData.tags
+    };
 };
 
 // Mutations
 
 const createCrumb = async (args, organization, user) => {
     let type = args.type.toLowerCase();
-    assert(["question", "answer"].indexOf(type) !== -1, "Type can't be: " + args.type);
 
-    return knexClient("crumbs")
+    let newIds = await knexClient("crumbs")
         .insert({
             title: args.title,
             text: args.text,
@@ -54,19 +68,36 @@ const createCrumb = async (args, organization, user) => {
             creator_id: user,
             tags: JSON.stringify(args.tags),
         })
-        .returning("id")
-        .then(async (newCrumbIds) => getCrumb({ id: newCrumbIds[0] }, organization, user));
+        .returning("id");
+
+    return getCrumbDataById(newIds[0], organization, user);
 };
 
-const upvoteCrumb = async (args, organization, user) => {
-    await ensureCrumbInOrga(args.id, organization, user);
-    await knexClient("crumbs").where({ id: args.id }).increment("votes", 1);
-    return getCrumb(args, organization, user);
+const voteCrumb = async (args, organization, user) => {
+    if (![1, 0, -1].includes(args.vote)) throw new Error("Vote must be +/- 1!");
+    console.log("Changing vote to", args.vote)
+    await knexClient("upvotes")
+        .where({organization_id: organization, user: user, crumb: args.id})
+        .delete();
+
+    if (args.vote !== 0) await knexClient("upvotes")
+        .insert({
+            crumb: args.id,
+            votes: args.vote,
+            user: user,
+            organization_id: organization,
+        });
+
+    return getCrumbDataById(args.id, organization, user);
+};
+
+
+const getCrumb = async (args, organization, user) => {
+    return getCrumbDataById(args.id, organization, user);
 };
 
 module.exports = {
-    getCrumbs,
     getCrumb,
     createCrumb,
-    upvoteCrumb,
+    voteCrumb,
 };

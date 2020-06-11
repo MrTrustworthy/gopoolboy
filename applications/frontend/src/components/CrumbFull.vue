@@ -27,9 +27,16 @@
                     </md-card-header-text>
                     <md-card-media>
                         <md-badge
-                                v-bind:class="getCrumb.votes !== 0 ? 'md-primary' : 'md-accent'"
+                                v-bind:class="getCrumb.votes > 0 ? 'md-primary' : 'md-accent'"
                                 v-bind:md-content="getCrumb.votes"
                         />
+
+                        <md-button class="md-primary" @click="() => voteCrumb(1)">
+                            <md-icon :style="getVoteStyle(1)">arrow_upward</md-icon>
+                        </md-button>
+                        <md-button class="md-primary" @click="() => voteCrumb(-1)">
+                            <md-icon :style="getVoteStyle(-1)">arrow_downward</md-icon>
+                        </md-button>
                     </md-card-media>
                 </md-card-header>
                 <md-divider></md-divider>
@@ -41,9 +48,6 @@
                     <md-chip class="md-primary" v-for="tag in getCrumb.tags" :key="tag.key + tag.value">
                         {{ tag.key }}:{{ tag.value }}
                     </md-chip>
-                    <md-button class="md-primary" @click="upvoteCrumb">
-                        <md-icon>arrow_upward</md-icon>
-                    </md-button>
                 </md-card-actions>
             </md-card>
         </div>
@@ -96,19 +100,18 @@
             prettyTime(ts) {
                 return moment(ts, "x").calendar();
             },
-            upvoteCrumb() {
+            getVoteStyle(vote) {
+                return vote === this.getCrumb.ownVote ? 'color:red;' : 'color:blue;';
+            },
+            voteCrumb(vote) {
+                // remove vote if it's the already-active vote
+                if (vote === this.getCrumb.ownVote) vote = 0;
+
                 this.$apollo.mutate({
-                    mutation: require("../graphql/UpvoteCrumb.gql"),
+                    mutation: require("../graphql/VoteCrumb.gql"),
                     variables: {
                         id: this.id,
-                    },
-                    optimisticResponse: {
-                        __typename: "Mutation",
-                        upvoteCrumb: {
-                            __typename: "Crumb",
-                            id: this.id,
-                            votes: this.getCrumb.votes + 1,
-                        },
+                        vote: vote
                     },
                     client: "crumblerClient",
                 });
