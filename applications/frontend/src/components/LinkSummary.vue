@@ -21,20 +21,24 @@
         <div v-else>
             <md-card>
                 <md-card-header>
-                    <div class="md-subhead">Linked by: {{ getCrumbLinkBetween.authorId }}</div>
-                    <div class="md-subhead">
-                        {{ relativeMicrosTS(getCrumbLinkBetween.createdAt) }}
-                        <md-tooltip md-direction="left" md-delay="150">
-                            {{ prettyTime(getCrumbLinkBetween.createdAt) }}
-                        </md-tooltip>
-                    </div>
+                    <md-card-header-text>
+                        <div class="md-subhead">Linked by: {{ getCrumbLinkBetween.authorId }}</div>
+                        <div class="md-subhead">
+                            {{ relativeMicrosTS(getCrumbLinkBetween.createdAt) }}
+                            <md-tooltip md-direction="left" md-delay="150">
+                                {{ prettyTime(getCrumbLinkBetween.createdAt) }}
+                            </md-tooltip>
+                        </div>
+                    </md-card-header-text>
+                    <md-card-media>
+                        <md-badge
+                                v-bind:class="getCrumbLinkBetween.votes !== 0 ? 'md-primary' : 'md-accent'"
+                                v-bind:md-content="getCrumbLinkBetween.votes"
+                        />
+                    </md-card-media>
                 </md-card-header>
 
                 <md-card-actions>
-                    <md-badge
-                            v-bind:class="'md-square ' + (getCrumbLinkBetween.votes !== 0 ? 'md-primary' : 'md-accent')"
-                            v-bind:md-content="getCrumbLinkBetween.votes + ' Votes'"
-                    />
                     <md-button class="md-primary" @click="() => console.log('no')">
                         <md-icon>arrow_upward</md-icon>
                     </md-button>
