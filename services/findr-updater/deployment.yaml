@@ -9,7 +9,7 @@ apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
     name: #@ appName
-    namespace: #@ appName
+    namespace: #@ app.namespace
     labels:
         name: #@ appName
 spec:
