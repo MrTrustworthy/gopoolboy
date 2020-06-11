@@ -1,0 +1,68 @@
+# This workflow will build a docker container, publish it to Google Container Registry, and deploy it to GKE.
+name: Deploy findr-updater
+
+on:
+    push:
+        branches:
+            - master
+        paths:
+            - "applications/findr-updater/**"
+            - "services/findr-updater/**"
+            - ".github/workflows/findr-updater.yaml"
+
+env:
+    GKE_PROJECT: staging-poolboy
+    GKE_ZONE: europe-west3-b
+    GKE_CLUSTER: kubernetes-cluster
+    YTT_VERSION: v0.27.2
+    KAPP_VERSION: v0.27.0
+    KBLD_VERSION: v0.22.0
+    GCP_VERSION: "293.0.0"
+
+    YTTENV_findrUpdater__env__kafka_consumer_group_id: finder-updater-crumbs
+    YTTENV_findrUpdater__env__es_index_prefix: "staging-findr-search-crumbs-"
+    YTTENV_findrUpdater__env__kafka_broker_endpoint: pkc-4ygn6.europe-west3.gcp.confluent.cloud:9092
+
+jobs:
+    deploy-findr-updater-staging:
+        name: Deploy findr-updater staging
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+              with:
+                  version: ${{ env.GCP_VERSION }}
+                  project_id: ${{ env.GKE_PROJECT }}
+                  service_account_key: ${{ secrets.GKE_KEY }}
+                  export_default_credentials: true
+            - id: secrets
+              uses: GoogleCloudPlatform/github-actions/get-secretmanager-secrets@master
+              with:
+                  secrets: |-
+                      kafka_api_key:staging-poolboy/staging-kafka_api_key
+                      kafka_api_secret:staging-poolboy/staging-kafka_api_secret
+                      es_cloud_id:staging-poolboy/staging-es_cloud_id
+                      es_auth_user:staging-poolboy/staging-es_auth_user
+                      es_auth_pw:staging-poolboy/staging-es_auth_pw
+            - run: |
+                  gcloud auth configure-docker
+            - name: Install and configure k14s
+              run: |
+                  sudo wget -O /bin/ytt https://github.com/k14s/ytt/releases/download/"$YTT_VERSION"/ytt-linux-amd64 \
+                      && sudo chmod +x /bin/ytt
+                  sudo wget -O /bin/kapp https://github.com/k14s/kapp/releases/download/"$KAPP_VERSION"/kapp-linux-amd64 \
+                      && sudo chmod +x /bin/kapp
+                  sudo wget -O /bin/kbld https://github.com/k14s/kbld/releases/download/"$KBLD_VERSION"/kbld-linux-amd64 \
+                      && sudo chmod +x /bin/kbld
+
+            - name: Build and Deploy via k14s
+              env:
+                  YTTENV_findrUpdater__secrets__kafka_api_key: ${{ steps.secrets.outputs.kafka_api_key }}
+                  YTTENV_findrUpdater__secrets__kafka_api_secret: ${{ steps.secrets.outputs.kafka_api_secret }}
+                  YTTENV_findrUpdater__secrets__es_cloud_id: ${{ steps.secrets.outputs.es_cloud_id }}
+                  YTTENV_findrUpdater__secrets__es_auth_user: ${{ steps.secrets.outputs.es_auth_user }}
+                  YTTENV_findrUpdater__secrets__es_auth_pw: ${{ steps.secrets.outputs.es_auth_pw }}
+              run: |
+                  gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
+                  ytt -f services/findr-updater --data-values-env YTTENV | kbld -f - | kapp deploy -a findr-updater -f - -n findr --diff-summary --yes

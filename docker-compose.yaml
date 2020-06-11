@@ -111,3 +111,18 @@ services:
             DB_DATABASE: crumbler
             DB_USER: postgres
             DB_PASSWORD: postgres
+    findr-updater:
+        build: applications/findr-updater
+        volumes:
+            - ./applications/findr-updater:/app
+        depends_on:
+            - app-postgres
+        environment:
+            KAFKA_BROKER_ENDPOINT: "${KAFKA_BROKER_ENDPOINT}"
+            KAFKA_API_KEY: "${KAFKA_API_KEY}"
+            KAFKA_API_SECRET: "${KAFKA_API_SECRET}"
+            KAFKA_CONSUMER_GROUP_ID: "${KAFKA_CONSUMER_GROUP_ID}"
+            ES_CLOUD_ID: "${ES_CLOUD_ID}"
+            ES_AUTH_USER: "${ES_AUTH_USER}"
+            ES_AUTH_PW: "${ES_AUTH_PW}"
+            ES_INDEX_PREFIX: "${ES_INDEX_PREFIX}"

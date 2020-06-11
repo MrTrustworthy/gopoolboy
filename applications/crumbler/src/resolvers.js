@@ -6,7 +6,7 @@ const getCrumbDataById = async (id, organization, user) => {
     let crumbData = await knexClient
         .from("crumbs")
         .where({organization_id: organization, id: id})
-        .select(["id", "title", "text", "type", "source", "created_at", "creator_id", "tags"])
+        .select(["id", "title", "text", "type", "source", "created_at", "creator_id", "tags", "organization_id"])
         .first();
 
     const voteData = await knexClient
@@ -31,7 +31,8 @@ const getCrumbDataById = async (id, organization, user) => {
         ownVote: ownVote.votes || 0,
         authorId: crumbData.creator_id,
         createdAt: crumbData.created_at,
-        tags: crumbData.tags
+        tags: crumbData.tags,
+        organizationId: crumbData.organization_id
     };
 };
 
