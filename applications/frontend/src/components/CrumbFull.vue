@@ -16,7 +16,7 @@
                         <div class="md-title">{{ getCrumb.title }}</div>
                         <div class="md-subhead">Type: {{ getCrumb.type }}</div>
                         <md-button class="md-subhead" v-bind:to="'/profile/' + getCrumb.authorId">
-                            by {{ getUserNickName(getCrumb.authorId) }}
+                            by {{ userName }}
                         </md-button>
                         <div class="md-subhead">
                             {{ relativeMicrosTS(getCrumb.createdAt) }}
@@ -66,6 +66,16 @@
                 getUsers: [],
             };
         },
+        computed: {
+            userName() {
+                let userId = this.getCrumb.authorId;
+                let users = this.getUsers.filter((u) => u.id === userId).map((u) => u.nickname);
+                if (users.length === 0) {
+                    return userId;
+                }
+                return users[0];
+            }
+        },
         apollo: {
             getCrumb: {
                 query: require("../graphql/GetCrumb.gql"),
@@ -102,13 +112,6 @@
                     },
                     client: "crumblerClient",
                 });
-            },
-            getUserNickName(userId) {
-                let users = this.getUsers.filter((u) => u.id == userId).map((u) => u.nickname);
-                if (users.length === 0) {
-                    return userId;
-                }
-                return users[0];
             },
         },
     };

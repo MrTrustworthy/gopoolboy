@@ -22,7 +22,9 @@
             <md-card>
                 <md-card-header>
                     <md-card-header-text>
-                        <div class="md-subhead">Linked by: {{ getCrumbLinkBetween.authorId }}</div>
+                        <md-button class="md-subhead" v-bind:to="'/profile/' + getCrumbLinkBetween.authorId">
+                            Linked by: {{ userName }}
+                        </md-button>
                         <div class="md-subhead">
                             {{ relativeMicrosTS(getCrumbLinkBetween.createdAt) }}
                             <md-tooltip md-direction="left" md-delay="150">
@@ -35,14 +37,12 @@
                                 v-bind:class="getCrumbLinkBetween.votes !== 0 ? 'md-primary' : 'md-accent'"
                                 v-bind:md-content="getCrumbLinkBetween.votes"
                         />
+                        <md-button class="md-primary" @click="() => console.log('no')">
+                            <md-icon>arrow_upward</md-icon>
+                        </md-button>
                     </md-card-media>
                 </md-card-header>
 
-                <md-card-actions>
-                    <md-button class="md-primary" @click="() => console.log('no')">
-                        <md-icon>arrow_upward</md-icon>
-                    </md-button>
-                </md-card-actions>
             </md-card>
         </div>
     </div>
@@ -60,7 +60,18 @@
         data() {
             return {
                 getCrumbLinkBetween: {},
+                getUsers: []
             };
+        },
+        computed: {
+            userName() {
+                let userId = this.getCrumbLinkBetween.authorId;
+                let users = this.getUsers.filter((u) => u.id === userId).map((u) => u.nickname);
+                if (users.length === 0) {
+                    return userId;
+                }
+                return users[0];
+            }
         },
         apollo: {
             getCrumbLinkBetween: {
@@ -73,6 +84,10 @@
                 },
                 client: "zeldaClient",
             },
+            getUsers: {
+                query: require("../graphql/GetUsers.gql"),
+                client: "orgamonClient",
+            },
         },
         methods: {
             relativeMicrosTS(ts) {
@@ -81,6 +96,7 @@
             prettyTime(ts) {
                 return moment(ts, "x").calendar();
             },
+
         }
     };
 </script>
