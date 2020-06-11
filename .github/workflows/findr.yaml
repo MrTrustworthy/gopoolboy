@@ -21,7 +21,6 @@ env:
 
     YTTENV_findr__env__auth0_domain: staging-poolboy.eu.auth0.com
     YTTENV_findr__env__api_identifier: http://staging-poolboy-api
-    YTTENV_findr__env__db_host: "10.135.0.3"
     YTTENV_findr__env__es_index_prefix: "staging-findr-search-crumbs-"
 
 jobs:
