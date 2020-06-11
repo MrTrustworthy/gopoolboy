@@ -6,7 +6,7 @@
 
         <md-card-content>
             <md-field>
-                <md-input v-model="newUserEmail" type="email" placeholder="New user email" />
+                <md-input v-model="newUserEmail" type="email" placeholder="New user email"/>
             </md-field>
             <md-field>
                 <md-select v-model="newUserRole" placeholder="Role">
@@ -24,38 +24,38 @@
 </template>
 
 <script>
-export default {
-    name: "InviteUser",
-    data() {
-        return {
-            newUserEmail: "",
-            newUserRole: "",
-            getRoles: [],
-        };
-    },
-    apollo: {
-        getRoles: {
-            query: require("../graphql/GetRoles.gql"),
+    export default {
+        name: "InviteUser",
+        data() {
+            return {
+                newUserEmail: "",
+                newUserRole: "",
+                getRoles: [],
+            };
         },
-        $client: "orgamonClient",
-    },
-    methods: {
-        invite() {
-            console.log("Inviting new user", this.newUserEmail, "with role", this.newUserRole);
-            if (!this.newUserRole || !this.newUserEmail) {
-                console.log("Can't create user without selecting a role & email first");
-                return;
-            }
-            this.$apollo
-                .mutate({
-                    mutation: require("../graphql/InviteUser.gql"),
-                    variables: {
-                        email: this.newUserEmail,
-                        role: this.newUserRole,
-                    },
-                })
-                .then((_) => (this.newUserEmail = ""));
+        apollo: {
+            getRoles: {
+                query: require("../graphql/GetRoles.gql"),
+            },
+            $client: "orgamonClient",
         },
-    },
-};
+        methods: {
+            invite() {
+                console.log("Inviting new user", this.newUserEmail, "with role", this.newUserRole);
+                if (!this.newUserRole || !this.newUserEmail) {
+                    console.log("Can't create user without selecting a role & email first");
+                    return;
+                }
+                this.$apollo
+                    .mutate({
+                        mutation: require("../graphql/InviteUser.gql"),
+                        variables: {
+                            email: this.newUserEmail,
+                            role: this.newUserRole,
+                        },
+                    })
+                    .then((_) => (this.newUserEmail = ""));
+            },
+        },
+    };
 </script>

@@ -17,7 +17,7 @@
                 return this.$store.state.pendingNotifications.length > 0;
             },
             amount() {
-                return this.$store.state.pendingNotifications.length
+                return this.$store.state.pendingNotifications.length;
             }
         },
         methods: {

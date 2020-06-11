@@ -1,9 +1,9 @@
 import Vue from "vue";
-import { linkActiveClass, router } from "./router";
+import {linkActiveClass, router} from "./router";
 import App from "./App.vue";
-import { createProvider } from "./vue-apollo";
-import { Auth0Plugin } from "./auth/index";
-import { store } from "./store";
+import {createProvider} from "./vue-apollo";
+import {Auth0Plugin} from "./auth/index";
+import {store} from "./store";
 import VueMaterial from "vue-material";
 import "vue-material/dist/vue-material.min.css";
 import "vue-material/dist/theme/default.css";

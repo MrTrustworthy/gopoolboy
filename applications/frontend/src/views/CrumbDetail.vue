@@ -43,10 +43,10 @@
             },
         },
         methods: {
-            refresh(){
+            refresh() {
                 this.$apollo.queries.getLinkedCrumbIds.refetch();
             },
-            logError(){
+            logError() {
 
             }
         },

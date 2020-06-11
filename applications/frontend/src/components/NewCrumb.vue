@@ -83,13 +83,13 @@
                             tags: this.parseTags(),
                         },
                         client: "crumblerClient",
-                    })
+                    });
                 let crumbId = data.data.createCrumb.id;
 
                 if (!this.linkTo) {
                     this.$emit(this.confirmedActionEvent);
                     await this.$router.push({name: "crumbdetail", params: {id: fromId(crumbId)}});
-                    return
+                    return;
                 }
                 await this.$apollo
                     .mutate({

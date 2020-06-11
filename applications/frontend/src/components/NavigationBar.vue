@@ -12,9 +12,9 @@
                 <md-tooltip md-size="large" md-direction="right">About</md-tooltip>
             </md-list-item>
             <md-list-item
-                id="tab-profile"
-                v-bind:md-disabled="$auth.loading"
-                v-bind:to="'/profile/' + ($auth.user ? $auth.user.sub : '')"
+                    id="tab-profile"
+                    v-bind:md-disabled="$auth.loading"
+                    v-bind:to="'/profile/' + ($auth.user ? $auth.user.sub : '')"
             >
                 <md-icon>{{ $auth.loading ? "perm_identity" : "face" }}</md-icon>
                 <span class="md-list-item-text">Profile</span>
@@ -30,8 +30,8 @@
 </template>
 
 <script>
-export default {
-    name: "NavigationBar",
-    components: {},
-};
+    export default {
+        name: "NavigationBar",
+        components: {},
+    };
 </script>

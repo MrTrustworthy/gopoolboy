@@ -4,7 +4,7 @@
             <div class="md-title">
                 {{ getOrganization.name }}
             </div>
-            <div class="md-subhead">Organization ID <br />{{ getOrganization.id }}</div>
+            <div class="md-subhead">Organization ID <br/>{{ getOrganization.id }}</div>
         </md-card-header>
 
         <md-card-actions>
@@ -14,18 +14,18 @@
 </template>
 
 <script>
-export default {
-    name: "OrgaOverview",
-    data() {
-        return {
-            getOrganization: {},
-        };
-    },
-    apollo: {
-        getOrganization: {
-            query: require("../graphql/GetOrganization.gql"),
+    export default {
+        name: "OrgaOverview",
+        data() {
+            return {
+                getOrganization: {},
+            };
         },
-        $client: "orgamonClient",
-    },
-};
+        apollo: {
+            getOrganization: {
+                query: require("../graphql/GetOrganization.gql"),
+            },
+            $client: "orgamonClient",
+        },
+    };
 </script>

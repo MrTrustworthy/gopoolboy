@@ -51,7 +51,7 @@
         },
         computed: {
             outputSuffix() {
-                return this.like === "" ? "in your organization" : "for your search"
+                return this.like === "" ? "in your organization" : "for your search";
             }
         },
         apollo: {

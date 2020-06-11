@@ -32,7 +32,7 @@
             NewCrumb,
         },
         data() {
-            return { showDialog: false };
+            return {showDialog: false};
         },
         methods: {
             notifyFailure() {

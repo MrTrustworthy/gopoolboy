@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueApollo from "vue-apollo";
-import { createApolloClient } from "vue-cli-plugin-apollo/graphql-client";
+import {createApolloClient} from "vue-cli-plugin-apollo/graphql-client";
 
 Vue.use(VueApollo);
 
@@ -30,24 +30,24 @@ const zeldaOptions = {
 };
 
 export function createProvider() {
-    const { apolloClient: orgamonClient } = createApolloClient({
+    const {apolloClient: orgamonClient} = createApolloClient({
         ...defaultOptions,
         ...orgamonOptions,
     });
-    const { apolloClient: findrClient } = createApolloClient({
+    const {apolloClient: findrClient} = createApolloClient({
         ...defaultOptions,
         ...findrOptions,
     });
-    const { apolloClient: crumblerClient } = createApolloClient({
+    const {apolloClient: crumblerClient} = createApolloClient({
         ...defaultOptions,
         ...crumblerOptions,
     });
-    const { apolloClient: zeldaClient } = createApolloClient({
+    const {apolloClient: zeldaClient} = createApolloClient({
         ...defaultOptions,
         ...zeldaOptions,
     });
     return new VueApollo({
-        clients: { orgamonClient, findrClient, crumblerClient, zeldaClient },
+        clients: {orgamonClient, findrClient, crumblerClient, zeldaClient},
         defaultClient: crumblerClient,
         errorHandler(error) {
             console.log(
@@ -56,7 +56,7 @@ export function createProvider() {
                 error.message
             );
             if (error.message === "GraphQL error: TokenExpiredError: jwt expired") {
-                this.$router.push({ name: "welcome" });
+                this.$router.push({name: "welcome"});
             }
         },
     });

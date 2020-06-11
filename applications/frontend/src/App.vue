@@ -46,7 +46,7 @@
             NavigationBar,
         },
         data() {
-            return { menuVisible: false };
+            return {menuVisible: false};
         },
     };
 </script>

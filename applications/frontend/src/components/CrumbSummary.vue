@@ -38,7 +38,7 @@
 </template>
 
 <script>
-    import { fromId } from "@/urlids";
+    import {fromId} from "@/urlids";
 
     export default {
         name: "CrumbSummary",
@@ -56,7 +56,7 @@
             getCrumb: {
                 query: require("../graphql/GetCrumb.gql"),
                 variables() {
-                    return { id: this.id };
+                    return {id: this.id};
                 },
                 client: "crumblerClient",
             },
