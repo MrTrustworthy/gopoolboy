@@ -11,7 +11,7 @@
             <br>
         </div>
         <h2>Post new response</h2>
-        <NewCrumb crumbType="answer" :linkTo="crumbId"/>
+        <NewCrumb crumbType="answer" :linkTo="crumbId" v-on:confirmed-action="refresh" v-on:failed-action="logError"/>
     </div>
 </template>
 
@@ -41,6 +41,14 @@
             $route(to) {
                 this.crumbId = toId(to.params.id);
             },
+        },
+        methods: {
+            refresh(){
+                this.$apollo.queries.getLinkedCrumbIds.refetch();
+            },
+            logError(){
+
+            }
         },
         apollo: {
             getLinkedCrumbIds: {

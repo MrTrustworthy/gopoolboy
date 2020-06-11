@@ -33,7 +33,7 @@
 </template>
 
 <script>
-    import { fromId } from "@/urlids";
+    import {fromId} from "@/urlids";
 
     export default {
         name: "NewCrumb",
@@ -68,12 +68,12 @@
             };
         },
         methods: {
-            createCrumb() {
+            async createCrumb() {
                 if (this.crumbType.toLowerCase() === "answer" && !this.linkTo) {
-                    console.error("Can't create answer-crumb with no link to anything!");
+                    this.$store.commit("addPendingNotification", "Can't create answer-crumb with no link to anything!");
                     return;
                 }
-                this.$apollo
+                const data = await this.$apollo
                     .mutate({
                         mutation: require("../graphql/CreateCrumb.gql"),
                         variables: {
@@ -84,34 +84,27 @@
                         },
                         client: "crumblerClient",
                     })
-                    .then((data) => {
-                        let crumbId = data.data.createCrumb.id;
-                        console.log("New crumb created with id", crumbId);
-                        this.$emit(this.confirmedActionEvent);
-                        if (this.crumbType.toLowerCase() === "question") {
-                            this.$router.push({ name: "crumbdetail", params: { id: fromId(crumbId) } });
-                        } else if (this.crumbType.toLowerCase() === "answer") {
-                            this.$apollo
-                                .mutate({
-                                    mutation: require("../graphql/CreateCrumbLink.gql"),
-                                    variables: {
-                                        fromId: this.linkTo,
-                                        toId: crumbId,
-                                    },
-                                    client: "zeldaClient",
-                                });
-                        } else {
-                            console.error("Can't proceed with new crumb of type:", this.crumbType);
-                        }
+                let crumbId = data.data.createCrumb.id;
 
-                    })
-                    .catch((data) => {
-                        console.log("Failed to create crumb!", data);
-                        this.$emit(this.failedActionEvent);
+                if (!this.linkTo) {
+                    this.$emit(this.confirmedActionEvent);
+                    await this.$router.push({name: "crumbdetail", params: {id: fromId(crumbId)}});
+                    return
+                }
+                await this.$apollo
+                    .mutate({
+                        mutation: require("../graphql/CreateCrumbLink.gql"),
+                        variables: {
+                            fromId: this.linkTo,
+                            toId: crumbId,
+                        },
+                        client: "zeldaClient",
                     });
+                this.$emit(this.confirmedActionEvent);
+
             },
             parseTags() {
-                return this.newCrumbTags.map((tag) => ({ key: tag.split(":")[0], value: tag.split(":")[1] }));
+                return this.newCrumbTags.map((tag) => ({key: tag.split(":")[0], value: tag.split(":")[1]}));
             },
             formatTag(str) {
                 /*

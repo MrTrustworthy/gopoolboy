@@ -50,9 +50,9 @@
             };
         },
         computed: {
-          outputSuffix(){
-              return this.like === "" ? "in your organization" : "for your search"
-          }
+            outputSuffix() {
+                return this.like === "" ? "in your organization" : "for your search"
+            }
         },
         apollo: {
             findCrumbs: {
@@ -64,6 +64,7 @@
                         sortBy: this.sortBy,
                     };
                 },
+                fetchPolicy: "no-cache", // disable cache so navigating back will reload it
                 client: "findrClient",
             },
         },
