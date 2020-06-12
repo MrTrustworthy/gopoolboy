@@ -1,3 +1,4 @@
+const assert = require('assert');
 const {Client} = require('@elastic/elasticsearch');
 
 const indexPrefix = process.env.ES_INDEX_PREFIX;
@@ -11,17 +12,47 @@ const client = new Client({
     }
 });
 
-const searchForCrumbs = async (like, organization) => {
+const searchForCrumbs = async (like, type, sortBy, organization) => {
+
+    assert(["question", "answer"].includes(type), `Crumb type must not be ${type}`);
+    assert(["relevance", "votes", "createdAt"].includes(sortBy), `SortBy must not be ${sortBy}`);
+    if (sortBy === "relevance") sortBy = "_score";
+
+    let query = {
+        bool: {
+            must: [
+                {match: {type: type}}
+            ],
+            should: [
+                {
+                    wildcard: {
+                        title: {
+                            value: "*" + like + "*",
+                            boost: 5,
+                            rewrite: "scoring_boolean"
+                        },
+                    }
+                },
+                {
+                    wildcard: {
+                        text: {
+                            value: "*" + like + "*",
+                            rewrite: "scoring_boolean"
+                        },
+                    }
+                },
+            ],
+            minimum_should_match: 1
+        }
+    };
+
     return client.search({
         index: indexPrefix + organization,
         body: {
-            query: {
-                multi_match: {
-                    query: "*" + like + "*",
-                    fields: ["title^5", "text", "tags"],
-                    fuzziness: "AUTO",
-                }
-            }
+            from: 0,
+            size: 10,
+            query: query,
+            sort: {[sortBy]: {order: "desc"}}
         }
     });
 };

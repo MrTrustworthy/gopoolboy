@@ -16,8 +16,9 @@
             </md-card-content>
             <md-card-actions>
                 <div class="md-subheader">sort by</div>
-                <md-radio v-model="sortBy" value="votes">Votes</md-radio>
-                <md-radio v-model="sortBy" value="date">Date</md-radio>
+                <md-radio v-model="sortBy" value="relevance">Relevance</md-radio>
+                <md-radio v-model="sortBy" value="votes">Votes [TBD]</md-radio>
+                <md-radio v-model="sortBy" value="createdAt">Date</md-radio>
             </md-card-actions>
         </md-card>
     </div>
@@ -34,7 +35,7 @@
             return {
                 like: "",
                 findCrumbs: [],
-                sortBy: "votes",
+                sortBy: "relevance",
             };
         },
         computed: {
