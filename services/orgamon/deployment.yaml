@@ -9,7 +9,7 @@ apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
     name: #@ appName
-    namespace: #@ appName
+    namespace: #@ app.namespace
     labels:
         name: #@ appName
 spec:
@@ -30,9 +30,9 @@ spec:
                       - containerPort: #@ app.appPort
                   resources:
                       requests:
-                          memory: 512Mi
+                          memory: #@ app.resources.ram
                       limits:
-                          memory: 512Mi
+                          memory: #@ app.resources.ram
                   env:
                       #@ for key in env:
                       - name: #@ key.upper()

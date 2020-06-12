@@ -8,7 +8,7 @@ apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
     name: #@ appName
-    namespace: #@ appName
+    namespace: #@ app.namespace
     labels:
         name: #@ appName
 spec:
@@ -29,6 +29,6 @@ spec:
                       - containerPort: #@ app.appPort
                   resources:
                       requests:
-                          memory: 256Mi
+                          memory: #@ app.resources.ram
                       limits:
-                          memory: 256Mi
+                          memory: #@ app.resources.ram
