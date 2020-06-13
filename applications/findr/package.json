@@ -3,7 +3,8 @@
     "version": "0.0.0",
     "private": true,
     "scripts": {
-        "server": "nodemon src/index.js"
+        "server": "node src/index.js",
+        "server-dev": "nodemon src/index.js"
     },
     "dependencies": {
         "@elastic/elasticsearch": "^7.7.1",

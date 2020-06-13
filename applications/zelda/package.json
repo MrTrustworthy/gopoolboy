@@ -3,7 +3,8 @@
     "version": "0.0.0",
     "private": true,
     "scripts": {
-        "server": "nodemon -L src/index.js",
+        "server": "node src/index.js",
+        "server-dev": "nodemon src/index.js",
         "migrate": "knex migrate:latest --env main"
     },
     "dependencies": {
