@@ -1,13 +1,13 @@
 # This workflow will build a docker container, publish it to Google Container Registry, and deploy it to GKE.
-name: Deploy ingress
+name: Deploy datadog
 
 on:
     push:
         branches:
             - master
         paths:
-            - "services/ingress/**"
-            - ".github/workflows/ingress.yaml"
+            - "services/datadog/**"
+            - ".github/workflows/datadog.yaml"
 
 env:
     GKE_PROJECT: staging-poolboy
@@ -16,8 +16,8 @@ env:
     GCP_VERSION: "293.0.0"
 
 jobs:
-    deploy-ingress-staging:
-        name: Deploy ingress staging
+    deploy-datadog-staging:
+        name: Deploy datadog staging
         runs-on: ubuntu-latest
         steps:
             - name: Checkout
@@ -28,6 +28,13 @@ jobs:
                   project_id: ${{ env.GKE_PROJECT }}
                   service_account_key: ${{ secrets.GKE_KEY }}
                   export_default_credentials: true
+
+            - id: secrets
+              uses: GoogleCloudPlatform/github-actions/get-secretmanager-secrets@master
+              with:
+                  secrets: |-
+                      dd_api_key:staging-poolboy/staging-datadog_api_key
+
             - run: |
                   gcloud auth configure-docker
 
@@ -38,6 +45,8 @@ jobs:
                   ./get_helm.sh
 
             - name: Build and Deploy via helm
+              env:
+                  DD_API_KEY: ${{ steps.secrets.outputs.dd_api_key }}
               run: |
                   gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
-                  helm upgrade --install nginx-ingress -f services/ingress/values-staging.yaml services/ingress -n nginx-ingress
+                  helm upgrade --install datadog -f services/datadog/values.yaml --set datadog.apiKey=$DD_API_KEY services/datadog -n datadog
