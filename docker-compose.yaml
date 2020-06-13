@@ -126,3 +126,4 @@ services:
             ES_AUTH_USER: "${ES_AUTH_USER}"
             ES_AUTH_PW: "${ES_AUTH_PW}"
             ES_INDEX_PREFIX: "${ES_INDEX_PREFIX}"
+        command: ["npm", "run", "consume-dev"]
