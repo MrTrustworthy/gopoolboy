@@ -5,12 +5,12 @@
 apiVersion: kbld.k14s.io/v1alpha1
 kind: Sources
 sources:
-    - image: #@ app.imageName
-      path: #@ app.dockerfileFolder
+  - image: #@ app.imageName
+    path: #@ app.dockerfileFolder
 
 ---
 apiVersion: kbld.k14s.io/v1alpha1
 kind: ImageDestinations
 destinations:
-    - image: #@ app.imageName
-      newImage: #@ app.newImageName
+  - image: #@ app.imageName
+    newImage: #@ app.newImageName

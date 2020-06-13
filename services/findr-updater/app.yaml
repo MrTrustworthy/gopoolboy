@@ -1,22 +1,22 @@
 #@data/values
 ---
 findrUpdater:
-    appName: findr-updater
-    imageName: findr-updater-image
-    newImageName: eu.gcr.io/integration-poolboy/findr-updater
-    secretName: findr-updater-secret
-    dockerfileFolder: applications/findr-updater
-    namespace: findr
-    resources:
-        ram: 256Mi
+  appName: findr-updater
+  imageName: findr-updater-image
+  newImageName: eu.gcr.io/integration-poolboy/findr-updater
+  secretName: findr-updater-secret
+  dockerfileFolder: applications/findr-updater
+  namespace: findr
+  resources:
+    ram: 256Mi
 
-    env:
-        kafka_consumer_group_id: bananas
-        es_index_prefix: bananas
-        kafka_broker_endpoint: bananas
-    secrets:
-        kafka_api_key: bananas
-        kafka_api_secret: bananas
-        es_cloud_id: bananas
-        es_auth_user: bananas
-        es_auth_pw: bananas
+  env:
+    kafka_consumer_group_id: bananas
+    es_index_prefix: bananas
+    kafka_broker_endpoint: bananas
+  secrets:
+    kafka_api_key: bananas
+    kafka_api_secret: bananas
+    es_cloud_id: bananas
+    es_auth_user: bananas
+    es_auth_pw: bananas

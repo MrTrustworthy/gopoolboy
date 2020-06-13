@@ -1,28 +1,28 @@
 #@data/values
 ---
 zelda:
-    appName: zelda
-    imageName: zelda-image
-    newImageName: eu.gcr.io/integration-poolboy/zelda
-    serviceName: zelda-service
-    secretName: zelda-secret
-    ingressName: zelda-ingress
-    staticIpName: nginx-ingress-static-global-ip
-    externalUrl: zelda.gopoolboy.dev
-    sslCertSecretName: zelda-ssl-secret
-    dockerfileFolder: applications/zelda
-    namespace: zelda
-    appPort: 4000
-    officeIps: "78.94.91.125/32,78.35.144.135/32"
-    resources:
-        ram: 256Mi
+  appName: zelda
+  imageName: zelda-image
+  newImageName: eu.gcr.io/integration-poolboy/zelda
+  serviceName: zelda-service
+  secretName: zelda-secret
+  ingressName: zelda-ingress
+  staticIpName: nginx-ingress-static-global-ip
+  externalUrl: zelda.gopoolboy.dev
+  sslCertSecretName: zelda-ssl-secret
+  dockerfileFolder: applications/zelda
+  namespace: zelda
+  appPort: 4000
+  officeIps: "78.94.91.125/32,78.35.144.135/32"
+  resources:
+    ram: 256Mi
 
-    env:
-        node_env: production
-        auth0_domain: dev-poolboy.eu.auth0.com
-        api_identifier: http://dev-poolboy-api
-        db_host: pg-zelda
-        db_database: zelda
-    secrets:
-        db_user: zelda
-        db_password: postgres
+  env:
+    node_env: production
+    auth0_domain: dev-poolboy.eu.auth0.com
+    api_identifier: http://dev-poolboy-api
+    db_host: pg-zelda
+    db_database: zelda
+  secrets:
+    db_user: zelda
+    db_password: postgres

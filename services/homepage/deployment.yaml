@@ -27,6 +27,9 @@ spec:
                   image: #@ app.imageName
                   ports:
                       - containerPort: #@ app.appPort
+                  env:
+                      - name: NODE_ENV
+                        value: production
                   resources:
                       requests:
                           memory: #@ app.resources.ram

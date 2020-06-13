@@ -32,6 +32,8 @@ spec:
                       limits:
                           memory: #@ app.resources.ram
                   env:
+                      - name: NODE_ENV
+                        value: production
                       #@ for key in env:
                       - name: #@ key.upper()
                         value: #@ env[key]

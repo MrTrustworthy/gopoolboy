@@ -1,19 +1,19 @@
 #@data/values
 ---
 frontend:
-    appName: frontend
-    imageName: frontend-image
-    newImageName: eu.gcr.io/integration-poolboy/frontend
-    serviceName: frontend-service
-    secretName: frontend-secret
-    ingressName: frontend-ingress
-    staticIpName: nginx-ingress-static-global-ip
-    configMapName: frontend-configmap
-    externalUrl: app.gopoolboy.dev
-    sslCertSecretName: frontend-ssl-secret
-    dockerfileFolder: applications/frontend
-    namespace: frontend
-    appPort: 80
-    officeIps: "78.94.91.125/32,78.35.144.135/32"
-    resources:
-        ram: 256Mi
+  appName: frontend
+  imageName: frontend-image
+  newImageName: eu.gcr.io/integration-poolboy/frontend
+  serviceName: frontend-service
+  secretName: frontend-secret
+  ingressName: frontend-ingress
+  staticIpName: nginx-ingress-static-global-ip
+  configMapName: frontend-configmap
+  externalUrl: app.gopoolboy.dev
+  sslCertSecretName: frontend-ssl-secret
+  dockerfileFolder: applications/frontend
+  namespace: frontend
+  appPort: 80
+  officeIps: "78.94.91.125/32,78.35.144.135/32"
+  resources:
+    ram: 256Mi

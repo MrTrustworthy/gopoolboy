@@ -1,19 +1,19 @@
 #@data/values
 ---
 homepage:
-    appName: homepage
-    imageName: homepage-image
-    newImageName: eu.gcr.io/integration-poolboy/homepage
-    serviceName: homepage-service
-    secretName: homepage-secret
-    ingressName: homepage-ingress
-    staticIpName: nginx-ingress-static-global-ip
-    configMapName: homepage-configmap
-    externalUrl: gopoolboy.dev
-    sslCertSecretName: homepage-ssl-secret
-    dockerfileFolder: applications/homepage
-    namespace: homepage
-    appPort: 80
-    officeIps: "78.94.91.125/32,78.35.144.135/32"
-    resources:
-        ram: 256Mi
+  appName: homepage
+  imageName: homepage-image
+  newImageName: eu.gcr.io/integration-poolboy/homepage
+  serviceName: homepage-service
+  secretName: homepage-secret
+  ingressName: homepage-ingress
+  staticIpName: nginx-ingress-static-global-ip
+  configMapName: homepage-configmap
+  externalUrl: gopoolboy.dev
+  sslCertSecretName: homepage-ssl-secret
+  dockerfileFolder: applications/homepage
+  namespace: homepage
+  appPort: 80
+  officeIps: "78.94.91.125/32,78.35.144.135/32"
+  resources:
+    ram: 256Mi

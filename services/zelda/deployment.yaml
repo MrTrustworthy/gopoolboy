@@ -8,36 +8,38 @@
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
+  name: #@ appName
+  namespace: #@ app.namespace
+  labels:
     name: #@ appName
-    namespace: #@ app.namespace
-    labels:
-        name: #@ appName
 spec:
-    replicas: 1
-    selector:
-        matchLabels:
-            name: #@ appName
-    template:
-        metadata:
-            name: #@ appName
-            labels:
-                name: #@ appName
-        spec:
-            containers:
-                - name: #@ appName
-                  image: #@ app.imageName
-                  ports:
-                      - containerPort: #@ app.appPort
-                  resources:
-                      requests:
-                          memory: #@ app.resources.ram
-                      limits:
-                          memory: #@ app.resources.ram
-                  env:
-                      #@ for key in env:
-                      - name: #@ key.upper()
-                        value: #@ env[key]
-                      #@ end
-                  envFrom:
-                      - secretRef:
-                            name: #@ app.secretName
+  replicas: 1
+  selector:
+    matchLabels:
+      name: #@ appName
+  template:
+    metadata:
+      name: #@ appName
+      labels:
+        name: #@ appName
+    spec:
+      containers:
+        - name: #@ appName
+          image: #@ app.imageName
+          ports:
+            - containerPort: #@ app.appPort
+          resources:
+            requests:
+              memory: #@ app.resources.ram
+            limits:
+              memory: #@ app.resources.ram
+          env:
+            - name: NODE_ENV
+              value: production
+            #@ for key in env:
+            - name: #@ key.upper()
+              value: #@ env[key]
+            #@ end
+          envFrom:
+            - secretRef:
+                name: #@ app.secretName
