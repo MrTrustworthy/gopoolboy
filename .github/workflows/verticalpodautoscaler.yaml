@@ -1,0 +1,38 @@
+# This workflow will build a docker container, publish it to Google Container Registry, and deploy it to GKE.
+name: Deploy verticalpodautoscaler
+
+on:
+    push:
+        branches:
+            - master
+        paths:
+            - "services/verticalpodautoscaler/**"
+            - ".github/workflows/verticalpodautoscaler.yaml"
+
+env:
+    GKE_PROJECT: staging-poolboy
+    GKE_ZONE: europe-west3-b
+    GKE_CLUSTER: kubernetes-cluster
+
+    GCP_VERSION: "293.0.0"
+
+jobs:
+    deploy-verticalpodautoscaler-staging:
+        name: Deploy verticalpodautoscaler staging
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+              with:
+                  version: ${{ env.GCP_VERSION }}
+                  project_id: ${{ env.GKE_PROJECT }}
+                  service_account_key: ${{ secrets.GKE_KEY }}
+                  export_default_credentials: true
+            - run: |
+                  gcloud auth configure-docker
+
+            - name: Deploy via kubectl apply
+              run: |
+                  gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
+                  kubectl apply -f services/verticalpodautoscaler/crd.yaml -n default

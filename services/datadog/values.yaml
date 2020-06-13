@@ -261,8 +261,8 @@ datadog:
   ## ref: https://github.com/DataDog/datadog-agent/tree/master/Dockerfiles/agent#environment-variables
   #
   env:
-    - name: DD_CONTAINER_EXCLUDE_LOGS
-      value: "service:kube-state-metrics"
+  #  - name: DD_CONTAINER_EXCLUDE_LOGS
+  #    value: "service:kube-state-metrics"
   #   - name: <ENV_VAR_NAME>
   #     value: <ENV_VAR_VALUE>
 
