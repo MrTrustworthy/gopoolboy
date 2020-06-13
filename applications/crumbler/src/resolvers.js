@@ -62,22 +62,35 @@ const createCrumb = async (args, organization, user) => {
 const voteCrumb = async (args, organization, user) => {
     if (![1, 0, -1].includes(args.vote)) throw new Error("Vote must be +/- 1!");
 
+    const oldVoteRecord = await knexClient("upvotes")
+        .where({organization_id: organization, user: user, crumb: args.id})
+        .select("votes")
+        .first();
+    const oldVote = oldVoteRecord?.votes || 0;
+    const voteChange = args.vote - oldVote;
+
+    console.log(`Turning vote from user ${user} in org ${organization} from ${oldVote} into ${args.vote}`);
+
     // Clear any existing votes
     await knexClient("upvotes")
         .where({organization_id: organization, user: user, crumb: args.id})
         .delete();
 
-    const payload = {
+
+    // only +/-1 votes are created, which means a 0-vote simply acts as delete
+    if (args.vote !== 0) await knexClient("upvotes").insert({
         crumb: args.id,
         votes: args.vote,
         user: user,
         organization_id: organization,
-    };
+    });
 
-    // only +/-1 votes are created, which means a 0-vote simply acts as delete
-    if (args.vote !== 0) await knexClient("upvotes").insert(payload);
-
-    await produce(topics.VOTES_TOPIC, payload);
+    await produce(topics.VOTES_TOPIC, {
+        crumbId: args.id,
+        voteChange: voteChange,
+        user: user,
+        organizationId: organization,
+    });
 
     return getCrumbDataById(args.id, organization, user);
 };

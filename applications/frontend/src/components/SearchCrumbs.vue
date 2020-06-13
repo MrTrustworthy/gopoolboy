@@ -17,7 +17,7 @@
             <md-card-actions>
                 <div class="md-subheader">sort by</div>
                 <md-radio v-model="sortBy" value="relevance">Relevance</md-radio>
-                <md-radio v-model="sortBy" value="votes">Votes [TBD]</md-radio>
+                <md-radio v-model="sortBy" value="votes">Votes</md-radio>
                 <md-radio v-model="sortBy" value="createdAt">Date</md-radio>
             </md-card-actions>
         </md-card>

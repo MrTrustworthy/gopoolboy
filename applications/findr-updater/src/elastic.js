@@ -12,18 +12,44 @@ const client = new Client({
 });
 
 const indexCrumb = async (message) => {
-    console.log("Indexing message with id", message.id, "for orga", message.organizationId);
+    console.log("Indexing crumb with id", message.id, "for orga", message.organizationId);
     const indexSuffix = message.organizationId || "missing_orga";
     await client.index({
         index: indexPrefix + indexSuffix,
         id: message.id,
         body: {
-            ...message,
+            id: message.id,
+            title: message.title,
+            text: message.text,
+            type: message.type,
+            votes: message.votes,
+            authorId: message.authorId,
+            createdAt: message.createdAt,
+            tags: message.tags,
             links: [],
         }
     });
 };
 
+const voteCrumb = async (message) => {
+    console.log("Updating crumb vote with id", message.crumbId, "for orga", message.organizationId);
+    const indexSuffix = message.organizationId || "missing_orga";
+    await client.update({
+        index: indexPrefix + indexSuffix,
+        id: message.crumbId,
+        body: {
+            script: {
+                source: "ctx._source.votes += params.amount",
+                lang: "painless",
+                params: {
+                    amount: message.voteChange
+                }
+            }
+        }
+    });
+};
+
 module.exports = {
-    indexCrumb
+    indexCrumb,
+    voteCrumb
 };

@@ -36,12 +36,22 @@ const getConsumer = async () => {
 
 const parseValue = message => JSON.parse(message.value.toString());
 
-const consume = async (topic, handler) => {
+const consume = async (pipes) => {
     const consumer = await getConsumer();
-    await consumer.subscribe({topic, fromBeginning: true});
-    console.log("starting consumer");
+    const topicsRegex = new RegExp(`${Object.keys(pipes).join("|")}`);
+
+    console.log(`starting consumer for topic(s) ${topicsRegex}`);
+    await consumer.subscribe({
+        topic: topicsRegex,
+        fromBeginning: true
+    });
     await consumer.run({
-        eachMessage: async ({message}) => handler(parseValue(message))
+        eachMessage: async ({topic, message}) => {
+            console.log("Received message for topic", topic);
+            let parsedMessage = parseValue(message);
+            let handler = pipes[topic];
+            handler(parsedMessage);
+        }
     });
 
 };
