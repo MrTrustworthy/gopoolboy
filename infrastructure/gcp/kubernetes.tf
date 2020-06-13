@@ -23,9 +23,9 @@ resource "google_container_cluster" "kubernetes_cluster" {
   }
 }
 
-resource "google_container_node_pool" "default_pool" {
+resource "google_container_node_pool" "main_pool" {
   provider = google
-  name     = "default-pool"
+  name     = "main-pool"
   cluster  = "kubernetes-cluster"
 
   depends_on = [
@@ -35,17 +35,17 @@ resource "google_container_node_pool" "default_pool" {
   initial_node_count = 1
 
   autoscaling {
-    max_node_count = "3"
+    max_node_count = "2"
     min_node_count = "1"
   }
 
   node_config {
-    machine_type = "custom-1-2048"
+    machine_type = "e2-standard-2"
     disk_type    = "pd-ssd"
-    disk_size_gb = "20"
+    disk_size_gb = "40"
 
     tags = [
-      "small-pool"
+      "main-pool"
     ]
     oauth_scopes = [
       "https://www.googleapis.com/auth/devstorage.read_only",
@@ -66,5 +66,4 @@ resource "google_container_node_pool" "default_pool" {
     ]
   }
 }
-
 
