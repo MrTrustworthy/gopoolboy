@@ -14,7 +14,11 @@
                 <img src="./assets/icon.png" width="64" height="64"/>
             </md-app-toolbar>
 
-            <md-app-drawer :md-active.sync="menuVisible" md-persistent="mini" md-permanent="clipped">
+            <md-app-drawer
+                    :md-active.sync="menuVisible"
+                    md-persistent="mini"
+                    md-permanent="clipped"
+            >
                 <NavigationBar/>
             </md-app-drawer>
 
