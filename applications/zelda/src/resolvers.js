@@ -1,8 +1,11 @@
 const knexClient = require("./knexclient");
+const {logger} = require("./log");
 
 // Object builder
 
 const getCrumbLinkDataById = async (id, organization, user) => {
+    logger.info("Getting crumblink by ID", {id, organization, user});
+
     const linkData = await knexClient
         .from("crumblinks")
         .where({organization_id: organization, id: id})
@@ -34,6 +37,8 @@ const getCrumbLinkDataById = async (id, organization, user) => {
 // Queries
 
 const getLinkedCrumbIds = async (args, organization, user) => {
+    logger.info("Getting crumbs linked to id", {id: args.id, organization, user});
+
     const tos = await knexClient
         .from("crumblinks")
         .where({from: args.id, organization_id: organization})
@@ -50,6 +55,7 @@ const getLinkedCrumbIds = async (args, organization, user) => {
 // Mutations
 
 const createCrumbLink = async (args, organization, user) => {
+    logger.info("Creating new crumb link", {to: args.toId, from: args.fromId, organization, user});
     let newIds = await knexClient("crumblinks")
         .insert({
             from: args.fromId,
@@ -62,7 +68,17 @@ const createCrumbLink = async (args, organization, user) => {
 };
 
 const voteCrumbLink = async (args, organization, user) => {
-    if (![1, 0, -1].includes(args.vote)) throw new Error("Vote must be +/- 1!");
+    logger.info("Voting crumblink", {id: args.id, vote: args.vote, organization, user});
+
+    if (![1, 0, -1].includes(args.vote)) {
+        logger.error("Error when voting crumblink as vote is not valid", {
+            id: args.id,
+            vote: args.vote,
+            organization,
+            user
+        });
+        throw new Error("Vote must be +/- 1!");
+    }
 
     await knexClient("upvotes")
         .where({organization_id: organization, user: user, crumblink: args.id})
@@ -81,6 +97,7 @@ const voteCrumbLink = async (args, organization, user) => {
 
 
 const getCrumbLinkBetween = async (args, organization, user) => {
+    logger.info("Getting crumblink between", {to: args.toId, from: args.fromId, organization, user});
     const ids = await knexClient
         .from("crumblinks")
         .where({organization_id: organization})

@@ -1,5 +1,7 @@
 const knexClient = require("./knexclient");
-const { v4: uuidv4 } = require("uuid");
+const {v4: uuidv4} = require("uuid");
+const {logger} = require("./log");
+
 
 const {
     createUser,
@@ -13,17 +15,20 @@ const {
 } = require("./auth0api");
 
 async function getOrganization(args, organization) {
+    logger.info("Get Organization", {organization});
     return knexClient.from("organizations").select("id", "name").where("id", "=", organization).first();
 }
 
 async function getUsers(args, organization) {
+    logger.info("Get Users for organization", {organization});
     return (await getAllUsers()).filter((user) => user.organization === organization);
 }
 
 async function getUser(args, organization) {
+    logger.info("Get User", {id: args.id, organization});
     let users = (await getUsers(args, organization)).filter((user) => args.id === user.id);
     if (users.length !== 1) {
-        console.log("Couldn't find user with id", id);
+        logger.error("Can't find user", {id: args.id});
         return {};
     }
     return users[0];
@@ -31,32 +36,35 @@ async function getUser(args, organization) {
 
 async function createOrganization(parent, args, context, info) {
     const orgaId = uuidv4();
-    console.log("Creating new organization with", args);
-    await knexClient.insert({ name: args.name, id: orgaId }).into("organizations");
-    console.log("created new org with id", orgaId);
+    logger.info("Creating new organization", {orgaId, name: args.name, creatorEmail: args.creatorEmail});
+    await knexClient.insert({name: args.name, id: orgaId}).into("organizations");
     await createUser(orgaId, args.creatorEmail, "owner");
-    return { id: orgaId, name: args.name };
+    return {id: orgaId, name: args.name};
 }
 
 async function inviteUser(args, organization) {
     /**
      * Resolver to invite a new user as requested by the organization/org owner
      */
+    logger.info("Inviting new user", {email: args.email, role: args.role, organization});
     await createUser(organization, args.email, args.role);
     return getUserDetails(args.id);
 }
 
 async function getRoles(args, organization) {
-    return (await apiGetRoles()).map((r) => ({ name: r.name, description: r.description }));
+    logger.info("Getting Roles", {organization});
+    return (await apiGetRoles()).map((r) => ({name: r.name, description: r.description}));
 }
 
 async function deleteUser(args, organization) {
+    logger.info("Delete user", {id: args.id, organization});
     await ensureUserIsInOrganization(args.id, organization);
     await apiDeleteUser(args.id);
     return true;
 }
 
 async function changeUserRole(args, organization) {
+    logger.info("Changing user role", {id: args.id, role: args.role, organization});
     await ensureUserIsInOrganization(args.id, organization);
     await clearAllRolesFromUser(args.id);
     await assignRoleToUser(args.id, args.role);

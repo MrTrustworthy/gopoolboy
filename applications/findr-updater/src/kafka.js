@@ -1,4 +1,6 @@
 const {Kafka} = require("kafkajs");
+const {logger} = require("./log");
+
 
 const topics = {
     VOTES_TOPIC: "crumbler-votes",
@@ -26,6 +28,8 @@ const kafka = new Kafka({
 let __consumer = null;
 
 const getConsumer = async () => {
+        logger.info("Creating new kafka consumer", {groupId: conf.group})
+
     if (!__consumer) {
         __consumer = kafka.consumer({groupId: conf.group});
         await __consumer.connect();
@@ -40,14 +44,14 @@ const consume = async (pipes) => {
     const consumer = await getConsumer();
     const topicsRegex = new RegExp(`${Object.keys(pipes).join("|")}`);
 
-    console.log(`starting consumer for topic(s) ${topicsRegex}`);
+    logger.info("Subscribing consumer", {topics: topicsRegex});
     await consumer.subscribe({
         topic: topicsRegex,
         fromBeginning: true
     });
     await consumer.run({
         eachMessage: async ({topic, message}) => {
-            console.log("Received message for topic", topic);
+            logger.info("Received message", {topic, offset: message.offset})
             let parsedMessage = parseValue(message);
             let handler = pipes[topic];
             handler(parsedMessage);

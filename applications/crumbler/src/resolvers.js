@@ -1,8 +1,11 @@
 const knexClient = require("./knexclient");
 const {produce, topics} = require("./kafka");
+const {logger} = require("./log");
 
 // ORM for Crumb
 const getCrumbDataById = async (id, organization, user) => {
+    logger.info("Retrieving crumb by ID", {id, organization, user});
+
     let crumbData = await knexClient
         .from("crumbs")
         .where({organization_id: organization, id: id})
@@ -40,6 +43,7 @@ const getCrumbDataById = async (id, organization, user) => {
 
 const createCrumb = async (args, organization, user) => {
     let type = args.type.toLowerCase();
+    logger.info("Creating crumb", {type, organization, user});
 
     let newIds = await knexClient("crumbs")
         .insert({
@@ -60,7 +64,11 @@ const createCrumb = async (args, organization, user) => {
 };
 
 const voteCrumb = async (args, organization, user) => {
-    if (![1, 0, -1].includes(args.vote)) throw new Error("Vote must be +/- 1!");
+    if (![1, 0, -1].includes(args.vote)) {
+        logger.error("Invalid vote to vote crumb", {id: args.id, vote: args.vote, organization, user});
+        throw new Error("Vote must be +/- 1!");
+    }
+
 
     const oldVoteRecord = await knexClient("upvotes")
         .where({organization_id: organization, user: user, crumb: args.id})
@@ -69,7 +77,7 @@ const voteCrumb = async (args, organization, user) => {
     const oldVote = oldVoteRecord?.votes || 0;
     const voteChange = args.vote - oldVote;
 
-    console.log(`Turning vote from user ${user} in org ${organization} from ${oldVote} into ${args.vote}`);
+    logger.info("Voting crumb", {id: args.id, newVote: args.vote, oldVote, organization, user});
 
     // Clear any existing votes
     await knexClient("upvotes")

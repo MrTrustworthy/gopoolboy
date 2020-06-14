@@ -1,4 +1,5 @@
 const {Kafka} = require("kafkajs");
+const {logger} = require("./log");
 
 const topics = {
     VOTES_TOPIC: "crumbler-votes",
@@ -44,6 +45,7 @@ const produce = async (topic, message) => {
     const keyObject = {};
     keyFields[topic].forEach(fld => keyObject[fld] = message[fld]);
 
+    logger.info("Producing kafka message", {key: keyObject});
     return producer.send({
         topic: topic,
         messages: [{

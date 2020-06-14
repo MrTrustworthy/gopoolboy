@@ -1,5 +1,6 @@
 const assert = require('assert');
 const {Client} = require('@elastic/elasticsearch');
+const {logger} = require("./log");
 
 const indexPrefix = process.env.ES_INDEX_PREFIX;
 const client = new Client({
@@ -13,6 +14,7 @@ const client = new Client({
 });
 
 const searchForCrumbs = async (like, type, sortBy, organization) => {
+    logger.info("Querying ES for crumb", {like, type, organization, sortBy});
 
     assert(["question", "answer"].includes(type), `Crumb type must not be ${type}`);
     assert(["relevance", "votes", "createdAt"].includes(sortBy), `SortBy must not be ${sortBy}`);

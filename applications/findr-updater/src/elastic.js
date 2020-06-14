@@ -1,4 +1,6 @@
 const {Client} = require('@elastic/elasticsearch');
+const {logger} = require("./log");
+
 
 const indexPrefix = process.env.ES_INDEX_PREFIX;
 const client = new Client({
@@ -12,7 +14,7 @@ const client = new Client({
 });
 
 const indexCrumb = async (message) => {
-    console.log("Indexing crumb with id", message.id, "for orga", message.organizationId);
+    logger.info("Indexing crumb", {id: message.id, organization: message.organizationId});
     const indexSuffix = message.organizationId || "missing_orga";
     await client.index({
         index: indexPrefix + indexSuffix,
@@ -32,7 +34,7 @@ const indexCrumb = async (message) => {
 };
 
 const voteCrumb = async (message) => {
-    console.log("Updating crumb vote with id", message.crumbId, "for orga", message.organizationId);
+    logger.info("Updating crumb vote", {id: message.crumbId, organization: message.organizationId});
     const indexSuffix = message.organizationId || "missing_orga";
     await client.update({
         index: indexPrefix + indexSuffix,
