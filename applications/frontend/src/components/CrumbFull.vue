@@ -36,7 +36,7 @@
                 </md-card-header>
                 <md-divider></md-divider>
                 <md-card-content>
-                    <div>{{ getCrumb.text }}</div>
+                    <div v-html="crumbTextMarkdown" />
                 </md-card-content>
                 <md-divider></md-divider>
                 <md-card-actions>
@@ -53,6 +53,8 @@
     import {fromId} from "@/urlids";
     import moment from "moment";
     import Votes from "./Votes";
+    import DOMPurify from 'dompurify';
+    import marked from "marked";
 
     export default {
         name: "CrumbFull",
@@ -72,9 +74,14 @@
                 let userId = this.getCrumb.authorId;
                 let users = this.getUsers.filter((u) => u.id === userId).map((u) => u.nickname);
                 if (users.length === 0) {
+                    console.error(`Could not find the right user name for id ${userId}`)
                     return userId;
                 }
                 return users[0];
+            },
+            crumbTextMarkdown() {
+                const dirty = marked(this.getCrumb.text);
+                return DOMPurify.sanitize(dirty);
             }
         },
         apollo: {
