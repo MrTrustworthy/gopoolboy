@@ -11,7 +11,7 @@
             </md-field>
             <md-field>
                 <label>Text</label>
-                <md-textarea v-model="newCrumbText" type="text" md-autogrow></md-textarea>
+                <md-textarea v-model="newCrumbText" type="text"></md-textarea>
             </md-field>
             <!-- Can use md-static-->
             <md-chips
