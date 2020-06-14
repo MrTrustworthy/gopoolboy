@@ -33,16 +33,12 @@
                         </div>
                     </md-card-header-text>
                     <md-card-media>
-                        <md-badge
-                                v-bind:class="getCrumbLinkBetween.votes > 0 ? 'md-primary' : 'md-accent'"
-                                v-bind:md-content="getCrumbLinkBetween.votes"
+                        <Votes
+                                :votes="getCrumbLinkBetween.votes"
+                                :own-vote="getCrumbLinkBetween.ownVote"
+                                :object-id="getCrumbLinkBetween.id"
+                                object-type="crumblink"
                         />
-                        <md-button class="md-primary" @click="() => voteCrumbLink(1)">
-                            <md-icon :class="getVoteStyle(1)">arrow_upward</md-icon>
-                        </md-button>
-                        <md-button class="md-primary" @click="() => voteCrumbLink(-1)">
-                            <md-icon :class="getVoteStyle(-1)">arrow_downward</md-icon>
-                        </md-button>
                     </md-card-media>
                 </md-card-header>
 
@@ -53,9 +49,11 @@
 
 <script>
     import moment from "moment";
+    import Votes from "./Votes";
 
     export default {
         name: "LinkSummary",
+        components: {Votes},
         props: {
             fromId: [String, Number],
             toId: [String, Number],

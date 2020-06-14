@@ -26,17 +26,12 @@
                         </div>
                     </md-card-header-text>
                     <md-card-media>
-                        <md-badge
-                                v-bind:class="getCrumb.votes > 0 ? 'md-primary' : 'md-accent'"
-                                v-bind:md-content="getCrumb.votes"
+                        <Votes
+                                :votes="getCrumb.votes"
+                                :own-vote="getCrumb.ownVote"
+                                :object-id="id"
+                                object-type="crumb"
                         />
-
-                        <md-button class="md-primary" @click="() => voteCrumb(1)">
-                            <md-icon :class="getVoteStyle(1)">arrow_upward</md-icon>
-                        </md-button>
-                        <md-button class="md-primary" @click="() => voteCrumb(-1)">
-                            <md-icon :class="getVoteStyle(-1)">arrow_downward</md-icon>
-                        </md-button>
                     </md-card-media>
                 </md-card-header>
                 <md-divider></md-divider>
@@ -57,9 +52,11 @@
 <script>
     import {fromId} from "@/urlids";
     import moment from "moment";
+    import Votes from "./Votes";
 
     export default {
         name: "CrumbFull",
+        components: {Votes},
         props: {
             id: {type: [String, Number], required: true},
         },
@@ -99,23 +96,7 @@
             },
             prettyTime(ts) {
                 return moment(ts, "x").calendar();
-            },
-            getVoteStyle(vote) {
-                return vote === this.getCrumb.ownVote ? 'md-accent' : 'md-primary;';
-            },
-            voteCrumb(vote) {
-                // remove vote if it's the already-active vote
-                if (vote === this.getCrumb.ownVote) vote = 0;
-
-                this.$apollo.mutate({
-                    mutation: require("../graphql/VoteCrumb.gql"),
-                    variables: {
-                        id: this.id,
-                        vote: vote
-                    },
-                    client: "crumblerClient",
-                });
-            },
+            }
         },
     };
 </script>
