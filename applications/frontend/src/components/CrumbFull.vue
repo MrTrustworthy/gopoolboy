@@ -32,10 +32,10 @@
                         />
 
                         <md-button class="md-primary" @click="() => voteCrumb(1)">
-                            <md-icon :style="getVoteStyle(1)">arrow_upward</md-icon>
+                            <md-icon :class="getVoteStyle(1)">arrow_upward</md-icon>
                         </md-button>
                         <md-button class="md-primary" @click="() => voteCrumb(-1)">
-                            <md-icon :style="getVoteStyle(-1)">arrow_downward</md-icon>
+                            <md-icon :class="getVoteStyle(-1)">arrow_downward</md-icon>
                         </md-button>
                     </md-card-media>
                 </md-card-header>
@@ -101,7 +101,7 @@
                 return moment(ts, "x").calendar();
             },
             getVoteStyle(vote) {
-                return vote === this.getCrumb.ownVote ? 'color:red;' : 'color:blue;';
+                return vote === this.getCrumb.ownVote ? 'md-accent' : 'md-primary;';
             },
             voteCrumb(vote) {
                 // remove vote if it's the already-active vote

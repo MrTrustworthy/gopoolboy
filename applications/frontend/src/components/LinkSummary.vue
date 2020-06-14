@@ -38,10 +38,10 @@
                                 v-bind:md-content="getCrumbLinkBetween.votes"
                         />
                         <md-button class="md-primary" @click="() => voteCrumbLink(1)">
-                            <md-icon :style="getVoteStyle(1)">arrow_upward</md-icon>
+                            <md-icon :class="getVoteStyle(1)">arrow_upward</md-icon>
                         </md-button>
                         <md-button class="md-primary" @click="() => voteCrumbLink(-1)">
-                            <md-icon :style="getVoteStyle(-1)">arrow_downward</md-icon>
+                            <md-icon :class="getVoteStyle(-1)">arrow_downward</md-icon>
                         </md-button>
                     </md-card-media>
                 </md-card-header>
@@ -100,7 +100,7 @@
                 return moment(ts, "x").calendar();
             },
             getVoteStyle(vote) {
-                return vote === this.getCrumbLinkBetween.ownVote ? 'color:red;' : 'color:blue;';
+                return vote === this.getCrumbLinkBetween.ownVote ? 'md-accent' : 'md-primary';
             },
             voteCrumbLink(vote) {
                 // remove vote if it's the already-active vote
