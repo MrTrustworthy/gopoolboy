@@ -73,14 +73,18 @@
                     this.$store.commit("addPendingNotification", "Can't create answer-crumb with no link to anything!");
                     return;
                 }
+
+                const newCrumbData = this.parseNewCrumbData();
+                if (!newCrumbData) return;
+
                 const data = await this.$apollo
                     .mutate({
                         mutation: require("../graphql/CreateCrumb.gql"),
                         variables: {
-                            title: this.newCrumbTitle,
-                            text: this.newCrumbText,
+                            title: newCrumbData.title,
+                            text: newCrumbData.text,
                             type: this.crumbType,
-                            tags: this.parseTags(),
+                            tags: newCrumbData.tags,
                         },
                         client: "crumblerClient",
                     });
@@ -103,8 +107,18 @@
                 this.$emit(this.confirmedActionEvent);
 
             },
-            parseTags() {
-                return this.newCrumbTags.map((tag) => ({key: tag.split(":")[0], value: tag.split(":")[1]}));
+            parseNewCrumbData() {
+                if (!this.newCrumbTitle || !this.newCrumbText) {
+                    this.$store.commit("addPendingNotification", "Can't create crumb without text or title");
+                    return;
+                }
+                const tags = this.newCrumbTags.map((tag) => ({key: tag.split(":")[0], value: tag.split(":")[1]}));
+                const title = this.newCrumbTitle;
+                const text = this.newCrumbText;
+                this.newCrumbTitle = "";
+                this.newCrumbText = "";
+                this.newCrumbTags = [];
+                return {tags, title, text};
             },
             formatTag(str) {
                 /*

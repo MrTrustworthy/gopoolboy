@@ -1,7 +1,10 @@
 <template>
     <md-snackbar :md-duration="Infinity" :md-active="notify">
 
-        <span><md-badge class="md-accent" :md-content="amount"/> {{ notifications[0] }}</span>
+        <span>
+            <md-badge class="md-accent" v-if="amount > 1" :md-content="amount"/>
+            {{ notifications[0] }}
+        </span>
         <md-button class="md-primary" @click="clearNotification">OK</md-button>
     </md-snackbar>
 </template>
