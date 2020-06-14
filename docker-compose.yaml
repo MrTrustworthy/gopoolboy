@@ -87,7 +87,7 @@ services:
             VUE_APP_AUTH0_SPA_CLIENT_ID: "${AUTH0_SPA_CLIENT_ID}"
             VUE_APP_AUTH0_AUDIENCE: http://dev-poolboy-api
         volumes:
-            - ./applications/frontend:/app
+            - ./applications/frontend/src:/app/src
         ports:
             - 8080:8080
     homepage:

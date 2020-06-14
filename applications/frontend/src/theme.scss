@@ -1,0 +1,13 @@
+@import "~vue-material/dist/vue-material.min.css";
+@import "~vue-material/dist/theme/engine"; // Import the theme engine
+
+// #afdbd7 teal, 300
+// #e97949
+
+@include md-register-theme("default", (
+  primary: md-get-palette-color(teal, 300), // The primary color of your application
+  accent: md-get-palette-color(amber, 600), // The accent or secondary color
+  theme: light // dark
+));
+
+@import "~vue-material/dist/theme/all"; // Apply the theme
