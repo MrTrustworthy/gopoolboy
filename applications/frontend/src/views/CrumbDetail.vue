@@ -2,16 +2,16 @@
     <div id="crumbdetail">
         <CreateWidgetSnackbar/>
 
-        <CrumbFull v-bind:id="crumbId"/>
+        <CrumbFull v-bind:id="crumbId" v-on:added-link="refresh"/>
         <h2>Found a total of {{ getLinkedCrumbIds.length }} linked Crumbs</h2>
         <div v-for="qId of getLinkedCrumbIds" :key="qId">
             <LinkSummary :fromId="crumbId" :toId="qId"/>
-            <CrumbFull v-bind:id="qId"/>
+            <CrumbFull v-bind:id="qId" v-on:added-link="refresh"/>
             <br>
             <br>
         </div>
         <h2>Post new response</h2>
-        <NewCrumb crumbType="answer" :linkTo="crumbId" v-on:confirmed-action="refresh" v-on:failed-action="logError"/>
+        <NewCrumb crumbType="answer" :linkTo="crumbId" v-on:confirmed-action="refresh"/>
     </div>
 </template>
 
@@ -31,6 +31,7 @@
             NewCrumb,
             CreateWidgetSnackbar,
         },
+
         data() {
             return {
                 crumbId: toId(this.$route.params.id),
@@ -46,9 +47,6 @@
             refresh() {
                 this.$apollo.queries.getLinkedCrumbIds.refetch();
             },
-            logError() {
-
-            }
         },
         apollo: {
             getLinkedCrumbIds: {

@@ -18,7 +18,14 @@
         name: "AddLinkButton",
         components: {CrumbList, SearchCrumb},
         props: {
-            crumbId: {type: [String, Number], required: true},
+            crumbId: {
+                type: [String, Number],
+                required: true
+            },
+            addedLinkEvent: {
+                type: String,
+                default: "added-link",
+            },
         },
         data() {
             return {
@@ -47,6 +54,8 @@
                     },
                     client: "zeldaClient",
                 });
+                this.$emit(this.addedLinkEvent);
+                this.showDialog = false;
             }
         },
     };

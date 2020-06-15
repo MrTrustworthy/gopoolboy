@@ -18,7 +18,10 @@
                         <md-button class="md-subhead" v-bind:to="'/profile/' + getCrumb.authorId">
                             by {{ userName }}
                         </md-button>
-                        <AddLinkButton :crumb-id="id"/>
+                        <AddLinkButton
+                                :crumb-id="id"
+                                v-on:added-link="() => $emit('added-link')"
+                        />
                         <div class="md-subhead">
                             {{ relativeMicrosTS(getCrumb.createdAt) }}
                             <md-tooltip md-direction="left" md-delay="150">
@@ -104,9 +107,6 @@
             prettyTime(ts) {
                 return moment(ts, "x").calendar();
             },
-            addLink(){
-                console.log("LINKING")
-            }
         },
     };
 </script>
