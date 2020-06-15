@@ -18,6 +18,7 @@
                         <md-button class="md-subhead" v-bind:to="'/profile/' + getCrumb.authorId">
                             by {{ userName }}
                         </md-button>
+                        <AddLinkButton :crumb-id="id"/>
                         <div class="md-subhead">
                             {{ relativeMicrosTS(getCrumb.createdAt) }}
                             <md-tooltip md-direction="left" md-delay="150">
@@ -55,10 +56,11 @@
     import Votes from "./Votes";
     import DOMPurify from 'dompurify';
     import marked from "marked";
+    import AddLinkButton from "./AddLinkButton";
 
     export default {
         name: "CrumbFull",
-        components: {Votes},
+        components: {AddLinkButton, Votes},
         props: {
             id: {type: [String, Number], required: true},
         },
@@ -101,6 +103,9 @@
             },
             prettyTime(ts) {
                 return moment(ts, "x").calendar();
+            },
+            addLink(){
+                console.log("LINKING")
             }
         },
     };

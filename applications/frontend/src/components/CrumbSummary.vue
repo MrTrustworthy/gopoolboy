@@ -19,10 +19,10 @@
         </div>
 
         <div v-else>
-            <md-list-item :to="'/crumbs/' + fromId(getCrumb.id)">
+            <md-list-item @click="clickItem">
                 <div class="md-list-item-text">
                     <span>{{ getCrumb.title }}</span>
-                    <span>{{ getCrumb.text }}</span>
+                    <span>{{ textSummary }}</span>
                 </div>
                 <md-badge
                         v-bind:class="'md-square ' + (getCrumb.votes !== 0 ? 'md-primary' : 'md-accent')"
@@ -38,19 +38,32 @@
 </template>
 
 <script>
-    import {fromId} from "@/urlids";
 
     export default {
         name: "CrumbSummary",
         props: {
             id: String,
+            textPreviewLength: {
+                type: Number,
+                default: 37
+            }
         },
         data() {
             return {
                 getCrumb: {},
-                fromId: fromId,
                 getLinkedCrumbIds: [],
             };
+        },
+        computed: {
+            textSummary() {
+                const ellipses = this.getCrumb.text.length >= this.textPreviewLength ? "..." : "";
+                return this.getCrumb.text.substring(0, this.textPreviewLength) + ellipses;
+            }
+        },
+        methods: {
+            clickItem() {
+                this.$emit("clicked-summary", this.id);
+            }
         },
         apollo: {
             getCrumb: {
@@ -69,6 +82,7 @@
                 },
                 client: "zeldaClient",
             },
+
         },
     };
 </script>

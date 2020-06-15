@@ -2,7 +2,7 @@
     <div id="crumbs">
         <CreateWidgetSnackbar/>
         <SearchCrumb crumbType="question" v-on:found-ids="(ids) => crumbIds = ids"/>
-        <CrumbList :crumb-ids="crumbIds"/>
+        <CrumbList :crumb-ids="crumbIds" v-on:clicked-summary="routeToFull"/>
     </div>
 </template>
 
@@ -10,18 +10,24 @@
     import CreateWidgetSnackbar from "@/components/Speeddial.vue";
     import CrumbList from "../components/CrumbList";
     import SearchCrumb from "../components/SearchCrumbs";
+    import {fromId} from "@/urlids";
 
     export default {
         name: "Crumbs",
-        data(){
+        data() {
             return {
                 crumbIds: []
-            }
+            };
         },
         components: {
             SearchCrumb,
             CrumbList,
             CreateWidgetSnackbar,
         },
+        methods: {
+            routeToFull(id) {
+                this.$router.push({name: "crumbdetail", params: {id: fromId(id)}});
+            }
+        }
     };
 </script>
