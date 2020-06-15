@@ -55,6 +55,8 @@ const getLinkedCrumbIds = async (args, organization, user) => {
 // Mutations
 
 const createCrumbLink = async (args, organization, user) => {
+    if (args.from === args.to) throw new Error("Can't link a crumb to itself");
+
     logger.info("Creating new crumb link", {to: args.toId, from: args.fromId, organization, user});
     let newIds = await knexClient("crumblinks")
         .insert({
