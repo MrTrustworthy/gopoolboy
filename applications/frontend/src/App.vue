@@ -10,15 +10,17 @@
                 <md-button class="md-icon-button" @click="() => (menuVisible = !menuVisible)">
                     <md-icon>{{ menuVisible ? "menu_open" : "menu" }}</md-icon>
                 </md-button>
-                <span class="md-title">GoPoolboy!</span>
                 <img src="./assets/icon.png" width="64" height="64"/>
+                <span style="flex: 1"></span>
+                <SearchToolbar/>
+                <span style="flex: 1"></span>
+
+                <md-button class="md-primary">
+                    <md-icon>more_vert</md-icon>
+                </md-button>
             </md-app-toolbar>
 
-            <md-app-drawer
-                    :md-active.sync="menuVisible"
-                    md-persistent="mini"
-                    md-permanent="clipped"
-            >
+            <md-app-drawer :md-active.sync="menuVisible" md-persistent="mini" md-permanent="clipped">
                 <NavigationBar/>
             </md-app-drawer>
 
@@ -42,10 +44,13 @@
 <script>
     import NavigationBar from "./components/NavigationBar.vue";
     import Notifications from "./components/Notifications";
+    import SearchBar from "./components/SearchBar";
+    import SearchToolbar from "./components/SearchToolbar";
 
     export default {
         name: "App",
         components: {
+            SearchToolbar,
             Notifications,
             NavigationBar,
         },

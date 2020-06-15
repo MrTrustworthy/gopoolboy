@@ -2,12 +2,9 @@
     <div>
         <md-card>
             <md-card-content>
-                <md-field>
-                    <md-input v-model="like"></md-input>
-                    <span class="md-helper-text">Search</span>
-                </md-field>
+                <SearchBar :sort-by="sortBy" :crumb-type="crumbType" v-on:found-ids="updateIds"/>
                 <div>
-                    Found a total of {{ findCrumbs.length }} {{ objectDescriptor }} {{ outputSuffix }}
+                    Found a total of {{ crumbIds.length }} {{ objectDescriptor }} {{ outputSuffix }}
                 </div>
             </md-card-content>
             <md-card-actions>
@@ -28,48 +25,34 @@
 
 <script>
 
+    import SearchBar from "./SearchBar";
+
     export default {
-        name: "SearchCrumb",
+        name: "SearchCard",
+        components: {SearchBar},
         data() {
             return {
-                like: "",
-                findCrumbs: [],
                 sortBy: "relevance",
-                crumbType: "all"
+                crumbType: "all",
+                crumbIds: []
             };
         },
         computed: {
-            crumbIds() {
-                return this.findCrumbs.map(c => c.id);
-            },
             outputSuffix() {
                 return this.like === "" ? "in your organization" : "for your search";
             },
             objectDescriptor() {
-                const plural = this.findCrumbs.length !== 1 ? "s" : "";
+                const plural = this.crumbIds.length !== 1 ? "s" : "";
                 let type = this.crumbType.charAt(0).toUpperCase() + this.crumbType.slice(1);
                 if (this.crumbType === "all") type = "Crumb";
                 return type + plural;
             },
         },
-        apollo: {
-            findCrumbs: {
-                query: require("../graphql/FindCrumbs.gql"),
-                variables() {
-                    return {
-                        type: this.crumbType,
-                        like: this.like,
-                        sortBy: this.sortBy,
-                    };
-                },
-                fetchPolicy: "no-cache", // disable cache so navigating back will reload it
-                client: "findrClient",
-                result: function (result, key) {
-                    const ids = result.data[key].map(found => found.id);
-                    this.$emit("found-ids", ids);
-
-                }
-            },
-        },
+        methods: {
+            updateIds(ids) {
+                this.crumbIds = ids;
+                this.$emit("found-ids", ids);
+            }
+        }
     };
 </script>

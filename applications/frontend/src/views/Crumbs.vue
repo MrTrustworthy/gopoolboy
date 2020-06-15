@@ -9,7 +9,7 @@
 <script>
     import CreateWidgetSnackbar from "@/components/Speeddial.vue";
     import CrumbList from "../components/CrumbList";
-    import SearchCrumb from "../components/SearchCrumbs";
+    import SearchCrumb from "../components/SearchCard";
     import {fromId} from "@/urlids";
 
     export default {

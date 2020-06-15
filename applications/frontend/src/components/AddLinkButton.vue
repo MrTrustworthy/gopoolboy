@@ -6,13 +6,15 @@
         </md-button>
         <md-dialog :md-active.sync="showDialog">
             <SearchCrumb crumb-type="all" v-on:found-ids="(ids) => crumbIds = ids"/>
-            <CrumbList :crumb-ids="crumbIdsToShow" v-on:clicked-summary="addLink"/>
+            <md-dialog-content>
+                <CrumbList :crumb-ids="crumbIdsToShow" v-on:clicked-summary="addLink"/>
+            </md-dialog-content>
         </md-dialog>
     </div>
 </template>
 
 <script>
-    import SearchCrumb from "./SearchCrumbs";
+    import SearchCrumb from "./SearchCard";
     import CrumbList from "./CrumbList";
 
     export default {
