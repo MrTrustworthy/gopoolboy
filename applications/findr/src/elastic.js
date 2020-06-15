@@ -16,15 +16,13 @@ const client = new Client({
 const searchForCrumbs = async (like, type, sortBy, organization) => {
     logger.info("Querying ES for crumb", {like, type, organization, sortBy});
 
-    assert(["question", "answer"].includes(type), `Crumb type must not be ${type}`);
     assert(["relevance", "votes", "createdAt"].includes(sortBy), `SortBy must not be ${sortBy}`);
+    assert(["question", "answer", "all"].includes(type), `Type must not be ${type}`);
+
     if (sortBy === "relevance") sortBy = "_score";
 
     let query = {
         bool: {
-            must: [
-                {match: {type: type}}
-            ],
             should: [
                 {
                     wildcard: {
@@ -47,6 +45,11 @@ const searchForCrumbs = async (like, type, sortBy, organization) => {
             minimum_should_match: 1
         }
     };
+
+    // Add a MUST filter for the type if there's a specific type to search for
+    if (type !== "all") query.bool["must"] = [
+        {match: {type: type}}
+    ];
 
     return client.search({
         index: indexPrefix + organization,

@@ -16,7 +16,8 @@
                         <div class="md-title">{{ getCrumb.title }}</div>
                         <div class="md-subhead">Type: {{ getCrumb.type }}</div>
                         <md-button class="md-subhead" v-bind:to="'/profile/' + getCrumb.authorId">
-                            by {{ userName }}
+                            <md-icon>recent_actors</md-icon>
+                            {{ userName }}
                         </md-button>
                         <AddLinkButton
                                 :crumb-id="id"

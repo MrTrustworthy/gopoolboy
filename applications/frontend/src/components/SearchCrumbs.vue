@@ -1,19 +1,21 @@
 <template>
     <div>
         <md-card>
-            <md-card-header>
-                <div class="md-title">Search</div>
-            </md-card-header>
-
             <md-card-content>
                 <md-field>
                     <md-input v-model="like"></md-input>
                     <span class="md-helper-text">Search</span>
                 </md-field>
                 <div>
-                    Found a total of {{ findCrumbs.length }} {{ crumbType }}s {{ outputSuffix }}
+                    Found a total of {{ findCrumbs.length }} {{ objectDescriptor }} {{ outputSuffix }}
                 </div>
             </md-card-content>
+            <md-card-actions>
+                <div class="md-subheader">types</div>
+                <md-radio v-model="crumbType" value="all">All</md-radio>
+                <md-radio v-model="crumbType" value="question">Question</md-radio>
+                <md-radio v-model="crumbType" value="answer">Answer</md-radio>
+            </md-card-actions>
             <md-card-actions>
                 <div class="md-subheader">sort by</div>
                 <md-radio v-model="sortBy" value="relevance">Relevance</md-radio>
@@ -28,14 +30,12 @@
 
     export default {
         name: "SearchCrumb",
-        props: {
-            crumbType: String,
-        },
         data() {
             return {
                 like: "",
                 findCrumbs: [],
                 sortBy: "relevance",
+                crumbType: "all"
             };
         },
         computed: {
@@ -44,7 +44,13 @@
             },
             outputSuffix() {
                 return this.like === "" ? "in your organization" : "for your search";
-            }
+            },
+            objectDescriptor() {
+                const plural = this.findCrumbs.length !== 1 ? "s" : "";
+                let type = this.crumbType.charAt(0).toUpperCase() + this.crumbType.slice(1);
+                if (this.crumbType === "all") type = "Crumb";
+                return type + plural;
+            },
         },
         apollo: {
             findCrumbs: {

@@ -1,10 +1,11 @@
 <template>
     <div>
         <md-button class="md-subhead" @click="showDialog = true">
-            Link answer
+            <md-icon>link</md-icon>
+            New link
         </md-button>
         <md-dialog :md-active.sync="showDialog">
-            <SearchCrumb crumb-type="answer" v-on:found-ids="(ids) => crumbIds = ids"/>
+            <SearchCrumb crumb-type="all" v-on:found-ids="(ids) => crumbIds = ids"/>
             <CrumbList :crumb-ids="crumbIdsToShow" v-on:clicked-summary="addLink"/>
         </md-dialog>
     </div>
