@@ -5,7 +5,7 @@
         </md-button>
         <md-dialog :md-active.sync="showDialog">
             <SearchCrumb crumb-type="answer" v-on:found-ids="(ids) => crumbIds = ids"/>
-            <CrumbList :crumb-ids="crumbIds" v-on:clicked-summary="addLink"/>
+            <CrumbList :crumb-ids="crumbIdsToShow" v-on:clicked-summary="addLink"/>
         </md-dialog>
     </div>
 </template>
@@ -25,6 +25,12 @@
                 showDialog: false,
                 crumbIds: []
             };
+        },
+        computed: {
+            crumbIdsToShow() {
+                // This means that sometimes the count shown in SearchCrumb is wrong :/
+                return this.crumbIds.filter(id => id !== this.crumbId);
+            }
         },
         methods: {
             async addLink(linkId) {
