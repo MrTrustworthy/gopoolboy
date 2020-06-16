@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="$apollo.queries.getCrumb.loading">
-            <md-progress-spinner class="md-accent" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
+            <v-skeleton-loader type="card"></v-skeleton-loader>
         </div>
 
         <!-- Error -->
@@ -10,61 +10,57 @@
         </div>
 
         <div v-else>
-            <md-card>
-                <md-card-header>
-                    <md-card-header-text>
-                        <div class="md-title">{{ getCrumb.title }}</div>
-                        <div class="md-subhead">Type: {{ getCrumb.type }}</div>
-                        <md-button class="md-subhead" v-bind:to="'/profile/' + getCrumb.authorId">
-                            <md-icon>recent_actors</md-icon>
-                            {{ userName }}
-                        </md-button>
-                        <AddLinkButton
-                                :crumb-id="id"
-                                v-on:added-link="() => $emit('added-link')"
-                        />
-                        <div class="md-subhead">
-                            {{ relativeMicrosTS(getCrumb.createdAt) }}
-                            <md-tooltip md-direction="left" md-delay="150">
-                                {{ prettyTime(getCrumb.createdAt) }}
-                            </md-tooltip>
-                        </div>
-                    </md-card-header-text>
-                    <md-card-media>
-                        <Votes
-                                :votes="getCrumb.votes"
-                                :own-vote="getCrumb.ownVote"
-                                :object-id="id"
-                                object-type="crumb"
-                        />
-                    </md-card-media>
-                </md-card-header>
-                <md-divider></md-divider>
-                <md-card-content>
+            <v-card>
+
+                <v-card-title>
+                    Type: {{ getCrumb.type }}
+                </v-card-title>
+                <v-card-title>
+                    {{ getCrumb.title }}
+                </v-card-title>
+                <v-list dense shaped>
+                    <AuthorListItem :author-id="getCrumb.authorId"/>
+                    <AddLinkListItem
+                            :crumb-id="id"
+                            v-on:added-link="() => $emit('added-link')"
+                    />
+                    <CreatedAtListItem :timestamp="getCrumb.createdAt"/>
+                </v-list>
+
+                <v-divider></v-divider>
+                <v-card-text>
                     <div v-html="crumbTextMarkdown"/>
-                </md-card-content>
-                <md-divider></md-divider>
-                <md-card-actions>
-                    <md-chip class="md-primary" v-for="tag in getCrumb.tags" :key="tag.key + tag.value">
+                </v-card-text>
+                <v-divider></v-divider>
+
+                <v-card-actions>
+                    <v-chip v-for="tag in getCrumb.tags" :key="tag.key + tag.value">
                         {{ tag.key }}:{{ tag.value }}
-                    </md-chip>
-                </md-card-actions>
-            </md-card>
+                    </v-chip>
+                    <Votes
+                            :votes="getCrumb.votes"
+                            :own-vote="getCrumb.ownVote"
+                            :object-id="id"
+                            object-type="crumb"
+                    />
+                </v-card-actions>
+            </v-card>
         </div>
     </div>
 </template>
 
 <script>
     import {fromId} from "@/urlids";
-    import moment from "moment";
     import Votes from "./Votes";
     import DOMPurify from 'dompurify';
     import marked from "marked";
-    import AddLinkButton from "./AddLinkButton";
+    import AddLinkListItem from "./AddLinkListItem";
+    import CreatedAtListItem from "./CreatedAtListItem";
+    import AuthorListItem from "./AuthorListItem";
 
     export default {
         name: "CrumbFull",
-        components: {AddLinkButton, Votes},
+        components: {AuthorListItem, CreatedAtListItem, AddLinkListItem, Votes},
         props: {
             id: {type: [String, Number], required: true},
         },
@@ -76,13 +72,6 @@
             };
         },
         computed: {
-            userName() {
-                let userId = this.getCrumb.authorId;
-                let users = this.getUsers.filter((u) => u.id === userId).map((u) => u.nickname);
-                // This happens during loading when getUsers hasn't completed yet
-                if (users.length === 0) return userId;
-                return users[0];
-            },
             crumbTextMarkdown() {
                 const dirty = marked(this.getCrumb.text);
                 return DOMPurify.sanitize(dirty);
@@ -96,18 +85,7 @@
                 },
                 client: "crumblerClient",
             },
-            getUsers: {
-                query: require("../graphql/GetUsers.gql"),
-                client: "orgamonClient",
-            },
-        },
-        methods: {
-            relativeMicrosTS(ts) {
-                return moment(ts, "x").fromNow();
-            },
-            prettyTime(ts) {
-                return moment(ts, "x").calendar();
-            },
+
         },
     };
 </script>

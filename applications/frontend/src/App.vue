@@ -5,37 +5,27 @@
                 href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic|Material+Icons"
         />
 
-        <md-app md-waterfall md-mode="fixed">
-            <md-app-toolbar class="md-primary" md-elevation="1">
-                <md-button class="md-icon-button" @click="() => (menuVisible = !menuVisible)">
-                    <md-icon>{{ menuVisible ? "menu_open" : "menu" }}</md-icon>
-                </md-button>
+        <v-app>
+            <v-app-bar app>
+                <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
                 <img src="./assets/icon.png" width="64" height="64"/>
                 <span style="flex: 1"></span>
                 <SearchToolbar/>
                 <span style="flex: 1"></span>
+            </v-app-bar>
 
-                <md-button class="md-primary">
-                    <md-icon>more_vert</md-icon>
-                </md-button>
-            </md-app-toolbar>
-
-            <md-app-drawer :md-active.sync="menuVisible" md-persistent="mini" md-permanent="clipped">
+            <v-navigation-drawer v-model="drawer" permanent mini-variant expand-on-hover clipped app>
                 <NavigationBar/>
-            </md-app-drawer>
+            </v-navigation-drawer>
 
-            <md-app-content>
-                <div class="md-layout">
-                    <div class="md-layout-item"></div>
-                    <div class="md-layout-item md-large-size-40 md-medium-size-50 md-small-size-75 md-xsmall-size-90">
-                        <transition name="slide-right">
-                            <router-view/>
-                        </transition>
-                    </div>
-                    <div class="md-layout-item"></div>
-                </div>
-            </md-app-content>
-        </md-app>
+            <v-main>
+
+                <transition name="slide-right">
+                    <router-view/>
+                </transition>
+
+            </v-main>
+        </v-app>
 
         <Notifications/>
     </div>
@@ -44,7 +34,6 @@
 <script>
     import NavigationBar from "./components/NavigationBar.vue";
     import Notifications from "./components/Notifications";
-    import SearchBar from "./components/SearchBar";
     import SearchToolbar from "./components/SearchToolbar";
 
     export default {
@@ -55,8 +44,10 @@
             NavigationBar,
         },
         data() {
-            return {menuVisible: false};
-        },
+            return {
+                drawer: false
+            };
+        }
     };
 </script>
 <style scoped>
@@ -82,3 +73,5 @@
         transform: translate(-2em, 0);
     }
 </style>
+
+

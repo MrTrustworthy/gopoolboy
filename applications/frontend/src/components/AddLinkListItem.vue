@@ -1,9 +1,15 @@
 <template>
     <div>
-        <md-button class="md-subhead" @click="showDialog = true">
-            <md-icon>link</md-icon>
-            New link
-        </md-button>
+
+        <v-list-item @click="showDialog=true">
+            <v-list-item-icon>
+                <v-icon>link</v-icon>
+            </v-list-item-icon>
+            <v-list-item-content>
+                <v-list-item-title>Add Link</v-list-item-title>
+            </v-list-item-content>
+        </v-list-item>
+
         <md-dialog :md-active.sync="showDialog">
             <SearchCrumb crumb-type="all" v-on:found-ids="(ids) => crumbIds = ids"/>
             <md-dialog-content>
@@ -18,7 +24,7 @@
     import CrumbList from "./CrumbList";
 
     export default {
-        name: "AddLinkButton",
+        name: "AddLinkListItem",
         components: {CrumbList, SearchCrumb},
         props: {
             crumbId: {
