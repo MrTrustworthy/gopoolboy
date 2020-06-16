@@ -19,11 +19,11 @@
             </v-navigation-drawer>
 
             <v-main>
-
-                <transition name="slide-right">
-                    <router-view/>
-                </transition>
-
+                <v-container>
+                    <transition name="slide-right">
+                        <router-view/>
+                    </transition>
+                </v-container>
             </v-main>
         </v-app>
 

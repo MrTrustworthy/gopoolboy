@@ -5,7 +5,7 @@
             <md-badge class="md-accent" v-if="amount > 1" :md-content="amount"/>
             {{ notifications[0] }}
         </span>
-        <md-button class="md-primary" @click="clearNotification">OK</md-button>
+        <v-btn class="md-primary" @click="clearNotification">OK</v-btn>
     </md-snackbar>
 </template>
 

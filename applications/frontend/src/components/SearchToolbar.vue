@@ -6,12 +6,9 @@
                 v-on:found-ids="(ids) => crumbIds = ids"
                 v-on:typed-like="updateSearch"
         />
-        <md-menu md-size="medium" md-align-trigger :md-active="showMenu">
-            <md-menu-content>
-                <CrumbList :crumb-ids="crumbIds" v-on:clicked-summary="routeToFull"/>
-            </md-menu-content>
-        </md-menu>
-
+        <v-menu absolute offset-y :value="showMenu" min-width="120" close-on-click close-on-content-click>
+            <CrumbList :crumb-ids="crumbIds" v-on:clicked-summary="routeToFull"/>
+        </v-menu>
     </div>
 </template>
 

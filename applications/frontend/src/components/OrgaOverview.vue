@@ -8,7 +8,7 @@
         </md-card-header>
 
         <md-card-actions>
-            <md-button class="md-accent" disabled>Close Account</md-button>
+            <v-btn class="md-accent" disabled>Close Account</v-btn>
         </md-card-actions>
     </md-card>
 </template>

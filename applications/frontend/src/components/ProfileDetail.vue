@@ -7,9 +7,9 @@
             <md-card>
                 <md-card-header>
                     <md-card-header-text>
-                        <md-button class="md-title" v-bind:to="'/profile/' + getUser.id">
+                        <v-btn class="md-title" v-bind:to="'/profile/' + getUser.id">
                             {{ getUser.nickname }} {{ isSelf ? "(You)" : "" }}
-                        </md-button>
+                        </v-btn>
                         <div class="md-subhead">ID: {{ getUser.id }}</div>
                     </md-card-header-text>
 
@@ -40,14 +40,14 @@
                         </md-field>
                     </md-card-content>
                     <md-card-actions>
-                        <md-button class="md-primary" @click="changeUserRole">Update</md-button>
-                        <md-button class="md-primary" disabled>Reset password</md-button>
-                        <md-button class="md-accent" @click="() => (confirmRemoveUser = true)">Remove user</md-button>
+                        <v-btn class="md-primary" @click="changeUserRole">Update</v-btn>
+                        <v-btn class="md-primary" disabled>Reset password</v-btn>
+                        <v-btn class="md-accent" @click="() => (confirmRemoveUser = true)">Remove user</v-btn>
                     </md-card-actions>
                 </div>
 
                 <md-card-actions v-if="isSelf">
-                    <md-button class="md-raised md-accent" @click="logout">Logout</md-button>
+                    <v-btn class="md-raised md-accent" @click="logout">Logout</v-btn>
                 </md-card-actions>
             </md-card>
         </div>

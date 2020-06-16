@@ -1,14 +1,7 @@
 <template>
     <div>
         <div v-if="$apollo.queries.getCrumb.loading">
-            <md-list-item>
-                <md-progress-spinner
-                        class="md-accent"
-                        :md-stroke="3"
-                        :md-diameter="30"
-                        md-mode="indeterminate"
-                />
-            </md-list-item>
+            <v-skeleton-loader type="list-item-avatar-two-line"></v-skeleton-loader>
         </div>
 
         <!-- Error -->
@@ -19,20 +12,23 @@
         </div>
 
         <div v-else>
-            <md-list-item @click="clickItem">
-                <div class="md-list-item-text">
-                    <span>{{ getCrumb.title }}</span>
-                    <span>{{ textSummary }}</span>
-                </div>
-                <md-badge
-                        v-bind:class="'md-square ' + (getCrumb.votes !== 0 ? 'md-primary' : 'md-accent')"
-                        v-bind:md-content="getCrumb.votes + ' Votes'"
-                />
-                <md-badge
-                        v-bind:class="'md-square ' + (getLinkedCrumbIds.length !== 0 ? 'md-primary' : 'md-accent')"
-                        v-bind:md-content="getLinkedCrumbIds.length + ' Linked'"
-                />
-            </md-list-item>
+
+            <v-list-item @click="clickItem" two-line>
+                <v-list-item-icon>
+                    <v-icon>{{ getCrumb.type === "question" ? "help" : "announcement" }}</v-icon>
+                </v-list-item-icon>
+
+                <v-list-item-content>
+                    <v-list-item-title>{{ getCrumb.title }}</v-list-item-title>
+                    <v-list-item-subtitle>{{ textSummary }}</v-list-item-subtitle>
+                </v-list-item-content>
+
+                <v-list-item-action>
+                    <v-chip>{{ getCrumb.votes + ' Votes' }}</v-chip>
+                    <v-chip>{{ getLinkedCrumbIds.length + ' Linked' }}</v-chip>
+                </v-list-item-action>
+            </v-list-item>
+
         </div>
     </div>
 </template>

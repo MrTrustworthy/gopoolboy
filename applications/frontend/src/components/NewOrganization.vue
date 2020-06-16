@@ -17,7 +17,7 @@
             </md-card-content>
 
             <md-card-actions>
-                <md-button @click="signup" class="md-raised md-primary" :disabled="inputDisabled">Sign up</md-button>
+                <v-btn @click="signup" class="md-raised md-primary" :disabled="inputDisabled">Sign up</v-btn>
             </md-card-actions>
         </md-card>
     </div>

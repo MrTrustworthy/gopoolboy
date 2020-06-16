@@ -1,6 +1,6 @@
 <template>
     <div id="crumbdetail">
-        <CreateWidgetSnackbar/>
+        <Speeddial/>
 
         <CrumbFull v-bind:id="crumbId" v-on:added-link="refresh"/>
         <h2>Found a total of {{ getLinkedCrumbIds.length }} linked Crumbs</h2>
@@ -18,7 +18,7 @@
 <script>
     import CrumbFull from "@/components/CrumbFull.vue";
     import NewCrumb from "@/components/NewCrumb.vue";
-    import CreateWidgetSnackbar from "@/components/Speeddial.vue";
+    import Speeddial from "@/components/Speeddial.vue";
 
     import {toId} from "@/urlids";
     import LinkSummary from "../components/LinkSummary";
@@ -29,7 +29,7 @@
             LinkSummary,
             CrumbFull,
             NewCrumb,
-            CreateWidgetSnackbar,
+            Speeddial,
         },
 
         data() {

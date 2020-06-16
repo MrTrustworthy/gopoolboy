@@ -27,7 +27,7 @@
         </md-card-content>
 
         <md-card-actions>
-            <md-button @click="createCrumb" class="md-raised md-primary">Post {{ crumbType }}</md-button>
+            <v-btn @click="createCrumb" class="md-raised md-primary">Post {{ crumbType }}</v-btn>
         </md-card-actions>
     </md-card>
 </template>

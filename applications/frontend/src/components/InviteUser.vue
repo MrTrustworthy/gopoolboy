@@ -18,7 +18,7 @@
         </md-card-content>
 
         <md-card-actions>
-            <md-button class="md-primary" @click="invite">Invite new user</md-button>
+            <v-btn class="md-primary" @click="invite">Invite new user</v-btn>
         </md-card-actions>
     </md-card>
 </template>

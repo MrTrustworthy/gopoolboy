@@ -1,10 +1,5 @@
 <template>
-    <div>
-        <md-field md-clearable md-inline>
-            <label>Search</label>
-            <md-input v-model="like" @keyup.enter="pressEnter"></md-input>
-        </md-field>
-    </div>
+    <v-text-field v-model="like" @keyup.enter="pressEnter" clearable dense single-line placeholder="Search" outlined></v-text-field>
 </template>
 
 <script>

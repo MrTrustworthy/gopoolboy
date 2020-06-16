@@ -78,7 +78,7 @@
         },
         methods: {
             getVoteStyle(vote) {
-                return vote === this.getCrumbLinkBetween.ownVote ? 'accent' : 'primary';
+                return vote === this.getCrumbLinkBetween.ownVote ? 'md-accent' : 'md-primary';
             },
             voteCrumbLink(vote) {
                 // remove vote if it's the already-active vote

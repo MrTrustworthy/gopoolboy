@@ -1,16 +1,19 @@
 <template>
-    <div>
-        <md-button class="md-primary" @click="() => voteCrumb(1)">
-            <md-icon :class="getVoteStyle(1)">arrow_upward</md-icon>
-        </md-button>
-        <md-badge
-                :class="votes <= 0 ? 'md-primary' : 'md-accent'"
-                :md-content="votes"
-        />
-        <md-button class="md-primary" @click="() => voteCrumb(-1)">
-            <md-icon :class="getVoteStyle(-1)">arrow_downward</md-icon>
-        </md-button>
-    </div>
+    <v-badge
+            :class="votes <= 0 ? 'md-primary' : 'md-accent'"
+            :content="votes.toString()"
+    >
+        <div>
+            <v-btn @click="() => voteCrumb(1)">
+                <md-icon :class="getVoteStyle(1)">arrow_upward</md-icon>
+            </v-btn>
+
+            <v-btn @click="() => voteCrumb(-1)">
+                <md-icon :class="getVoteStyle(-1)">arrow_downward</md-icon>
+            </v-btn>
+
+        </div>
+    </v-badge>
 </template>
 
 <script>
@@ -34,7 +37,7 @@
         },
         methods: {
             getVoteStyle(vote) {
-                return vote === this.ownVote ? 'md-accent' : 'md-primary;';
+                return vote === this.ownVote ? 'md-accent' : 'md-primary';
             },
             voteCrumb(vote) {
                 // remove vote if it's the already-active vote
