@@ -5,11 +5,11 @@
     >
         <div>
             <v-btn @click="() => voteCrumb(1)">
-                <md-icon :class="getVoteStyle(1)">arrow_upward</md-icon>
+                <v-icon :class="getVoteStyle(1)">arrow_upward</v-icon>
             </v-btn>
 
             <v-btn @click="() => voteCrumb(-1)">
-                <md-icon :class="getVoteStyle(-1)">arrow_downward</md-icon>
+                <v-icon :class="getVoteStyle(-1)">arrow_downward</v-icon>
             </v-btn>
 
         </div>

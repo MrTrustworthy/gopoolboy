@@ -1,10 +1,10 @@
 <template>
-    <md-list class="md-double-line md-dense">
+    <v-list>
         <template v-for="crumbId of crumbIds">
             <CrumbSummary :key="crumbId" :id="crumbId" v-on:clicked-summary="clickedSummary"/>
-            <md-divider class="md-inset" :key="crumbId + '_inset'"></md-divider>
+            <v-divider inset :key="crumbId + '_inset'"></v-divider>
         </template>
-    </md-list>
+    </v-list>
 </template>
 
 <script>

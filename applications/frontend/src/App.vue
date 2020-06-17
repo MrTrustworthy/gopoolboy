@@ -1,34 +1,34 @@
 <template>
-    <div id="app">
+    <v-app>
         <link
                 rel="stylesheet"
                 href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic|Material+Icons"
         />
 
-        <v-app>
-            <v-app-bar app>
-                <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
-                <img src="./assets/icon.png" width="64" height="64"/>
-                <span style="flex: 1"></span>
-                <SearchToolbar/>
-                <span style="flex: 1"></span>
-            </v-app-bar>
+        <v-app-bar app class="primary">
+            <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+            <img src="./assets/icon.png" width="64" height="64"/>
+            <span style="flex: 1"></span>
+            <SearchToolbar/>
+            <span style="flex: 1"></span>
+        </v-app-bar>
 
-            <v-navigation-drawer v-model="drawer" permanent mini-variant expand-on-hover clipped app>
-                <NavigationBar/>
-            </v-navigation-drawer>
+        <v-navigation-drawer v-model="drawer" absolute temporary app class="primary">
+            <NavigationBar/>
+        </v-navigation-drawer>
 
-            <v-main>
-                <v-container>
-                    <transition name="slide-right">
-                        <router-view/>
-                    </transition>
-                </v-container>
-            </v-main>
-        </v-app>
+        <v-main class="primary">
+            <v-container>
+                <transition name="slide-right">
+                    <router-view/>
+                </transition>
+            </v-container>
+        </v-main>
 
         <Notifications/>
-    </div>
+
+    </v-app>
+
 </template>
 
 <script>

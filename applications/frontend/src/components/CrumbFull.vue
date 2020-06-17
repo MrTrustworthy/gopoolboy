@@ -10,7 +10,7 @@
         </div>
 
         <div v-else>
-            <v-card>
+            <v-card class="secondary">
 
                 <v-card-title>
                     Type: {{ getCrumb.type }}
