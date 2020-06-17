@@ -1,42 +1,25 @@
 <template>
-    <md-card>
-        <md-card-header>
-            <div class="md-title">New {{ crumbTypeCapitalized }}</div>
-        </md-card-header>
+    <v-card>
+        <v-card-title>
+            New {{ crumbTypeCapitalized }}
+        </v-card-title>
+        <v-form ref="form">
+            <v-text-field v-model="newCrumbTitle" :counter="120" label="Title" required></v-text-field>
+            <v-textarea v-model="newCrumbText" label="Text" outlined></v-textarea>
+            <TagInput v-on:new-tags="(tags) => newCrumbTags = tags"/>
+            <v-btn @click="createCrumb">Post {{ crumbType }}</v-btn>
+        </v-form>
 
-        <md-card-content>
-            <md-field>
-                <label>Title</label>
-                <md-input v-model="newCrumbTitle" type="text" maxlength="120" md-autogrow></md-input>
-            </md-field>
-            <md-field>
-                <label>Text</label>
-                <md-textarea v-model="newCrumbText" type="text"></md-textarea>
-            </md-field>
-            <!-- Can use md-static-->
-            <md-chips
-                    class="md-primary pulse-on-error"
-                    v-model="newCrumbTags"
-                    :md-auto-insert="true"
-                    md-check-duplicated
-                    :md-format="formatTag"
-                    placeholder="Tags as key:value"
-            >
-                <label>Tags as key:value</label>
-            </md-chips>
-        </md-card-content>
-
-        <md-card-actions>
-            <v-btn @click="createCrumb" class="md-raised md-primary">Post {{ crumbType }}</v-btn>
-        </md-card-actions>
-    </md-card>
+    </v-card>
 </template>
 
 <script>
     import {fromId} from "@/urlids";
+    import TagInput from "./TagInput";
 
     export default {
         name: "NewCrumb",
+        components: {TagInput},
         props: {
             crumbType: {
                 type: String,
@@ -64,7 +47,7 @@
             return {
                 newCrumbTitle: "",
                 newCrumbText: "",
-                newCrumbTags: [],
+                newCrumbTags: []
             };
         },
         methods: {
@@ -112,25 +95,13 @@
                     this.$store.commit("addPendingNotification", "Can't create crumb without text or title");
                     return;
                 }
-                const tags = this.newCrumbTags.map((tag) => ({key: tag.split(":")[0], value: tag.split(":")[1]}));
                 const title = this.newCrumbTitle;
                 const text = this.newCrumbText;
                 this.newCrumbTitle = "";
                 this.newCrumbText = "";
-                this.newCrumbTags = [];
-                return {tags, title, text};
+                return {tags: this.newCrumbTags, title, text};
             },
-            formatTag(str) {
-                /*
-                 * Turns arbitrary strings into "clean" tags
-                 * "  hello YOU :   friend" -> "helloyou:friend"
-                 * "whatsup" -> "whatsup:yes"
-                 */
-                if (!str) return "";
-                let tag = str.replace(/ /g, "").toLowerCase();
-                if (tag.indexOf(":") === -1) tag += ":yes";
-                return tag;
-            },
+
         },
     };
 </script>

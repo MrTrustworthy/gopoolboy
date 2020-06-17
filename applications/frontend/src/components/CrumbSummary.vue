@@ -6,9 +6,9 @@
 
         <!-- Error -->
         <div v-else-if="$apollo.queries.getCrumb.error">
-            <md-list-item>
+            <v-list-item>
                 An error occured :(
-            </md-list-item>
+            </v-list-item>
         </div>
 
         <div v-else>
@@ -78,7 +78,6 @@
                 },
                 client: "zeldaClient",
             },
-
         },
     };
 </script>
