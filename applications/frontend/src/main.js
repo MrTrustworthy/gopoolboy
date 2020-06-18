@@ -4,7 +4,6 @@ import App from "./App.vue";
 import {createProvider} from "./vue-apollo";
 import {Auth0Plugin} from "./auth/index";
 import {store} from "./store";
-import VueMaterial from "vue-material";
 import vuetify from './plugins/vuetify';
 
 Vue.config.productionTip = false;
@@ -14,9 +13,6 @@ Vue.use(Auth0Plugin, {
     clientId: process.env.VUE_APP_AUTH0_SPA_CLIENT_ID,
     audience: process.env.VUE_APP_AUTH0_AUDIENCE,
 });
-
-Vue.use(VueMaterial);
-Vue.material.router.linkActiveClass = linkActiveClass;
 
 new Vue({
     apolloProvider: createProvider(),
