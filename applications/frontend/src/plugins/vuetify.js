@@ -10,7 +10,7 @@ export default new Vuetify({
     theme: {
         themes: {
             light: {
-                primary: colors.teal.lighten2,
+                primary: colors.teal.lighten3,
                 secondary: colors.teal.lighten5,
                 accent: colors.amber.accent4,
                 error: '#f44336',

@@ -1,12 +1,15 @@
 <template>
-    <md-snackbar :md-duration="Infinity" :md-active="notify">
+    <v-snackbar v-model="notify" timeout="-1" app>
 
-        <span>
-            <md-badge class="md-accent" v-if="amount > 1" :md-content="amount"/>
-            {{ notifications[0] }}
-        </span>
-        <v-btn class="md-primary" @click="clearNotification">OK</v-btn>
-    </md-snackbar>
+        <span>{{ notifications[0] }}</span>
+        <template v-slot:action="{ attrs }">
+            <v-badge v-if="amount > 1" :content="amount">
+                <v-btn v-bind="attrs" @click="clearNotification">OK</v-btn>
+            </v-badge>
+            <v-btn v-else v-bind="attrs" @click="clearNotification">OK</v-btn>
+        </template>
+
+    </v-snackbar>
 </template>
 
 <script>

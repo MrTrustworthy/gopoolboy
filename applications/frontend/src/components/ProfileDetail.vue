@@ -1,66 +1,85 @@
 <template>
     <div>
-        <div v-if="$auth.loading">
-            <md-progress-spinner class="md-accent" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
+        <div v-if="$auth.loading || $apollo.queries.getUser.loading">
+            <v-skeleton-loader type="card"></v-skeleton-loader>
         </div>
         <div v-else>
-            <md-card>
-                <md-card-header>
-                    <md-card-header-text>
-                        <v-btn class="md-title" v-bind:to="'/profile/' + getUser.id">
-                            {{ getUser.nickname }} {{ isSelf ? "(You)" : "" }}
-                        </v-btn>
-                        <div class="md-subhead">ID: {{ getUser.id }}</div>
-                    </md-card-header-text>
+            <v-card>
 
-                    <md-card-media md-small>
-                        <md-avatar class="md-large">
-                            <img :src="getUser.picture" alt="UserProfilePic"/>
-                        </md-avatar>
-                    </md-card-media>
-                </md-card-header>
+                <v-list-item two-line v-bind:to="'/profile/' + getUser.id">
+                    <v-list-item-content>
+                        <v-list-item-title>{{ getUser.nickname }} {{ isSelf ? "(You)" : "" }}</v-list-item-title>
+                        <v-list-item-subtitle>ID: {{ getUser.id }}</v-list-item-subtitle>
+                    </v-list-item-content>
+                    <v-list-item-avatar>
+                        <img :src="getUser.picture" alt="UserProfilePic"/>
+                    </v-list-item-avatar>
+                </v-list-item>
+                <v-divider></v-divider>
 
-                <md-card-content>
-                    <div>Name: {{ getUser.name }}</div>
-                    <div>Email: {{ getUser.email }}</div>
-                    <div>Role: {{ getUser.organizationRole }}</div>
-                    <div>Created at: {{ getUser.createdAt }}</div>
-                    <div>Last Login: {{ getUser.lastLogin }}</div>
-                    <div>Logins: {{ getUser.loginCount }}</div>
-                </md-card-content>
+
+                <v-list>
+
+                    <v-list-group v-model="expandDetails" no-action>
+
+                        <template v-slot:activator>
+                            <v-list-item>
+                                <v-list-item-icon>
+                                    <v-icon v-text="detailFields[0].icon"></v-icon>
+                                </v-list-item-icon>
+                                <v-list-item-content>
+                                    <v-list-item-title v-text="detailFields[0].text"></v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </template>
+
+                        <v-list-item v-for="(item, i) in detailFields.slice(1)" :key="i" dense>
+                            <v-list-item-icon>
+                                <v-icon v-text="item.icon"></v-icon>
+                            </v-list-item-icon>
+                            <v-list-item-content>
+                                <v-list-item-title v-text="item.text"></v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+
+                    </v-list-group>
+
+                </v-list>
 
                 <div v-if="editable">
-                    <md-card-content>
-                        <md-field>
-                            <md-select v-model="newUserRole" placeholder="New Role">
-                                <md-option v-for="role in possibleRoles" :key="role.name" :value="role.name">
-                                    {{ role.name }}
-                                </md-option>
-                            </md-select>
-                        </md-field>
-                    </md-card-content>
-                    <md-card-actions>
-                        <v-btn class="md-primary" @click="changeUserRole">Update</v-btn>
-                        <v-btn class="md-primary" disabled>Reset password</v-btn>
-                        <v-btn class="md-accent" @click="() => (confirmRemoveUser = true)">Remove user</v-btn>
-                    </md-card-actions>
+                    <v-select :items="possibleRoles" v-model="newUserRole" item-text="name" item-value="name"
+                              label="New Role"></v-select>
+                    <v-card-actions>
+                        <v-btn @click="changeUserRole">Update Role</v-btn>
+                        <v-btn @click="$store.commit('addPendingNotification', 'Sorry, this feature is not available yet')">
+                            Reset password
+                        </v-btn>
+                        <v-btn @click.stop="confirmRemoveUser = true">Remove user</v-btn>
+                        <v-btn v-if="isSelf" @click="logout">Logout</v-btn>
+                    </v-card-actions>
                 </div>
-
-                <md-card-actions v-if="isSelf">
-                    <v-btn class="md-raised md-accent" @click="logout">Logout</v-btn>
-                </md-card-actions>
-            </md-card>
+                <div v-else>
+                    <v-card-actions>
+                        <v-btn v-if="isSelf" @click="logout">Logout</v-btn>
+                    </v-card-actions>
+                </div>
+            </v-card>
         </div>
 
-        <md-dialog-confirm
-                :md-active.sync="confirmRemoveUser"
-                :md-title="'Do you really want to remove the user' + getUser.name"
-                md-content="This will remove this user. Content of that user, such as crumbs or votes, will not be deleted. This operation can't be reversed."
-                md-confirm-text="Agree"
-                md-cancel-text="Disagree"
-                @md-cancel="onCancelRemoveUser"
-                @md-confirm="onConfirmRemoveUser"
-        />
+        <v-dialog v-model="confirmRemoveUser" persistent max-width="600">
+            <v-card>
+                <v-card-title>Remove {{ getUser.name }}?</v-card-title>
+                <v-card-text>This will remove this user. Content of that user, such as crumbs or votes, will not be
+                    deleted. This operation can't be reversed!
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn @click="onCancelRemoveUser">Cancel</v-btn>
+                    <v-btn @click="onConfirmRemoveUser">Delete User</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
     </div>
 </template>
 
@@ -77,12 +96,14 @@
                 required: true,
             },
         },
+
         data() {
             return {
                 getUser: {},
                 getRoles: [],
                 newUserRole: null,
                 confirmRemoveUser: false,
+                expandDetails: false,
             };
         },
         computed: {
@@ -92,6 +113,16 @@
             possibleRoles: function () {
                 return this.getRoles.filter((r) => r.name !== this.getUser.organizationRole);
             },
+            detailFields: function () {
+                return [
+                    {text: `Name: ${this.getUser.name}`, icon: "face"},
+                    {text: `Email: ${this.getUser.email}`, icon: "email"},
+                    {text: `Role: ${this.getUser.organizationRole}`, icon: "admin_panel_settings"},
+                    {text: `Created at: ${this.getUser.createdAt}`, icon: "av_timer"},
+                    {text: `Last Login: ${this.getUser.lastLogin || 'Never'}`, icon: "restore"},
+                    {text: `Logins: ${this.getUser.loginCount || '0'}`, icon: "timeline"},
+                ];
+            }
         },
         apollo: {
             getUser: {
@@ -132,6 +163,7 @@
             },
             onConfirmRemoveUser() {
                 console.log("Deleting user", this.userId);
+                this.confirmRemoveUser = false;
                 this.$apollo.mutate({
                     mutation: require("../graphql/DeleteUser.gql"),
                     variables: {
@@ -141,6 +173,7 @@
             },
             onCancelRemoveUser() {
                 console.log("Aborted deleting user", this.userId);
+                this.confirmRemoveUser = false;
                 this.$store.commit("addPendingNotification", "Removal of user cancelled");
             },
         },

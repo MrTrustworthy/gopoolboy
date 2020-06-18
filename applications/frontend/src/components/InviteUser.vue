@@ -1,26 +1,16 @@
 <template>
-    <md-card>
-        <md-card-header class="md-title">
+    <v-card>
+        <v-card-title>
             Invite new User
-        </md-card-header>
+        </v-card-title>
 
-        <md-card-content>
-            <md-field>
-                <md-input v-model="newUserEmail" type="email" placeholder="New user email"/>
-            </md-field>
-            <md-field>
-                <md-select v-model="newUserRole" placeholder="Role">
-                    <md-option v-for="role in getRoles" :key="role.name" :value="role.name">
-                        {{ role.name }}
-                    </md-option>
-                </md-select>
-            </md-field>
-        </md-card-content>
+        <v-text-field v-model="newUserEmail" label="New user email" :rules="[rules.required, rules.email]"/>
+        <v-select v-model="newUserRole" label="Role" :items="possibleRoleNames"></v-select>
 
-        <md-card-actions>
-            <v-btn class="md-primary" @click="invite">Invite new user</v-btn>
-        </md-card-actions>
-    </md-card>
+        <v-card-actions>
+            <v-btn @click="invite">Invite new user</v-btn>
+        </v-card-actions>
+    </v-card>
 </template>
 
 <script>
@@ -31,7 +21,19 @@
                 newUserEmail: "",
                 newUserRole: "",
                 getRoles: [],
+                rules: {
+                    required: value => !!value || 'Required.',
+                    email: value => {
+                        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                        return pattern.test(value) || 'Invalid e-mail.';
+                    },
+                },
             };
+        },
+        computed: {
+            possibleRoleNames() {
+                return this.getRoles.map(r => r.name);
+            }
         },
         apollo: {
             getRoles: {

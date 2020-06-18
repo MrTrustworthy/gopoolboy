@@ -11,20 +11,19 @@
                 </v-btn>
             </template>
 
-            <v-btn @click="showDialog = true" fab small>
-                <v-icon>add</v-icon>
+            <v-btn @click.stop="showDialog = true" fab small>
+                <v-icon>help</v-icon>
             </v-btn>
 
         </v-speed-dial>
 
-
-        <md-dialog :md-active.sync="showDialog">
+        <v-dialog v-model="showDialog" max-width="800">
             <NewCrumb
                     crumbType="question"
                     v-on:confirmed-action="showDialog = false"
                     v-on:failed-action="notifyFailure"
             />
-        </md-dialog>
+        </v-dialog>
 
     </div>
 </template>

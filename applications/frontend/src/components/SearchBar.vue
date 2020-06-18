@@ -1,5 +1,5 @@
 <template>
-    <v-text-field v-model="like" @keyup.enter="pressEnter" clearable dense single-line placeholder="Search" outlined></v-text-field>
+    <v-text-field v-model="like" @keyup.enter="pressEnter" dense single-line placeholder="Search" outlined></v-text-field>
 </template>
 
 <script>

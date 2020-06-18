@@ -1,15 +1,15 @@
 <template>
     <v-badge
-            :class="votes <= 0 ? 'md-primary' : 'md-accent'"
+            :color="votes <= 0 ? 'primary' : 'accent'"
             :content="votes.toString()"
     >
         <div>
             <v-btn @click="() => voteCrumb(1)">
-                <v-icon :class="getVoteStyle(1)">arrow_upward</v-icon>
+                <v-icon :color="getVoteStyle(1)">arrow_upward</v-icon>
             </v-btn>
 
             <v-btn @click="() => voteCrumb(-1)">
-                <v-icon :class="getVoteStyle(-1)">arrow_downward</v-icon>
+                <v-icon :color="getVoteStyle(-1)">arrow_downward</v-icon>
             </v-btn>
 
         </div>
@@ -37,7 +37,7 @@
         },
         methods: {
             getVoteStyle(vote) {
-                return vote === this.ownVote ? 'md-accent' : 'md-primary';
+                return vote === this.ownVote ? 'accent' : 'primary';
             },
             voteCrumb(vote) {
                 // remove vote if it's the already-active vote
