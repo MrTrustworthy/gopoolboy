@@ -1,25 +1,30 @@
 <template>
     <div>
-        <md-card>
-            <md-card-content>
+        <v-card>
+            <v-card-text>
                 <SearchBar :sort-by="sortBy" :crumb-type="crumbType" v-on:found-ids="updateIds"/>
                 <div>
                     Found a total of {{ crumbIds.length }} {{ objectDescriptor }} {{ outputSuffix }}
                 </div>
-            </md-card-content>
-            <md-card-actions>
-                <div class="md-subheader">types</div>
-                <md-radio v-model="crumbType" value="all">All</md-radio>
-                <md-radio v-model="crumbType" value="question">Question</md-radio>
-                <md-radio v-model="crumbType" value="answer">Answer</md-radio>
-            </md-card-actions>
-            <md-card-actions>
-                <div class="md-subheader">sort by</div>
-                <md-radio v-model="sortBy" value="relevance">Relevance</md-radio>
-                <md-radio v-model="sortBy" value="votes">Votes</md-radio>
-                <md-radio v-model="sortBy" value="createdAt">Date</md-radio>
-            </md-card-actions>
-        </md-card>
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+                <span>types</span>
+                <v-radio-group v-model="crumbType" row>
+                    <v-radio value="all" label="All"></v-radio>
+                    <v-radio value="question" label="Question"></v-radio>
+                    <v-radio value="answer" label="Answer"></v-radio>
+                </v-radio-group>
+            </v-card-actions>
+            <v-card-actions>
+                <span>sort by</span>
+                <v-radio-group v-model="sortBy" row>
+                    <v-radio value="relevance" label="Relevance"></v-radio>
+                    <v-radio value="votes" label="Votes"></v-radio>
+                    <v-radio value="createdAt" label="Date"></v-radio>
+                </v-radio-group>
+            </v-card-actions>
+        </v-card>
     </div>
 </template>
 

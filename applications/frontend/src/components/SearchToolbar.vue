@@ -48,8 +48,3 @@
         }
     };
 </script>
-<style scoped>
-    .md-menu {
-        min-width: 80%
-    }
-</style>

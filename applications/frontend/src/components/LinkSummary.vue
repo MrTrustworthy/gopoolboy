@@ -4,7 +4,6 @@
             <v-skeleton-loader type="card"></v-skeleton-loader>
         </div>
 
-        <!-- Error -->
         <div v-else-if="$apollo.queries.getCrumbLinkBetween.error">
             <v-card>
                 An error occured :(
@@ -50,16 +49,6 @@
                 getUsers: []
             };
         },
-        computed: {
-            userName() {
-                let userId = this.getCrumbLinkBetween.authorId;
-                let users = this.getUsers.filter((u) => u.id === userId).map((u) => u.nickname);
-                if (users.length === 0) {
-                    return userId;
-                }
-                return users[0];
-            }
-        },
         apollo: {
             getCrumbLinkBetween: {
                 query: require("../graphql/GetCrumbLinkBetween.gql"),
@@ -76,23 +65,5 @@
                 client: "orgamonClient",
             },
         },
-        methods: {
-            getVoteStyle(vote) {
-                return vote === this.getCrumbLinkBetween.ownVote ? 'md-accent' : 'md-primary';
-            },
-            voteCrumbLink(vote) {
-                // remove vote if it's the already-active vote
-                if (vote === this.getCrumbLinkBetween.ownVote) vote = 0;
-
-                this.$apollo.mutate({
-                    mutation: require("../graphql/VoteCrumbLink.gql"),
-                    variables: {
-                        id: this.getCrumbLinkBetween.id,
-                        vote: vote
-                    },
-                    client: "zeldaClient",
-                });
-            },
-        }
     };
 </script>

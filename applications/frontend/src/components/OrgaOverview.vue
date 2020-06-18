@@ -1,16 +1,11 @@
 <template>
-    <md-card>
-        <md-card-header>
-            <div class="md-title">
-                {{ getOrganization.name }}
-            </div>
-            <div class="md-subhead">Organization ID <br/>{{ getOrganization.id }}</div>
-        </md-card-header>
-
-        <md-card-actions>
-            <v-btn class="md-accent" disabled>Close Account</v-btn>
-        </md-card-actions>
-    </md-card>
+    <v-card>
+        <v-card-title> {{ getOrganization.name }}</v-card-title>
+        <v-card-subtitle>Organization ID: {{ getOrganization.id }}</v-card-subtitle>
+        <v-card-actions>
+            <v-btn disabled>Close Account</v-btn>
+        </v-card-actions>
+    </v-card>
 </template>
 
 <script>
