@@ -3,10 +3,19 @@
         <Speeddial/>
 
         <CrumbFull v-bind:id="crumbId" v-on:added-link="refresh"/>
+        <br>
         <h2>Found a total of {{ getLinkedCrumbIds.length }} linked Crumbs</h2>
+        <br>
         <div v-for="qId of getLinkedCrumbIds" :key="qId">
-            <LinkSummary :fromId="crumbId" :toId="qId"/>
             <CrumbFull v-bind:id="qId" v-on:added-link="refresh"/>
+
+            <v-row justify="center">
+                <v-avatar class="accent" size="24">
+                    <v-icon>link</v-icon>
+                </v-avatar>
+            </v-row>
+            <LinkSummary :fromId="crumbId" :toId="qId"/>
+
             <br>
             <br>
         </div>

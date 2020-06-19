@@ -1,33 +1,27 @@
 <template>
     <div>
-        <div v-if="$apollo.queries.getCrumbLinkBetween.loading">
-            <v-skeleton-loader type="card"></v-skeleton-loader>
-        </div>
+        <v-skeleton-loader v-if="$apollo.queries.getCrumbLinkBetween.loading" type="card"></v-skeleton-loader>
 
-        <div v-else-if="$apollo.queries.getCrumbLinkBetween.error">
-            <v-card>
-                An error occured :(
-            </v-card>
-        </div>
+        <v-card v-else-if="$apollo.queries.getCrumbLinkBetween.error">
+            An error occured :(
+        </v-card>
 
-        <div v-else>
-            <v-card>
+        <v-card v-else shaped>
 
-                <v-list dense>
-                    <AuthorListItem :author-id="getCrumbLinkBetween.authorId"/>
-                    <CreatedAtListItem :timestamp="getCrumbLinkBetween.createdAt"/>
-                </v-list>
+            <v-list dense>
+                <AuthorListItem :author-id="getCrumbLinkBetween.authorId"/>
+                <CreatedAtListItem :timestamp="getCrumbLinkBetween.createdAt"/>
+            </v-list>
 
-                <v-card-actions>
-                    <Votes
-                            :votes="getCrumbLinkBetween.votes"
-                            :own-vote="getCrumbLinkBetween.ownVote"
-                            :object-id="getCrumbLinkBetween.id"
-                            object-type="crumblink"
-                    />
-                </v-card-actions>
-            </v-card>
-        </div>
+            <v-card-actions>
+                <Votes
+                        :votes="getCrumbLinkBetween.votes"
+                        :own-vote="getCrumbLinkBetween.ownVote"
+                        :object-id="getCrumbLinkBetween.id"
+                        object-type="crumblink"
+                />
+            </v-card-actions>
+        </v-card>
     </div>
 </template>
 

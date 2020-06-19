@@ -1,5 +1,5 @@
 import Vue from "vue";
-import {linkActiveClass, router} from "./router";
+import {router} from "./router";
 import App from "./App.vue";
 import {createProvider} from "./vue-apollo";
 import {Auth0Plugin} from "./auth/index";

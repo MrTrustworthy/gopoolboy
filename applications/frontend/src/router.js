@@ -8,8 +8,6 @@ import OrganizationView from "./views/Organization.vue";
 import {fromId} from "@/urlids";
 import {authGuard} from "./auth/authGuard";
 
-export const linkActiveClass = "vue-material-link-active";
-
 Vue.use(VueRouter);
 
 export const router = new VueRouter({
@@ -64,7 +62,6 @@ export const router = new VueRouter({
             },
         },
     ],
-    linkActiveClass,
 });
 
 router.beforeEach(authGuard);

@@ -1,11 +1,9 @@
 <template>
     <div>
-        <div v-if="$auth.loading || $apollo.queries.getUser.loading">
-            <v-skeleton-loader type="card"></v-skeleton-loader>
-        </div>
-        <div v-else>
-            <v-card>
+        <v-skeleton-loader v-if="$auth.loading || $apollo.queries.getUser.loading" type="card"></v-skeleton-loader>
+        <v-card v-else shaped>
 
+            <v-container fluid>
                 <v-list-item two-line v-bind:to="'/profile/' + getUser.id">
                     <v-list-item-content>
                         <v-list-item-title>{{ getUser.nickname }} {{ isSelf ? "(You)" : "" }}</v-list-item-title>
@@ -17,11 +15,8 @@
                 </v-list-item>
                 <v-divider></v-divider>
 
-
                 <v-list>
-
                     <v-list-group v-model="expandDetails" no-action>
-
                         <template v-slot:activator>
                             <v-list-item>
                                 <v-list-item-icon>
@@ -63,8 +58,8 @@
                         <v-btn v-if="isSelf" @click="logout">Logout</v-btn>
                     </v-card-actions>
                 </div>
-            </v-card>
-        </div>
+            </v-container>
+        </v-card>
 
         <v-dialog v-model="confirmRemoveUser" persistent max-width="600">
             <v-card>

@@ -1,15 +1,16 @@
 <template>
-    <v-card>
-        <v-card-title>
-            New {{ crumbTypeCapitalized }}
-        </v-card-title>
-        <v-form ref="form">
-            <v-text-field v-model="newCrumbTitle" :counter="120" label="Title" required></v-text-field>
-            <v-textarea v-model="newCrumbText" label="Text" outlined></v-textarea>
-            <TagInput v-on:new-tags="(tags) => newCrumbTags = tags"/>
-            <v-btn @click="createCrumb">Post {{ crumbType }}</v-btn>
-        </v-form>
-
+    <v-card shaped>
+        <v-container fluid>
+            <v-card-title>
+                New {{ crumbTypeCapitalized }}
+            </v-card-title>
+            <v-form ref="form">
+                <v-text-field v-model="newCrumbTitle" :counter="120" label="Title" required></v-text-field>
+                <v-textarea v-model="newCrumbText" label="Text" outlined></v-textarea>
+                <TagInput v-on:new-tags="(tags) => newCrumbTags = tags"/>
+                <v-btn @click="createCrumb">Post {{ crumbType }}</v-btn>
+            </v-form>
+        </v-container>
     </v-card>
 </template>
 

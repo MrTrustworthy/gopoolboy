@@ -8,9 +8,7 @@
         <v-app-bar app class="primary">
             <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
             <img src="./assets/icon.png" width="64" height="64"/>
-            <span style="flex: 1"></span>
             <SearchToolbar/>
-            <span style="flex: 1"></span>
         </v-app-bar>
 
         <v-navigation-drawer v-model="drawer" absolute temporary clipped app class="primary">
@@ -18,10 +16,16 @@
         </v-navigation-drawer>
 
         <v-main class="primary">
-            <v-container fluid>
-                <v-slide-y-transition>
-                    <router-view/>
-                </v-slide-y-transition>
+            <v-container>
+                <v-row>
+                    <v-col cols="2"></v-col>
+                    <v-col cols="8">
+                        <v-slide-y-transition>
+                            <router-view/>
+                        </v-slide-y-transition>
+                    </v-col>
+                    <v-col cols="2"></v-col>
+                </v-row>
             </v-container>
         </v-main>
 

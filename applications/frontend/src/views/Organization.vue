@@ -4,8 +4,10 @@
         <OrgaOverview/>
         <br/>
         <h2>Users</h2>
-        <ProfileDetail v-for="user of getUsers" :key="user.id" v-bind:userId="user.id" :editable="true"/>
-        <br/>
+        <div v-for="user of getUsers" :key="user.id">
+            <ProfileDetail v-bind:userId="user.id" :editable="true"/>
+            <br/>
+        </div>
         <InviteUser/>
     </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <v-container>
         <SearchBar
                 sort-by="relevance"
                 crumb-type="all"
@@ -9,7 +9,7 @@
         <v-menu absolute offset-y :value="showMenu" min-width="120" close-on-click close-on-content-click>
             <CrumbList :crumb-ids="crumbIds" v-on:clicked-summary="routeToFull"/>
         </v-menu>
-    </div>
+    </v-container>
 </template>
 
 <script>

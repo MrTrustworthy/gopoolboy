@@ -1,42 +1,38 @@
 <template>
     <div>
-        <div v-if="$apollo.queries.getCrumb.loading">
-            <v-skeleton-loader type="list-item-avatar-two-line"></v-skeleton-loader>
-        </div>
+        <v-skeleton-loader v-if="$apollo.queries.getCrumb.loading" type="list-item-avatar-two-line"></v-skeleton-loader>
 
         <!-- Error -->
         <div v-else-if="$apollo.queries.getCrumb.error">
-            <v-list-item>
-                An error occured :(
-            </v-list-item>
+            An error occured :(
         </div>
 
-        <div v-else>
 
-            <v-list-item @click="clickItem" two-line>
-                <v-list-item-icon>
-                    <v-icon>{{ getCrumb.type === "question" ? "help" : "announcement" }}</v-icon>
-                </v-list-item-icon>
+        <v-list-item v-else @click="clickItem" two-line>
+            <v-list-item-icon>
+                <CrumbTypeIcon :crumb-type="getCrumb.type"></CrumbTypeIcon>
+            </v-list-item-icon>
 
-                <v-list-item-content>
-                    <v-list-item-title>{{ getCrumb.title }}</v-list-item-title>
-                    <v-list-item-subtitle>{{ textSummary }}</v-list-item-subtitle>
-                </v-list-item-content>
+            <v-list-item-content>
+                <v-list-item-title>{{ getCrumb.title }}</v-list-item-title>
+                <v-list-item-subtitle>{{ textSummary }}</v-list-item-subtitle>
+            </v-list-item-content>
 
-                <v-list-item-action>
-                    <v-chip>{{ getCrumb.votes + ' Votes' }}</v-chip>
-                    <v-chip>{{ getLinkedCrumbIds.length + ' Linked' }}</v-chip>
-                </v-list-item-action>
-            </v-list-item>
+            <v-list-item-action>
+                <v-chip>{{ getCrumb.votes + ' Votes' }}</v-chip>
+                <v-chip>{{ getLinkedCrumbIds.length + ' Linked' }}</v-chip>
+            </v-list-item-action>
+        </v-list-item>
 
-        </div>
     </div>
 </template>
 
 <script>
 
+    import CrumbTypeIcon from "./CrumbTypeIcon";
     export default {
         name: "CrumbSummary",
+        components: {CrumbTypeIcon},
         props: {
             id: String,
             textPreviewLength: {

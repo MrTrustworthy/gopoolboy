@@ -38,7 +38,7 @@
         data() {
             return {
                 sortBy: "relevance",
-                crumbType: "all",
+                crumbType: "question",
                 crumbIds: []
             };
         },
