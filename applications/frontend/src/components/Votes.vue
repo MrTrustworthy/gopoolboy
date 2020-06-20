@@ -1,29 +1,33 @@
 <template>
-    <v-badge
-            :color="votes <= 0 ? 'primary' : 'accent'"
-            :content="votes.toString()"
-    >
+    <v-container>
+        <v-col cols="12" class="align-center justify-center">
+            <v-row align="center" justify="center">
 
-        <v-tooltip top>
-            <template v-slot:activator="{ on, attrs }">
-                <v-btn @click="() => voteCrumb(1)" v-bind="attrs" v-on="on">
-                    <v-icon :color="getVoteStyle(1)">arrow_upward</v-icon>
-                </v-btn>
-            </template>
-            <span>{{ getVoteTooltip(1) }}</span>
-        </v-tooltip>
+                <v-tooltip top>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn class="ma-3" @click="() => voteCrumb(1)" v-bind="attrs" v-on="on">
+                            <v-icon :color="getVoteStyle(1)">arrow_upward</v-icon>
+                        </v-btn>
+                    </template>
+                    <span>{{ getVoteTooltip(1) }}</span>
+                </v-tooltip>
 
+                <v-avatar class="ma-3" :color="votes <= 0 ? 'primary' : 'accent'" size="36">
+                    <span>{{ votes }}</span>
+                </v-avatar>
 
-        <v-tooltip top>
-            <template v-slot:activator="{ on, attrs }">
-                <v-btn @click="() => voteCrumb(-1)" v-bind="attrs" v-on="on">
-                    <v-icon :color="getVoteStyle(-1)">arrow_downward</v-icon>
-                </v-btn>
-            </template>
-            <span>{{ getVoteTooltip(-1) }}</span>
-        </v-tooltip>
+                <v-tooltip top>
+                    <template v-slot:activator="{ on, attrs }">
+                        <v-btn class="ma-3" @click="() => voteCrumb(-1)" v-bind="attrs" v-on="on">
+                            <v-icon :color="getVoteStyle(-1)">arrow_downward</v-icon>
+                        </v-btn>
+                    </template>
+                    <span>{{ getVoteTooltip(-1) }}</span>
+                </v-tooltip>
 
-    </v-badge>
+            </v-row>
+        </v-col>
+    </v-container>
 </template>
 
 <script>
@@ -36,13 +40,15 @@
             votes: {type: Number, required: true},
             ownVote: {type: Number, required: true},
             objectId: {type: [String, Number], required: true},
-            objectType: {type: String, required: true}
+            objectType: {type: String, required: true, validator: (val) => ["crumb", "crumblink"].includes(val)}
         },
         computed: {
             mutationArgs() {
-                if (this.objectType === "crumb") return {gql: "VoteCrumb", client: "crumbler"};
-                else if (this.objectType === "crumblink") return {gql: "VoteCrumbLink", client: "zelda"};
-                else throw new Error(`objectType must be crumb or crumblink, not ${this.objectType}`);
+                const args = {
+                    crumb: {gql: "VoteCrumb", client: "crumbler"},
+                    crumblink: {gql: "VoteCrumbLink", client: "zelda"}
+                };
+                return args[this.objectType];
             },
         },
         methods: {

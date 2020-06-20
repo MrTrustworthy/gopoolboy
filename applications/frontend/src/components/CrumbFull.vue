@@ -25,10 +25,11 @@
                 </v-card-text>
             </v-container>
 
-            <v-card-actions class="justify-center">
-                <v-chip v-for="tag in getCrumb.tags" :key="tag.key + tag.value">
-                    {{ tag.key }}:{{ tag.value }}
-                </v-chip>
+            <v-card-actions>
+
+                <Tags :tags="getCrumb.tags"/>
+            </v-card-actions>
+            <v-card-actions>
                 <Votes
                         :votes="getCrumb.votes"
                         :own-vote="getCrumb.ownVote"
@@ -47,10 +48,11 @@
     import marked from "marked";
     import CrumbTypeIcon from "./CrumbTypeIcon";
     import DetailActionButtons from "./DetailActionButtons";
+    import Tags from "./Tags";
 
     export default {
         name: "CrumbFull",
-        components: {DetailActionButtons, CrumbTypeIcon, Votes},
+        components: {Tags, DetailActionButtons, CrumbTypeIcon, Votes},
         props: {
             id: {type: [String, Number], required: true},
         },

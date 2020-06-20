@@ -10,12 +10,13 @@
             <CrumbFull v-bind:id="qId" v-on:added-link="refresh"/>
 
             <v-row justify="center">
-                <v-avatar class="accent" size="24">
+                <v-btn fab class="accent" size="36" @click="() => toggleShowLink(qId)">
                     <v-icon>link</v-icon>
-                </v-avatar>
+                </v-btn>
             </v-row>
-            <LinkSummary :fromId="crumbId" :toId="qId"/>
-
+            <v-scroll-y-transition>
+                <LinkSummary v-if="getShowLink(qId)" :fromId="crumbId" :toId="qId"/>
+            </v-scroll-y-transition>
             <br>
             <br>
         </div>
@@ -40,11 +41,17 @@
             NewCrumb,
             Speeddial,
         },
-
+        props: {
+            showLinkDefault: {
+                type: Boolean,
+                default: true
+            }
+        },
         data() {
             return {
                 crumbId: toId(this.$route.params.id),
                 getLinkedCrumbIds: [],
+                showLinkFlags: {}
             };
         },
         watch: {
@@ -56,6 +63,13 @@
             refresh() {
                 this.$apollo.queries.getLinkedCrumbIds.refetch();
             },
+            getShowLink(crumbId) {
+                const showLink = this.showLinkFlags[crumbId];
+                return showLink !== undefined ? showLink : this.showLinkDefault;
+            },
+            toggleShowLink(crumbId) {
+                this.$set(this.showLinkFlags, crumbId, !this.getShowLink(crumbId));
+            }
         },
         apollo: {
             getLinkedCrumbIds: {

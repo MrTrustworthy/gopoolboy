@@ -1,5 +1,12 @@
 <template>
-    <v-icon>{{ crumbType === "question" ? "help" : "announcement" }}</v-icon>
+    <v-tooltip right>
+        <template v-slot:activator="{ on, attrs }">
+            <v-icon v-bind="attrs" v-on="on">
+                {{ crumbType === "question" ? "help" : "announcement" }}
+            </v-icon>
+        </template>
+        <span>{{ crumbTypeCapitalized }}</span>
+    </v-tooltip>
 </template>
 
 <script>
@@ -9,6 +16,11 @@
             crumbType: {
                 type: String,
                 required: true
+            }
+        },
+        computed: {
+            crumbTypeCapitalized() {
+                return this.crumbType[0].toUpperCase() + this.crumbType.slice(1);
             }
         }
     };

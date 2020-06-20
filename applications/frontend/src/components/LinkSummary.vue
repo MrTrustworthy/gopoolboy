@@ -8,7 +8,8 @@
 
         <v-card v-else shaped>
             <DetailActionButtons :source-object="getCrumbLinkBetween" :show-add-link="false"/>
-            <v-card-actions class="justify-center">
+
+            <v-card-actions>
                 <Votes
                         :votes="getCrumbLinkBetween.votes"
                         :own-vote="getCrumbLinkBetween.ownVote"
