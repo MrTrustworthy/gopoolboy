@@ -7,13 +7,8 @@
         </v-card>
 
         <v-card v-else shaped>
-
-            <v-list dense>
-                <AuthorListItem :author-id="getCrumbLinkBetween.authorId"/>
-                <CreatedAtListItem :timestamp="getCrumbLinkBetween.createdAt"/>
-            </v-list>
-
-            <v-card-actions>
+            <DetailActionButtons :source-object="getCrumbLinkBetween" :show-add-link="false"/>
+            <v-card-actions class="justify-center">
                 <Votes
                         :votes="getCrumbLinkBetween.votes"
                         :own-vote="getCrumbLinkBetween.ownVote"
@@ -27,12 +22,11 @@
 
 <script>
     import Votes from "./Votes";
-    import AuthorListItem from "./AuthorListItem";
-    import CreatedAtListItem from "./CreatedAtListItem";
+    import DetailActionButtons from "./DetailActionButtons";
 
     export default {
         name: "LinkSummary",
-        components: {CreatedAtListItem, AuthorListItem, Votes},
+        components: {DetailActionButtons, Votes},
         props: {
             fromId: [String, Number],
             toId: [String, Number],

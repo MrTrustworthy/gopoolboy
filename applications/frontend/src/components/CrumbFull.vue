@@ -11,31 +11,21 @@
 
             <v-container>
                 <CrumbTypeIcon :crumb-type="getCrumb.type"></CrumbTypeIcon>
-                <v-card-title>
+                <v-card-title class="secondary">
                     {{ getCrumb.title }}
                 </v-card-title>
             </v-container>
 
-            <v-container>
-                <v-list dense>
-                    <AuthorListItem :author-id="getCrumb.authorId"/>
-                    <AddLinkListItem
-                            :crumb-id="id"
-                            v-on:added-link="() => $emit('added-link')"
-                    />
-                    <CreatedAtListItem :timestamp="getCrumb.createdAt"/>
-                </v-list>
-            </v-container>
-            <v-divider></v-divider>
+            <DetailActionButtons :source-object="getCrumb" :show-add-link="true"
+                                 v-on:added-link="() => $emit('added-link')"/>
 
-            <v-container fluid class="secondary">
-                <v-card-text>
+            <v-container fluid>
+                <v-card-text class="secondary">
                     <div v-html="crumbTextMarkdown"/>
                 </v-card-text>
             </v-container>
-            <v-divider></v-divider>
 
-            <v-card-actions>
+            <v-card-actions class="justify-center">
                 <v-chip v-for="tag in getCrumb.tags" :key="tag.key + tag.value">
                     {{ tag.key }}:{{ tag.value }}
                 </v-chip>
@@ -55,14 +45,12 @@
     import Votes from "./Votes";
     import DOMPurify from 'dompurify';
     import marked from "marked";
-    import AddLinkListItem from "./AddLinkListItem";
-    import CreatedAtListItem from "./CreatedAtListItem";
-    import AuthorListItem from "./AuthorListItem";
     import CrumbTypeIcon from "./CrumbTypeIcon";
+    import DetailActionButtons from "./DetailActionButtons";
 
     export default {
         name: "CrumbFull",
-        components: {CrumbTypeIcon, AuthorListItem, CreatedAtListItem, AddLinkListItem, Votes},
+        components: {DetailActionButtons, CrumbTypeIcon, Votes},
         props: {
             id: {type: [String, Number], required: true},
         },

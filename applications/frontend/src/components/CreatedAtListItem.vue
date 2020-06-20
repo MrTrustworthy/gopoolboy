@@ -1,15 +1,15 @@
 <template>
-    <v-tooltip left open-delay="150">
+    <v-tooltip top open-delay="150">
         <template v-slot:activator="{ on, attrs }">
 
-                    <v-list-item v-bind="attrs" v-on="on">
-            <v-list-item-icon>
-                <v-icon>av_timer</v-icon>
-            </v-list-item-icon>
-            <v-list-item-content>
-                <v-list-item-title>{{ relativeMicrosTS(timestamp) }}</v-list-item-title>
-            </v-list-item-content>
-        </v-list-item>
+            <v-list-item v-bind="attrs" v-on="on">
+                <v-list-item-icon>
+                    <v-icon>av_timer</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                    <v-list-item-title>{{ relativeMicrosTS(timestamp) }}</v-list-item-title>
+                </v-list-item-content>
+            </v-list-item>
 
         </template>
         <span>{{ prettyTime(timestamp) }}</span>
@@ -32,7 +32,7 @@
                 return moment(ts, "x").fromNow();
             },
             prettyTime(ts) {
-                return moment(ts, "x").calendar();
+                return moment(ts, "x").format("dddd, MMMM Do YYYY, h:mm:ss a");
             },
         }
     };
