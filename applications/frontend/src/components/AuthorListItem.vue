@@ -1,10 +1,10 @@
 <template>
-    <v-list-item v-bind:to="'/profile/' + authorId">
+    <v-list-item :to="{ name: 'profile', params: {userId: authorId}}">
         <v-list-item-icon>
             <v-icon>recent_actors</v-icon>
         </v-list-item-icon>
         <v-list-item-content>
-            <v-list-item-title>By: {{ getUser.nickname }}</v-list-item-title>
+            <v-list-item-title>by {{ getUser.nickname || 'anon' }}</v-list-item-title>
         </v-list-item-content>
     </v-list-item>
 </template>

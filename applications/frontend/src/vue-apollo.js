@@ -55,9 +55,6 @@ export function createProvider() {
                 "background: red; color: white; padding: 2px 4px; border-radius: 3px; font-weight: bold;",
                 error.message
             );
-            if (error.message === "GraphQL error: TokenExpiredError: jwt expired") {
-                this.$router.push({name: "welcome"});
-            }
         },
     });
 }

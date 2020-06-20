@@ -1,7 +1,6 @@
 <template>
     <div>
         <v-list>
-
             <v-list-item id="tab-crumbs" to="/crumbs">
                 <v-list-item-icon>
                     <v-icon>dynamic_feed</v-icon>
@@ -22,8 +21,8 @@
 
             <v-list-item
                     id="tab-profile"
-                    v-bind:v-disabled="$auth.loading"
-                    v-bind:to="{ name: 'profile', params: {userId: $auth && $auth.user ? $auth.user.sub : 'undefined'}}"
+                    :v-disabled="$auth.loading"
+                    :to="{ name: 'profile', params: {userId: profileId}}"
             >
                 <v-list-item-icon>
                     <v-icon>{{ $auth.loading ? "perm_identity" : "face" }}</v-icon>
@@ -49,6 +48,11 @@
     export default {
         name: "NavigationBar",
         components: {},
+        computed: {
+            profileId () {
+                return this.$auth && this.$auth.user && this.$auth.user.sub ? this.$auth.user.sub : 'unknown'
+            }
+        }
     };
 
 </script>

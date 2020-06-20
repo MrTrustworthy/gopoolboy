@@ -1,19 +1,19 @@
 <template>
     <div>
-        <v-skeleton-loader v-if="$apollo.queries.getCrumbLinkBetween.loading" type="card"></v-skeleton-loader>
+        <v-skeleton-loader v-if="isLoading" type="card"></v-skeleton-loader>
 
         <v-card v-else-if="$apollo.queries.getCrumbLinkBetween.error">
             An error occured :(
         </v-card>
 
         <v-card v-else shaped>
-            <DetailActionButtons :source-object="getCrumbLinkBetween" :show-add-link="false"/>
+            <DetailActionButtons :source-object="linkData" :show-add-link="false"/>
 
             <v-card-actions>
                 <Votes
-                        :votes="getCrumbLinkBetween.votes"
-                        :own-vote="getCrumbLinkBetween.ownVote"
-                        :object-id="getCrumbLinkBetween.id"
+                        :votes="linkData.votes"
+                        :own-vote="linkData.ownVote"
+                        :object-id="linkData.id"
                         object-type="crumblink"
                 />
             </v-card-actions>
@@ -38,6 +38,14 @@
                 getUsers: []
             };
         },
+        computed: {
+            linkData() {
+                return this.getCrumbLinkBetween;
+            },
+            isLoading() {
+                return this.getCrumbLinkBetween === undefined || this.$apollo.queries.getCrumbLinkBetween.loading;
+            }
+        },
         apollo: {
             getCrumbLinkBetween: {
                 query: require("../graphql/GetCrumbLinkBetween.gql"),
@@ -48,10 +56,6 @@
                     };
                 },
                 client: "zeldaClient",
-            },
-            getUsers: {
-                query: require("../graphql/GetUsers.gql"),
-                client: "orgamonClient",
             },
         },
     };

@@ -2,11 +2,11 @@
     <div id="crumbdetail">
         <Speeddial/>
 
-        <CrumbFull v-bind:id="crumbId" v-on:added-link="refresh"/>
+        <CrumbFull v-bind:id="crumbId" :main="true" v-on:added-link="refresh"/>
         <br>
         <h2>Found a total of {{ getLinkedCrumbIds.length }} linked Crumbs</h2>
         <br>
-        <div v-for="qId of getLinkedCrumbIds" :key="qId">
+        <div v-for="qId in getLinkedCrumbIds" :key="qId">
             <CrumbFull v-bind:id="qId" v-on:added-link="refresh"/>
 
             <v-row justify="center">
