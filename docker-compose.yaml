@@ -32,6 +32,27 @@ services:
             KAFKA_API_SECRET: "${KAFKA_API_SECRET}"
         command: ["npm", "run", "server-dev"]
 
+    taginator:
+        build: applications/taginator
+        volumes:
+            - ./applications/taginator:/app
+        ports:
+            - 4200:4000
+        depends_on:
+            - app-postgres
+        environment:
+            NODE_ENV: development
+            AUTH0_DOMAIN: dev-poolboy.eu.auth0.com
+            API_IDENTIFIER: http://dev-poolboy-api
+            DB_HOST: app-postgres
+            DB_DATABASE: taginator
+            DB_USER: postgres
+            DB_PASSWORD: postgres
+            KAFKA_BROKER_ENDPOINT: "${KAFKA_BROKER_ENDPOINT}"
+            KAFKA_API_KEY: "${KAFKA_API_KEY}"
+            KAFKA_API_SECRET: "${KAFKA_API_SECRET}"
+        command: ["npm", "run", "server-dev"]
+
     zelda:
         build: applications/zelda
         volumes:
@@ -90,6 +111,7 @@ services:
             - ./applications/frontend/src:/app/src
         ports:
             - 8080:8080
+
     homepage:
         build:
             context: applications/homepage
@@ -101,6 +123,7 @@ services:
             - ./applications/homepage:/app
         ports:
             - 8040:8080
+
     findr:
         build: applications/findr
         volumes:
@@ -118,6 +141,7 @@ services:
             ES_AUTH_PW: "${ES_AUTH_PW}"
             ES_INDEX_PREFIX: "${ES_INDEX_PREFIX}"
         command: ["npm", "run", "server-dev"]
+
     findr-updater:
         build: applications/findr-updater
         volumes:

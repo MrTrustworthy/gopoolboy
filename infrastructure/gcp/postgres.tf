@@ -61,3 +61,14 @@ resource "google_sql_user" "zelda_user" {
   instance = google_sql_database_instance.app_postgres.name
   password = var.zelda_db_password
 }
+
+resource "google_sql_database" "taginator_database" {
+  name     = "taginator"
+  instance = google_sql_database_instance.app_postgres.name
+}
+
+resource "google_sql_user" "taginator_user" {
+  name     = "taginator"
+  instance = google_sql_database_instance.app_postgres.name
+  password = var.taginator_db_password
+}

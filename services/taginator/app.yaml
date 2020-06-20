@@ -1,0 +1,31 @@
+#@data/values
+---
+taginator:
+  appName: taginator
+  imageName: taginator-image
+  newImageName: eu.gcr.io/integration-poolboy/taginator
+  serviceName: taginator-service
+  secretName: taginator-secret
+  ingressName: taginator-ingress
+  staticIpName: nginx-ingress-static-global-ip
+  externalUrl: taginator.gopoolboy.dev
+  sslCertSecretName: taginator-ssl-secret
+  dockerfileFolder: applications/taginator
+  namespace: taginator
+  appPort: 4000
+  officeIps: "78.94.91.125/32,78.35.144.135/32"
+  resources:
+    ram: 256Mi
+
+  env:
+    node_env: production
+    auth0_domain: dev-poolboy.eu.auth0.com
+    api_identifier: http://dev-poolboy-api
+    db_host: pg-taginator
+    db_database: taginator
+    kafka_broker_endpoint: kafka:9092
+  secrets:
+    db_user: taginator
+    db_password: postgres
+    kafka_api_key: omlette
+    kafka_api_secret: omlette

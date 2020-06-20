@@ -74,3 +74,8 @@ variable "zelda_db_password" {
   type    = string
   default = ""
 }
+
+variable "taginator_db_password" {
+  type    = string
+  default = ""
+}
