@@ -1,6 +1,7 @@
 query GetAllTags {
   getAllTags {
-    key
+    id
+    name
     value
   }
 }

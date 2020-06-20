@@ -1,0 +1,7 @@
+query GetTagsByIds($ids: [ID]!){
+  getTagsByIds(ids: $ids){
+    id
+    name
+    value
+  }
+}

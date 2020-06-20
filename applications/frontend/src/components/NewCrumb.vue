@@ -7,7 +7,7 @@
             <v-form ref="form">
                 <v-text-field v-model="newCrumbTitle" :counter="120" label="Title" required></v-text-field>
                 <v-textarea v-model="newCrumbText" label="Text" outlined></v-textarea>
-                <TagInput v-on:new-tags="(tags) => newCrumbTags = tags"/>
+                <TagInput v-on:new-tags="(tagIds) => newCrumbTagIds = tagIds"/>
                 <v-btn @click="createCrumb">Post {{ crumbType }}</v-btn>
             </v-form>
         </v-container>
@@ -48,7 +48,7 @@
             return {
                 newCrumbTitle: "",
                 newCrumbText: "",
-                newCrumbTags: []
+                newCrumbTagIds: []
             };
         },
         methods: {
@@ -68,7 +68,7 @@
                             title: newCrumbData.title,
                             text: newCrumbData.text,
                             type: this.crumbType,
-                            tags: newCrumbData.tags,
+                            tags: newCrumbData.tagIds,
                         },
                         client: "crumblerClient",
                     });
@@ -100,7 +100,7 @@
                 const text = this.newCrumbText;
                 this.newCrumbTitle = "";
                 this.newCrumbText = "";
-                return {tags: this.newCrumbTags, title, text};
+                return {tagIds: this.newCrumbTagIds, title, text};
             },
 
         },

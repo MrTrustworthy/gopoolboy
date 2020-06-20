@@ -5,22 +5,22 @@ const {getTagsByIds, getAllTags, createTag} = require("./resolvers");
 const typeDefs = gql`
     type Tag {
         id: ID!
-        key: String!
+        name: String!
         value: String!
     }
 
     input TagInput {
-        key: String!
+        name: String!
         value: String!
     }
 
     type Query {
-        getTagsByIds(ids: [ID!]): [Tag]
+        getTagsByIds(ids: [ID]!): [Tag]
         getAllTags: [Tag]
     }
 
     type Mutation {
-        createTag(input: TagInput!): Tag!
+        createTag(tagInput: TagInput!): Tag!
     }
 `;
 

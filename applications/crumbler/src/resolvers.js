@@ -109,20 +109,8 @@ const getCrumb = async (args, organization, user) => {
     return getCrumbDataById(args.id, organization, user);
 };
 
-const getAllTags = async (args, organization, user) => {
-    logger.info("Getting all Tags", {organization, user});
-    let tags = await knexClient
-        .from("crumbs")
-        .where({organization_id: organization})
-        .select("tags");
-    // Extract tags from result set, concatinate and de-duplicate all tags
-    tags = [...new Set([].concat(...tags.map(item => item.tags)))];
-    return tags;
-};
-
 module.exports = {
     getCrumb,
-    getAllTags,
     createCrumb,
     voteCrumb,
 };

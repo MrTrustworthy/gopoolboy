@@ -19,8 +19,9 @@
             </v-list-item-content>
 
             <v-list-item-action>
-                <v-chip>{{ getCrumb.votes + ' Votes' }}</v-chip>
-                <v-chip>{{ getLinkedCrumbIds.length + ' Linked' }}</v-chip>
+                <v-chip>{{ getCrumb.votes }}<v-icon>arrow_upward</v-icon></v-chip>
+                <v-chip>{{ getLinkedCrumbIds.length }}<v-icon>link</v-icon></v-chip>
+                <v-chip>{{ getCrumb.tags.length }}<v-icon>label</v-icon></v-chip>
             </v-list-item-action>
         </v-list-item>
 
@@ -30,6 +31,7 @@
 <script>
 
     import CrumbTypeIcon from "./CrumbTypeIcon";
+
     export default {
         name: "CrumbSummary",
         components: {CrumbTypeIcon},

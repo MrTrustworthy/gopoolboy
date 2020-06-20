@@ -1,55 +1,70 @@
 <template>
-
-    <v-combobox
-            v-model="tags"
-            :items="tagAutocompletes"
-            v-on:input="updateTags"
-            :search-input.sync="search"
-            label="Tags as key:value"
-            multiple
-            chips
-            clearable
-    >
-        <template v-slot:selection="data">
-            <v-chip
-                    :key="JSON.stringify(data.item)"
-                    v-bind="data.attrs"
-                    :input-value="data.selected"
-                    :disabled="data.disabled"
-            >
-                <v-avatar class="accent white--text" left v-text="data.item.slice(0, 1).toUpperCase()"
-                ></v-avatar>
-                {{ data.item }}
-            </v-chip>
-        </template>
-
-
-        <template v-slot:no-data>
-            <v-list-item>
-                <v-list-item-content>
-                    <v-list-item-title>
-                        Press <kbd>enter</kbd> to create a new one
-                    </v-list-item-title>
-                </v-list-item-content>
-            </v-list-item>
-        </template>
-    </v-combobox>
-
+    <v-container fluid>
+        <v-combobox
+                v-model="model"
+                :filter="filter"
+                :hide-no-data="!search"
+                :items="allTags"
+                item-value="id"
+                :search-input.sync="search"
+                v-on:change="newTagEntered"
+                :loading="isLoading"
+                hide-selected
+                label="Search for tags"
+                multiple
+                small-chips
+                solo
+        >
+            <template v-slot:no-data>
+                <v-list-item>
+                    <span class="subheading">Create</span>
+                    <v-chip label small :color="colorForId(0)">
+                        {{ search }}
+                    </v-chip>
+                </v-list-item>
+            </template>
+            <template v-slot:selection="{ attrs, item, parent, selected }">
+                <v-chip
+                        v-bind="attrs"
+                        :input-value="selected"
+                        :color="colorForId(item.id)"
+                        label
+                        small
+                >
+                    <span>{{ item.name }}:{{ item.value }}</span>
+                    <v-icon small @click="parent.selectItem(item)">close</v-icon>
+                </v-chip>
+            </template>
+            <template v-slot:item="{ item }">
+                <v-chip dark label small :color="colorForId(item.id)"> {{ item.name }}:{{ item.value }}</v-chip>
+                <v-spacer></v-spacer>
+            </template>
+        </v-combobox>
+    </v-container>
 </template>
 
 <script>
     export default {
         name: "TagInput",
-        data() {
-            return {
-                tags: [],
-                getAllTags: [],
-                search: null
-            };
-        },
+        data: () => ({
+            getAllTags: [],
+            waitingForTags: 0,
+            colors: ['green', 'purple', 'indigo', 'cyan', 'teal', 'orange'],
+            model: [],
+            search: null,
+        }),
         computed: {
-            tagAutocompletes() {
-                return this.getAllTags.map(tag => `${tag.key}:${tag.value}`);
+            allTags() {
+                return [
+                    {header: 'Select an tag or create one'},
+                    ...this.getAllTags
+                ];
+            },
+            isLoading() {
+                return this.waitingForTags > 0;
+            },
+            tagIds() {
+                return this.model.map(tag => tag.id);
             }
         },
         watch: {
@@ -58,29 +73,61 @@
             }
         },
         methods: {
+            newTagEntered(tags) {
+                // filter out all "new custom" tags (which are strings) and handle them async
+                tags = tags.map(tag => {
+                    if (typeof tag !== "string") return tag;
+                    this.createNewTag(tag);
+                    this.waitingForTags++;
+                    return null;
+                }).filter(e => e !== null);
+                this.model = tags;
+                this.$emit("new-tags", this.tagIds);
+            },
+            async createNewTag(tagString) {
+                const newTag = this.parseTag(tagString);
+                const result = await this.$apollo
+                    .mutate({
+                        mutation: require("../graphql/CreateTag.gql"),
+                        variables: {
+                            tagInput: {
+                                name: newTag.name,
+                                value: newTag.value
+                            }
+                        },
+                        client: "taginatorClient"
+                    });
+                this.waitingForTags--;
+                this.model.push(result.data.createTag);
+                this.$emit("new-tags", this.tagIds);
+                await this.$apollo.queries.getAllTags.refetch();
+            },
             parseTag(str) {
                 /***
                  * validates and formats a string tag, returning "null" if its not verifiable
-                 * "hello:you:friend" => {key: 'hello', 'value': 'youfriend'}
-                 * "whatsup" -> "{key: 'whatsup', value: 'yes'}"
+                 * "hello:you:friend" => {name: 'hello', 'value': 'youfriend'}
+                 * "whatsup" -> "{name: 'whatsup', value: 'yes'}"
                  */
                 if (!str) return null;
-                let split = str.split(":");
+                let split = str.replace(/ /g, "").toLowerCase().split(":");
                 return {
-                    key: split[0],
+                    name: split[0],
                     value: split.slice(1).join("") || "yes"
                 };
             },
-            updateTags(newTags) {
-                const tagData = newTags.map(this.parseTag).filter(x => x);
-                this.tags = tagData.map(tag => `${tag.key}:${tag.value}`);
-                this.$emit("new-tags", tagData);
-            }
+            colorForId(id) {
+                return this.colors[id % this.colors.length];
+            },
+            filter(item, queryText) {
+                if (item.header) return false;
+                const itemText = `${item.name}:${item.value}`;
+                return itemText.includes(queryText.toLowerCase());
+            },
         },
         apollo: {
             getAllTags: {
                 query: require("../graphql/GetAllTags.gql"),
-                client: "crumblerClient",
+                client: "taginatorClient",
             },
         },
     };

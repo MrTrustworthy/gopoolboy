@@ -9,9 +9,6 @@ query GetCrumb($id: ID!) {
         ownVote
         createdAt
         authorId
-        tags {
-            key
-            value
-        }
+        tags
     }
 }

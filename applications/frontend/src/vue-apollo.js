@@ -29,6 +29,10 @@ const zeldaOptions = {
     httpEndpoint: process.env.VUE_APP_ZELDA_GRAPHQL_HTTP,
 };
 
+const taginatorOptions = {
+    httpEndpoint: process.env.VUE_APP_TAGINATOR_GRAPHQL_HTTP,
+};
+
 export function createProvider() {
     const {apolloClient: orgamonClient} = createApolloClient({
         ...defaultOptions,
@@ -46,8 +50,12 @@ export function createProvider() {
         ...defaultOptions,
         ...zeldaOptions,
     });
+    const {apolloClient: taginatorClient} = createApolloClient({
+        ...defaultOptions,
+        ...taginatorOptions,
+    });
     return new VueApollo({
-        clients: {orgamonClient, findrClient, crumblerClient, zeldaClient},
+        clients: {orgamonClient, findrClient, crumblerClient, zeldaClient, taginatorClient},
         defaultClient: crumblerClient,
         errorHandler(error) {
             console.log(

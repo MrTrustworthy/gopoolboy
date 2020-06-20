@@ -52,7 +52,7 @@
             </v-container>
 
             <v-card-actions>
-                <Tags :tags="getCrumb.tags"/>
+                <Tags :tag-ids="getCrumb.tags"/>
             </v-card-actions>
 
         </v-card>
@@ -99,7 +99,6 @@
                 },
                 client: "crumblerClient",
             },
-
         },
     };
 </script>

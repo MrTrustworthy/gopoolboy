@@ -1,4 +1,4 @@
-mutation CreateCrumb($title: String!, $text: String!, $type: String!, $tags: [TagInput]) {
+mutation CreateCrumb($title: String!, $text: String!, $type: String!, $tags: [ID]!) {
     createCrumb(title: $title, text: $text, type: $type, tags: $tags) {
         id
     }

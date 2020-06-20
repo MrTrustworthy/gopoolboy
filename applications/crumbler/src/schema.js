@@ -1,17 +1,8 @@
-const { gql } = require("apollo-server");
+const {gql} = require("apollo-server");
 const authRequired = require("./validate");
-const { getCrumb, getAllTags, createCrumb, voteCrumb } = require("./resolvers");
+const {getCrumb, createCrumb, voteCrumb} = require("./resolvers");
 
 const typeDefs = gql`
-    type Tag {
-        key: String!
-        value: String!
-    }
-
-    input TagInput {
-        key: String!
-        value: String!
-    }
 
     type Crumb {
         id: ID
@@ -23,16 +14,15 @@ const typeDefs = gql`
         ownVote: Int
         createdAt: String
         authorId: String
-        tags: [Tag]
+        tags: [ID]
     }
 
     type Query {
         getCrumb(id: ID!): Crumb
-        getAllTags: [Tag]
     }
 
     type Mutation {
-        createCrumb(title: String!, text: String!, type: String!, tags: [TagInput]): Crumb!
+        createCrumb(title: String!, text: String!, type: String!, tags: [ID]!): Crumb!
         voteCrumb(id: ID!, vote: Int!): Crumb!
     }
 `;
@@ -40,7 +30,6 @@ const typeDefs = gql`
 const resolvers = {
     Query: {
         getCrumb: authRequired(getCrumb, "read:questions"),
-        getAllTags: authRequired(getAllTags, "read:questions")
     },
     Mutation: {
         createCrumb: authRequired(createCrumb, "create:questions"),
@@ -48,4 +37,4 @@ const resolvers = {
     },
 };
 
-module.exports = { typeDefs, resolvers };
+module.exports = {typeDefs, resolvers};
