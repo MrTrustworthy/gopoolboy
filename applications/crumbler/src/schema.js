@@ -1,7 +1,7 @@
 const {gql} = require("apollo-server");
 const {AuthenticationError} = require("apollo-server");
 const {initialize, authRequired, PERMISSIONS} = require("@gopoolboy/auth");
-const {getCrumb, createCrumb, voteCrumb} = require("./resolvers");
+const {getCrumb, getCrumbsWithTag, createCrumb, voteCrumb} = require("./resolvers");
 
 initialize(process.env.AUTH0_DOMAIN, process.env.API_IDENTIFIER, AuthenticationError);
 
@@ -22,6 +22,7 @@ const typeDefs = gql`
 
     type Query {
         getCrumb(id: ID!): Crumb
+        getCrumbsWithTag(tag: ID!): [Crumb]
     }
 
     type Mutation {
@@ -33,6 +34,7 @@ const typeDefs = gql`
 const resolvers = {
     Query: {
         getCrumb: authRequired(getCrumb, PERMISSIONS.READ_CRUMBS),
+        getCrumbsWithTag: authRequired(getCrumbsWithTag, PERMISSIONS.READ_CRUMBS)
     },
     Mutation: {
         createCrumb: authRequired(createCrumb, PERMISSIONS.CREATE_CRUMBS),

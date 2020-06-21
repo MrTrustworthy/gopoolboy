@@ -36,7 +36,7 @@
                 </v-chip>
             </template>
             <template v-slot:item="{ item }">
-                <v-chip dark label small :color="colorForId(item.id)"> {{ item.name }}:{{ item.value }}</v-chip>
+                <v-chip dark label small :color="colorForId(item.id)">{{ item.name }}:{{ item.value }}</v-chip>
                 <v-spacer></v-spacer>
             </template>
         </v-combobox>

@@ -76,7 +76,7 @@ function authRequired(resolverFunction, requiredPermission = null) {
             throw new config.errorType(msg);
         }
         let {organization} = decoded[config.apiIdentifier];
-        return resolverFunction(args, organization, decoded.sub);
+        return resolverFunction(args, organization, decoded.sub, info);
     };
 }
 

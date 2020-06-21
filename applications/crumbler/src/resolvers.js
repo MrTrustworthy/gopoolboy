@@ -109,8 +109,13 @@ const getCrumb = async (args, organization, user) => {
     return getCrumbDataById(args.id, organization, user);
 };
 
+const getCrumbsWithTag = async (args, organization, user) => {
+    logger.info("GOT ARGS", args);
+};
+
 module.exports = {
     getCrumb,
+    getCrumbsWithTag,
     createCrumb,
     voteCrumb,
 };
