@@ -17,14 +17,6 @@ resource "auth0_resource_server" "poolboy_api" {
     value       = "create:users"
   }
   scopes {
-    description = "create answers"
-    value       = "create:answers"
-  }
-  scopes {
-    description = "create questions"
-    value       = "create:questions"
-  }
-  scopes {
     description = "delete users"
     value       = "delete:users"
   }
@@ -33,28 +25,12 @@ resource "auth0_resource_server" "poolboy_api" {
     value       = "modify:users"
   }
   scopes {
-    description = "read answers"
-    value       = "read:answers"
-  }
-  scopes {
     description = "read organization"
     value       = "read:organization"
   }
   scopes {
-    description = "read questions"
-    value       = "read:questions"
-  }
-  scopes {
     description = "read users"
     value       = "read:users"
-  }
-  scopes {
-    description = "vote answers"
-    value       = "vote:answers"
-  }
-  scopes {
-    description = "vote questions"
-    value       = "vote:questions"
   }
 
   scopes {
@@ -65,7 +41,6 @@ resource "auth0_resource_server" "poolboy_api" {
     description = "Read Crumbs"
     value       = "read:crumbs"
   }
-
   scopes {
     description = "Create CrumbLinks"
     value       = "create:crumblinks"
@@ -74,7 +49,6 @@ resource "auth0_resource_server" "poolboy_api" {
     description = "Read CrumbLinks"
     value       = "read:crumblinks"
   }
-
   scopes {
     description = "Create Tags"
     value       = "create:tags"

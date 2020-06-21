@@ -1,14 +1,7 @@
 resource "auth0_role" "owner" {
   name        = "Owner"
   description = "Organization Owner"
-  permissions {
-    name                       = "create:answers"
-    resource_server_identifier = local.env.api_identifier
-  }
-  permissions {
-    name                       = "create:questions"
-    resource_server_identifier = local.env.api_identifier
-  }
+
   permissions {
     name                       = "create:users"
     resource_server_identifier = local.env.api_identifier
@@ -22,27 +15,11 @@ resource "auth0_role" "owner" {
     resource_server_identifier = local.env.api_identifier
   }
   permissions {
-    name                       = "read:answers"
-    resource_server_identifier = local.env.api_identifier
-  }
-  permissions {
     name                       = "read:organization"
     resource_server_identifier = local.env.api_identifier
   }
   permissions {
-    name                       = "read:questions"
-    resource_server_identifier = local.env.api_identifier
-  }
-  permissions {
     name                       = "read:users"
-    resource_server_identifier = local.env.api_identifier
-  }
-  permissions {
-    name                       = "vote:answers"
-    resource_server_identifier = local.env.api_identifier
-  }
-  permissions {
-    name                       = "vote:questions"
     resource_server_identifier = local.env.api_identifier
   }
 
@@ -58,8 +35,6 @@ resource "auth0_role" "owner" {
     name                       = "read:tags"
     resource_server_identifier = local.env.api_identifier
   }
-
-
   permissions {
     name                       = "create:crumbs"
     resource_server_identifier = local.env.api_identifier
@@ -79,32 +54,6 @@ resource "auth0_role" "editor" {
   description = "Editor"
 
   permissions {
-    name                       = "create:answers"
-    resource_server_identifier = local.env.api_identifier
-  }
-  permissions {
-    name                       = "create:questions"
-    resource_server_identifier = local.env.api_identifier
-  }
-  permissions {
-    name                       = "read:answers"
-    resource_server_identifier = local.env.api_identifier
-  }
-  permissions {
-    name                       = "read:questions"
-    resource_server_identifier = local.env.api_identifier
-  }
-  permissions {
-    name                       = "vote:answers"
-    resource_server_identifier = local.env.api_identifier
-  }
-  permissions {
-    name                       = "vote:questions"
-    resource_server_identifier = local.env.api_identifier
-  }
-
-
-  permissions {
     name                       = "read:crumbs"
     resource_server_identifier = local.env.api_identifier
   }
@@ -116,8 +65,6 @@ resource "auth0_role" "editor" {
     name                       = "read:tags"
     resource_server_identifier = local.env.api_identifier
   }
-
-
   permissions {
     name                       = "create:crumbs"
     resource_server_identifier = local.env.api_identifier
@@ -135,15 +82,6 @@ resource "auth0_role" "editor" {
 resource "auth0_role" "viewer" {
   name        = "Viewer"
   description = "Viewer"
-
-  permissions {
-    name                       = "read:answers"
-    resource_server_identifier = local.env.api_identifier
-  }
-  permissions {
-    name                       = "read:questions"
-    resource_server_identifier = local.env.api_identifier
-  }
 
   permissions {
     name                       = "read:crumbs"
