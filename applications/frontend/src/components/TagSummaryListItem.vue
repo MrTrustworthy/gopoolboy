@@ -1,0 +1,67 @@
+<template>
+
+    <div>
+        <v-skeleton-loader v-if="$apollo.queries.getCrumbsWithTag.loading" type="list-item-avatar-two-line"/>
+
+        <!-- Error -->
+        <div v-else-if="$apollo.queries.getCrumbsWithTag.error">
+            An error occured :(
+        </div>
+
+        <v-list-item sha v-else>
+            <v-list-item-icon>
+                <v-chip label small :color="color"> {{ tag.name }}:{{ tag.value }}</v-chip>
+            </v-list-item-icon>
+
+            <v-list-item-content>
+                <v-list-item-title>{{ getCrumbsWithTag.length }} Crumbs</v-list-item-title>
+            </v-list-item-content>
+
+            <v-list-item-action>
+                <AuthorListItem :author-id="tag.authorId"/>
+            </v-list-item-action>
+
+        </v-list-item>
+    </div>
+</template>
+
+<script>
+    import AuthorListItem from "./AuthorListItem";
+
+    export default {
+        name: "TagSummaryListItem",
+        components: {AuthorListItem},
+        props: {
+            tag: {
+                type: Object,
+                required: true
+            }
+        },
+        data() {
+            return {
+                getCrumbsWithTag: [],
+                colors: ['green', 'purple', 'indigo', 'cyan', 'teal', 'orange'],
+            };
+        },
+        computed: {
+            color() {
+                return this.colors[this.tag.id % this.colors.length];
+            },
+        },
+        apollo: {
+            getCrumbsWithTag: {
+                query: require("../graphql/GetCrumbsWithTag.gql"),
+                client: "crumblerClient",
+                variables() {
+                    return {
+                        tag: this.tag.id
+                    };
+                }
+            },
+        },
+    };
+</script>
+
+<style scoped>
+
+</style>

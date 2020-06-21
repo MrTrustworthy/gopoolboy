@@ -1,0 +1,5 @@
+query GetCrumbsWithTag($tag: ID!){
+  getCrumbsWithTag(tag: $tag){
+    id
+  }
+}

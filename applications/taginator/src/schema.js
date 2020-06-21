@@ -10,6 +10,7 @@ const typeDefs = gql`
         id: ID!
         name: String!
         value: String!
+        authorId: String
     }
 
     input TagInput {

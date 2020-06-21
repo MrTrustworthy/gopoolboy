@@ -10,6 +10,15 @@
                 </v-list-item-content>
             </v-list-item>
 
+            <v-list-item id="tab-tags" to="/tags">
+                <v-list-item-icon>
+                    <v-icon>label</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content>
+                    <v-list-item-title>Tags</v-list-item-title>
+                </v-list-item-content>
+            </v-list-item>
+
             <v-list-item id="tab-about" to="/about">
                 <v-list-item-icon>
                     <v-icon>help</v-icon>
@@ -49,8 +58,8 @@
         name: "NavigationBar",
         components: {},
         computed: {
-            profileId () {
-                return this.$auth && this.$auth.user && this.$auth.user.sub ? this.$auth.user.sub : 'unknown'
+            profileId() {
+                return this.$auth && this.$auth.user && this.$auth.user.sub ? this.$auth.user.sub : 'unknown';
             }
         }
     };

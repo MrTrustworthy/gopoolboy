@@ -3,5 +3,6 @@ query GetAllTags {
     id
     name
     value
+    authorId
   }
 }

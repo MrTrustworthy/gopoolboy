@@ -7,6 +7,7 @@ import ProfileView from "./views/Profile.vue";
 import OrganizationView from "./views/Organization.vue";
 import {fromId} from "@/urlids";
 import {authGuard} from "./auth/authGuard";
+import TagOverview from "./views/TagOverview";
 
 Vue.use(VueRouter);
 
@@ -24,6 +25,14 @@ export const router = new VueRouter({
             path: "/crumbs",
             name: "crumbs",
             component: CrumbsView,
+            meta: {
+                requiresLogin: true,
+            },
+        },
+        {
+            path: "/tags",
+            name: "tags",
+            component: TagOverview,
             meta: {
                 requiresLogin: true,
             },

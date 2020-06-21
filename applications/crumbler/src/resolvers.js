@@ -111,19 +111,16 @@ const getCrumb = async (args, organization, user) => {
 
 const getCrumbsWithTag = async (args, organization, user, info) => {
     logger.info("Getting all crumbs with tag", {tags: args.tags});
-
-    let crumbData = await knexClient
+    const crumbData = await knexClient
         .from("crumbs")
         .where({organization_id: organization})
         .andWhere("tags", "@>", [args.tag])
         .select("id");
-    
+
     // try to shorten it if only the ID is requested
     const fields = info.fieldNodes[0].selectionSet.selections.map(selection => selection.name.value);
-    if (crumbData.length === 0 || fields === ["id"]) return crumbData;
-    return Promise.all(crumbData.map(record => getCrumbDataById(record.id)));
-
-
+    if (crumbData.length === 0 || (fields.length === 1 && fields[0] === "id")) return crumbData;
+    return Promise.all(crumbData.map(record => getCrumbDataById(record.id, organization, user)));
 };
 
 module.exports = {
