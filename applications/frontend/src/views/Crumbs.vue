@@ -1,7 +1,8 @@
 <template>
     <div id="crumbs">
         <CreateWidgetSnackbar/>
-        <SearchCrumb crumbType="question" v-on:found-ids="(ids) => crumbIds = ids"/>
+        <SearchCard crumbType="question" v-on:found-ids="(ids) => crumbIds = ids"/>
+        <br>
         <CrumbList :crumb-ids="crumbIds" v-on:clicked-summary="routeToFull"/>
     </div>
 </template>
@@ -9,7 +10,7 @@
 <script>
     import CreateWidgetSnackbar from "@/components/Speeddial.vue";
     import CrumbList from "../components/CrumbList";
-    import SearchCrumb from "../components/SearchCard";
+    import SearchCard from "../components/SearchCard";
     import {fromId} from "@/urlids";
 
     export default {
@@ -20,7 +21,7 @@
             };
         },
         components: {
-            SearchCrumb,
+            SearchCard,
             CrumbList,
             CreateWidgetSnackbar,
         },

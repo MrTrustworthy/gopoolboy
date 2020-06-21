@@ -1,31 +1,29 @@
 <template>
-    <div>
-        <v-card>
-            <v-card-text>
-                <SearchBar :sort-by="sortBy" :crumb-type="crumbType" v-on:found-ids="updateIds"/>
-                <div>
-                    Found a total of {{ crumbIds.length }} {{ objectDescriptor }} {{ outputSuffix }}
-                </div>
-            </v-card-text>
-            <v-divider></v-divider>
-            <v-card-actions>
-                <span>types</span>
-                <v-radio-group v-model="crumbType" row>
-                    <v-radio value="all" label="All"></v-radio>
-                    <v-radio value="question" label="Question"></v-radio>
-                    <v-radio value="answer" label="Answer"></v-radio>
-                </v-radio-group>
-            </v-card-actions>
-            <v-card-actions>
-                <span>sort by</span>
-                <v-radio-group v-model="sortBy" row>
-                    <v-radio value="relevance" label="Relevance"></v-radio>
-                    <v-radio value="votes" label="Votes"></v-radio>
-                    <v-radio value="createdAt" label="Date"></v-radio>
-                </v-radio-group>
-            </v-card-actions>
-        </v-card>
-    </div>
+    <v-card shaped>
+        <v-card-text>
+            <SearchBar :sort-by="sortBy" :crumb-type="crumbType" v-on:found-ids="updateIds"/>
+            <div>
+                Found a total of {{ crumbIds.length }} {{ objectDescriptor }} {{ outputSuffix }}
+            </div>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+            <span>types</span>
+            <v-radio-group v-model="crumbType" row>
+                <v-radio value="all" label="All"></v-radio>
+                <v-radio value="question" label="Question"></v-radio>
+                <v-radio value="answer" label="Answer"></v-radio>
+            </v-radio-group>
+        </v-card-actions>
+        <v-card-actions>
+            <span>sort by</span>
+            <v-radio-group v-model="sortBy" row>
+                <v-radio value="relevance" label="Relevance"></v-radio>
+                <v-radio value="votes" label="Votes"></v-radio>
+                <v-radio value="createdAt" label="Date"></v-radio>
+            </v-radio-group>
+        </v-card-actions>
+    </v-card>
 </template>
 
 <script>
