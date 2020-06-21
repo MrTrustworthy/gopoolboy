@@ -4,10 +4,19 @@ const {logger} = require("./log");
 
 logger.info("Starting consumer", {topics});
 
+const handleError = (wrapped, pipe) => {
+    return (...args) => {
+        try {
+            return wrapped(...args);
+        } catch (e) {
+            logger.error("Error when trying to process message", {pipe, error: e});
+        }
+    };
+};
 
 consume({
-    [topics.CRUMBS_TOPIC]: indexCrumb,
-    [topics.VOTES_TOPIC]: voteCrumb
+    [topics.CRUMBS_TOPIC]: handleError(indexCrumb, "indexCrumb"),
+    [topics.VOTES_TOPIC]: handleError(voteCrumb, "voteCrumb")
 });
 
 
