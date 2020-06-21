@@ -19,9 +19,14 @@
             </v-list-item-content>
 
             <v-list-item-action>
-                <v-chip>{{ getCrumb.votes }}<v-icon>arrow_upward</v-icon></v-chip>
-                <v-chip>{{ getLinkedCrumbIds.length }}<v-icon>link</v-icon></v-chip>
-                <v-chip>{{ getCrumb.tags.length }}<v-icon>label</v-icon></v-chip>
+                <v-chip>
+                    {{ getCrumb.votes }}
+                    <v-icon>arrow_upward</v-icon>
+                    {{ getLinkedCrumbIds.length }}
+                    <v-icon>link</v-icon>
+                    {{ getCrumb.tags.length }}
+                    <v-icon>label</v-icon>
+                </v-chip>
             </v-list-item-action>
         </v-list-item>
 
