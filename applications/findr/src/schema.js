@@ -1,6 +1,10 @@
-const { gql } = require("apollo-server");
-const authRequired = require("./validate");
-const { findCrumbs } = require("./resolvers");
+const {gql} = require("apollo-server");
+const {AuthenticationError} = require("apollo-server");
+const {initialize, authRequired, PERMISSIONS} = require("@gopoolboy/auth");
+const {findCrumbs} = require("./resolvers");
+
+initialize(process.env.AUTH0_DOMAIN, process.env.API_IDENTIFIER, AuthenticationError);
+
 
 const typeDefs = gql`
     type QueryResult {
@@ -14,8 +18,8 @@ const typeDefs = gql`
 
 const resolvers = {
     Query: {
-        findCrumbs: authRequired(findCrumbs, "read:questions"),
+        findCrumbs: authRequired(findCrumbs, PERMISSIONS.READ_CRUMBS),
     },
 };
 
-module.exports = { typeDefs, resolvers };
+module.exports = {typeDefs, resolvers};

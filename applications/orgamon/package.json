@@ -8,13 +8,12 @@
         "migrate": "knex migrate:latest --env main"
     },
     "dependencies": {
+        "@gopoolboy/auth": "^0.1.1",
         "apollo-server": "^2.14.2",
         "auth0": "^2.25.1",
         "dotenv": "^8.2.0",
         "generate-password": "^1.5.1",
         "graphql": "^15.0.0",
-        "jsonwebtoken": "^8.5.1",
-        "jwks-rsa": "^1.8.0",
         "knex": "^0.21.1",
         "pg": "^8.0.3",
         "uuid": "^8.1.0",

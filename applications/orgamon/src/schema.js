@@ -1,5 +1,9 @@
-const { gql } = require("apollo-server");
-const authRequired = require("./validate");
+const {gql} = require("apollo-server");
+const {AuthenticationError} = require("apollo-server");
+const {initialize, authRequired, PERMISSIONS} = require("@gopoolboy/auth");
+
+initialize(process.env.AUTH0_DOMAIN, process.env.API_IDENTIFIER, AuthenticationError);
+
 const {
     getOrganization,
     getUsers,
@@ -57,17 +61,17 @@ const typeDefs = gql`
 
 const resolvers = {
     Query: {
-        getOrganization: authRequired(getOrganization, "read:organization"),
-        getUsers: authRequired(getUsers, "read:users"),
-        getUser: authRequired(getUser, "read:users"),
-        getRoles: authRequired(getRoles, "read:users"),
+        getOrganization: authRequired(getOrganization, PERMISSIONS.READ_ORGANIZATION),
+        getUsers: authRequired(getUsers, PERMISSIONS.READ_USERS),
+        getUser: authRequired(getUser, PERMISSIONS.READ_USERS),
+        getRoles: authRequired(getRoles, PERMISSIONS.READ_USERS),
     },
     Mutation: {
         createOrganization: createOrganization,
-        inviteUser: authRequired(inviteUser, "create:users"),
-        changeUserRole: authRequired(changeUserRole, "modify:users"),
-        deleteUser: authRequired(deleteUser, "delete:users"),
+        inviteUser: authRequired(inviteUser, PERMISSIONS.CREATE_USERS),
+        changeUserRole: authRequired(changeUserRole, PERMISSIONS.MODIFY_USERS),
+        deleteUser: authRequired(deleteUser, PERMISSIONS.DELETE_USERS),
     },
 };
 
-module.exports = { typeDefs, resolvers };
+module.exports = {typeDefs, resolvers};

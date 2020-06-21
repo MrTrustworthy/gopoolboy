@@ -1,9 +1,12 @@
 const {gql} = require("apollo-server");
-const authRequired = require("./validate");
+const {AuthenticationError} = require("apollo-server");
+const {initialize, authRequired, PERMISSIONS} = require("@gopoolboy/auth");
 const {getLinkedCrumbIds, getCrumbLinkBetween, voteCrumbLink, createCrumbLink} = require("./resolvers");
 
+initialize(process.env.AUTH0_DOMAIN, process.env.API_IDENTIFIER, AuthenticationError);
+
 const typeDefs = gql`
-        
+
     type CrumbLink {
         id: ID!
         links: [ID]
@@ -26,13 +29,13 @@ const typeDefs = gql`
 
 const resolvers = {
     Query: {
-        getLinkedCrumbIds: authRequired(getLinkedCrumbIds, "read:questions"),
-        getCrumbLinkBetween: authRequired(getCrumbLinkBetween, "read:questions"),
+        getLinkedCrumbIds: authRequired(getLinkedCrumbIds, PERMISSIONS.READ_CRUMBLINKS),
+        getCrumbLinkBetween: authRequired(getCrumbLinkBetween, PERMISSIONS.READ_CRUMBLINKS),
 
     },
     Mutation: {
-        createCrumbLink: authRequired(createCrumbLink, "create:questions"),
-        voteCrumbLink: authRequired(voteCrumbLink, "vote:questions"),
+        createCrumbLink: authRequired(createCrumbLink, PERMISSIONS.CREATE_CRUMBLINKS),
+        voteCrumbLink: authRequired(voteCrumbLink, PERMISSIONS.READ_CRUMBLINKS),
     },
 };
 

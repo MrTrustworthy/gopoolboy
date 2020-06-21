@@ -56,6 +56,33 @@ resource "auth0_resource_server" "poolboy_api" {
     description = "vote questions"
     value       = "vote:questions"
   }
+
+  scopes {
+    description = "Create Crumbs"
+    value       = "create:crumbs"
+  }
+  scopes {
+    description = "Read Crumbs"
+    value       = "read:crumbs"
+  }
+
+  scopes {
+    description = "Create CrumbLinks"
+    value       = "create:crumblinks"
+  }
+  scopes {
+    description = "Read CrumbLinks"
+    value       = "read:crumblinks"
+  }
+
+  scopes {
+    description = "Create Tags"
+    value       = "create:tags"
+  }
+  scopes {
+    description = "Read Tags"
+    value       = "read:tags"
+  }
 }
 
 resource "auth0_resource_server" "management_api" {

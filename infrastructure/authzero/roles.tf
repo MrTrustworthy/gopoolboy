@@ -45,6 +45,33 @@ resource "auth0_role" "owner" {
     name                       = "vote:questions"
     resource_server_identifier = local.env.api_identifier
   }
+
+  permissions {
+    name                       = "read:crumbs"
+    resource_server_identifier = local.env.api_identifier
+  }
+  permissions {
+    name                       = "read:crumblinks"
+    resource_server_identifier = local.env.api_identifier
+  }
+  permissions {
+    name                       = "read:tags"
+    resource_server_identifier = local.env.api_identifier
+  }
+
+
+  permissions {
+    name                       = "create:crumbs"
+    resource_server_identifier = local.env.api_identifier
+  }
+  permissions {
+    name                       = "create:crumblinks"
+    resource_server_identifier = local.env.api_identifier
+  }
+  permissions {
+    name                       = "create:tags"
+    resource_server_identifier = local.env.api_identifier
+  }
 }
 
 resource "auth0_role" "editor" {
@@ -75,6 +102,34 @@ resource "auth0_role" "editor" {
     name                       = "vote:questions"
     resource_server_identifier = local.env.api_identifier
   }
+
+
+  permissions {
+    name                       = "read:crumbs"
+    resource_server_identifier = local.env.api_identifier
+  }
+  permissions {
+    name                       = "read:crumblinks"
+    resource_server_identifier = local.env.api_identifier
+  }
+  permissions {
+    name                       = "read:tags"
+    resource_server_identifier = local.env.api_identifier
+  }
+
+
+  permissions {
+    name                       = "create:crumbs"
+    resource_server_identifier = local.env.api_identifier
+  }
+  permissions {
+    name                       = "create:crumblinks"
+    resource_server_identifier = local.env.api_identifier
+  }
+  permissions {
+    name                       = "create:tags"
+    resource_server_identifier = local.env.api_identifier
+  }
 }
 
 resource "auth0_role" "viewer" {
@@ -87,6 +142,19 @@ resource "auth0_role" "viewer" {
   }
   permissions {
     name                       = "read:questions"
+    resource_server_identifier = local.env.api_identifier
+  }
+
+  permissions {
+    name                       = "read:crumbs"
+    resource_server_identifier = local.env.api_identifier
+  }
+  permissions {
+    name                       = "read:crumblinks"
+    resource_server_identifier = local.env.api_identifier
+  }
+  permissions {
+    name                       = "read:tags"
     resource_server_identifier = local.env.api_identifier
   }
 }

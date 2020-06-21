@@ -1,0 +1,38 @@
+name: Publish Auth library to NPM
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "libraries/auth/**"
+      - ".github/workflows/auth.yaml"
+
+env:
+  NODE_VERSION: 12
+
+jobs:
+  publish-npm:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: ${{ env.GCP_VERSION }}
+          project_id: ${{ env.GKE_PROJECT }}
+          service_account_key: ${{ secrets.GKE_KEY }}
+          export_default_credentials: true
+      - id: secrets
+        uses: GoogleCloudPlatform/github-actions/get-secretmanager-secrets@master
+        with:
+          secrets: |-
+            npm_token:staging-poolboy/staging-npm_token
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          registry-url: https://registry.npmjs.org/
+      - run: npm ci
+      - run: npm publish --access public libraries/auth
+        env:
+          NODE_AUTH_TOKEN: ${{ steps.secrets.npm_token }}
