@@ -33,4 +33,4 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - run: npm publish --access public libraries/auth
         env:
-          NODE_AUTH_TOKEN: ${{ steps.secrets.npm_token }}
+          NODE_AUTH_TOKEN: ${{ steps.secrets.outputs.npm_token }}
