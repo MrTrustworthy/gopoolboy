@@ -8,7 +8,7 @@
         "migrate": "knex migrate:latest --env main"
     },
     "dependencies": {
-        "@gopoolboy/auth": "^0.1.0",
+        "@gopoolboy/auth": "^0.1.5",
         "apollo-server": "^2.14.2",
         "dotenv": "^8.2.0",
         "graphql": "^15.0.0",

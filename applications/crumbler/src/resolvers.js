@@ -53,7 +53,7 @@ const createCrumb = async (args, organization, user) => {
             source: "web",
             organization_id: organization,
             creator_id: user,
-            tags: JSON.stringify(args.tags),
+            tags: args.tags,
         })
         .returning("id");
 
@@ -109,8 +109,21 @@ const getCrumb = async (args, organization, user) => {
     return getCrumbDataById(args.id, organization, user);
 };
 
-const getCrumbsWithTag = async (args, organization, user) => {
-    logger.info("GOT ARGS", args);
+const getCrumbsWithTag = async (args, organization, user, info) => {
+    logger.info("Getting all crumbs with tag", {tags: args.tags});
+
+    let crumbData = await knexClient
+        .from("crumbs")
+        .where({organization_id: organization})
+        .andWhere("tags", "@>", [args.tag])
+        .select("id");
+    
+    // try to shorten it if only the ID is requested
+    const fields = info.fieldNodes[0].selectionSet.selections.map(selection => selection.name.value);
+    if (crumbData.length === 0 || fields === ["id"]) return crumbData;
+    return Promise.all(crumbData.map(record => getCrumbDataById(record.id)));
+
+
 };
 
 module.exports = {
