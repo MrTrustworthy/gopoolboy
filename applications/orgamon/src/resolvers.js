@@ -5,14 +5,13 @@ const {logger} = require("./log");
 
 const {
     createUser,
-    getAllUsers,
+    getAllOrganizationUsers,
     getRoles: apiGetRoles,
     deleteUser: apiDeleteUser,
     getRoleNameForUser,
     assignRoleToUser,
     clearAllRolesFromUser,
-    getUserDetails,
-    ensureUserIsInOrganization,
+    getOrganizationUser,
 } = require("./auth0api");
 
 /* Organization resolvers */
@@ -37,17 +36,26 @@ async function getOrganization(args, organization) {
         .first();
 }
 
+async function _getRoleDistribution(args, organization) {
+    const roles = await getRoles(args, organization);
+    const roleCounts = roles.reduce((acc, curr) => {
+        acc[curr.name] = 0;
+        return acc;
+    }, {});
+    (await getUsers(args, organization)).forEach(u => roleCounts[u.organizationRole]++);
+    return roleCounts;
+}
+
 /* User Resolvers */
 
 async function getUsers(args, organization) {
     logger.info("Get Users for organization", {organization});
-    return (await getAllUsers()).filter((user) => user.organization === organization);
+    return getAllOrganizationUsers(organization);
 }
 
 async function getUser(args, organization) {
     logger.info("Get User", {id: args.id, organization});
-    await ensureUserIsInOrganization(args.id, organization);
-    return getUserDetails(args.id);
+    return getOrganizationUser(args.id, organization);
 }
 
 async function inviteUser(args, organization) {
@@ -56,14 +64,14 @@ async function inviteUser(args, organization) {
      */
     logger.info("Inviting new user", {email: args.email, role: args.role, organization});
     await createUser(organization, args.email, args.role);
-    return getUserDetails(args.id);
+    return getOrganizationUser(args.id, organization);
 }
 
 async function deleteUser(args, organization) {
     logger.info("Delete user", {id: args.id, organization});
     const msg = `deleting user ${args.id} in organization ${organization}`;
     try {
-        await ensureUserIsInOrganization(args.id, organization);
+        await getOrganizationUser(args.id, organization);
         await apiDeleteUser(args.id);
         return {success: true, message: `${msg} was successful`};
     } catch (e) {
@@ -80,7 +88,7 @@ async function getRoles(args, organization) {
 
 async function changeUserRole(args, organization, user) {
     logger.info("Changing user role", {id: args.id, role: args.role, organization});
-    await ensureUserIsInOrganization(args.id, organization);
+    await getOrganizationUser(args.id, organization);  // will throw an error if there's none
 
     // Ensure users can't change their own roles
     // This also guards against "removed the last owner" cases
@@ -91,7 +99,7 @@ async function changeUserRole(args, organization, user) {
 
     await clearAllRolesFromUser(args.id);
     await assignRoleToUser(args.id, args.role);
-    return getUserDetails(args.id);
+    return getOrganizationUser(args.id);
 }
 
 module.exports = {

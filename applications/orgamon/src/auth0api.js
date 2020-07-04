@@ -34,7 +34,6 @@ async function _parseUserAttributes(userObject) {
 }
 
 
-
 async function _getRoleIdForName(role) {
     logger.info("Retrieving role ID by name", {role});
     const roleIds = (await getRoles()).filter((r) => r.name.toLowerCase() === role.toLowerCase()).map((r) => r.id);
@@ -44,6 +43,12 @@ async function _getRoleIdForName(role) {
     }
     logger.info("Found roleId for role name", {id: roleIds[0], role});
     return roleIds[0];
+}
+
+
+async function _getUserDetails(userId) {
+    logger.info("Getting user details", {userId});
+    return _parseUserAttributes(await managementClient.getUser({id: userId}));
 }
 
 /* Public functions for the resolvers to use */
@@ -77,11 +82,6 @@ async function getRoles() {
     return managementClient.getRoles();
 }
 
-async function getUserDetails(userId) {
-    logger.info("Getting user details", {userId});
-    return _parseUserAttributes(await managementClient.getUser({id: userId}));
-}
-
 async function createUser(orgaId, email, role) {
     /**
      * Creates a new user with those parameters.
@@ -113,20 +113,27 @@ async function createUser(orgaId, email, role) {
 
 }
 
-async function ensureUserIsInOrganization(userId, organization) {
+async function getOrganizationUser(userId, organization) {
     logger.info("Ensuring user is in organization", {userId, organization});
-
     let isInOrganization = false;
+    let user = null;
     try {
-        let user = await getUserDetails(userId);
+        user = await _getUserDetails(userId);
         isInOrganization = user.organization === organization;
     } catch (e) {
         logger.error("Got error when trying to get user", {userId, organization, error: e});
     }
     if (!isInOrganization) {
         logger.error("User doesn't seem to belong in organization", {userId, organization});
-        throw new AuthenticationError("User " + userId + " does not belong to organization " + organization);
+        throw new AuthenticationError(`User ${userId} does not belong to organization ${organization}`);
     }
+    return user;
+}
+
+async function getAllOrganizationUsers(organization) {
+    logger.info("Getting all users");
+    const allUsers = await managementClient.users.getAll({q: `app_metadata.organization:${organization}`});
+    return Promise.all(allUsers.map(_parseUserAttributes));
 }
 
 async function deleteUser(userId) {
@@ -134,20 +141,13 @@ async function deleteUser(userId) {
     return managementClient.deleteUser({id: userId});
 }
 
-async function getAllUsers() {
-    logger.info("Getting all users");
-    const allUsers = await managementClient.users.getAll();
-    return Promise.all(allUsers.map(_parseUserAttributes));
-}
-
 module.exports = {
     createUser,
-    getAllUsers,
     getRoles,
     getRoleNameForUser,
     assignRoleToUser,
+    getAllOrganizationUsers,
     clearAllRolesFromUser,
-    getUserDetails,
-    ensureUserIsInOrganization,
+    getOrganizationUser,
     deleteUser,
 };
