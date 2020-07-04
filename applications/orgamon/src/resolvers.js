@@ -8,6 +8,7 @@ const {
     getAllUsers,
     getRoles: apiGetRoles,
     deleteUser: apiDeleteUser,
+    getRoleNameForUser,
     assignRoleToUser,
     clearAllRolesFromUser,
     getUserDetails,
@@ -45,12 +46,8 @@ async function getUsers(args, organization) {
 
 async function getUser(args, organization) {
     logger.info("Get User", {id: args.id, organization});
-    let users = (await getUsers(args, organization)).filter((user) => args.id === user.id);
-    if (users.length !== 1) {
-        logger.error("Can't find user", {id: args.id});
-        return {};
-    }
-    return users[0];
+    await ensureUserIsInOrganization(args.id, organization);
+    return getUserDetails(args.id);
 }
 
 async function inviteUser(args, organization) {
@@ -81,9 +78,17 @@ async function getRoles(args, organization) {
     return (await apiGetRoles()).map((r) => ({name: r.name, description: r.description}));
 }
 
-async function changeUserRole(args, organization) {
+async function changeUserRole(args, organization, user) {
     logger.info("Changing user role", {id: args.id, role: args.role, organization});
     await ensureUserIsInOrganization(args.id, organization);
+
+    // Ensure users can't change their own roles
+    // This also guards against "removed the last owner" cases
+    if (args.id === user) {
+        logger.warn("Users can't modify their own role", {organization, user, role: args.role});
+        throw Error("Users can't modify their own role");
+    }
+
     await clearAllRolesFromUser(args.id);
     await assignRoleToUser(args.id, args.role);
     return getUserDetails(args.id);
