@@ -190,6 +190,7 @@
                     variables: {
                         userId: this.userId,
                     },
+                    refetchQueries: ["GetUsers"]
                 }).then(response => this.$store.commit("addPendingNotification", response.data.deleteUser.message));
             },
             onCancelRemoveUser() {

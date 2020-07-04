@@ -57,6 +57,7 @@
                             email: this.newUserEmail,
                             role: this.newUserRole,
                         },
+                        refetchQueries: ["GetUsers"]
                     })
                     .then((_) => (this.newUserEmail = ""));
             },
