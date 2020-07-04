@@ -45,13 +45,13 @@ export const router = new VueRouter({
                 requiresLogin: true,
             },
             beforeEnter: (to, from, next) => {
-                if (!isNaN(to.params.id)) {
-                    let id = fromId(to.params.id);
-                    console.log("Redirecting plain ID", to.params.id, "to nice ID", id);
-                    next({name: "crumbdetail", params: {id: id}});
+                if (isNaN(to.params.id)) {
+                    next();
                     return;
                 }
-                next();
+                let id = fromId(to.params.id);
+                console.log("Redirecting plain ID", to.params.id, "to nice ID", id);
+                next({name: "crumbdetail", params: {id: id}});
             },
         },
         {

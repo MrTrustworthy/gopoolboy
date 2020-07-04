@@ -55,8 +55,8 @@
         },
         computed: {
             textSummary() {
-                const ellipses = this.getCrumb.text.length >= this.textPreviewLength ? "..." : "";
-                return this.getCrumb.text.substring(0, this.textPreviewLength) + ellipses;
+                const post = this.getCrumb.text.length >= this.textPreviewLength ? "..." : "";
+                return this.getCrumb.text.substring(0, this.textPreviewLength - post.length) + post;
             }
         },
         methods: {
