@@ -1,6 +1,6 @@
 <template>
     <v-list>
-        <v-list-item id="tab-search" to="/crumbs">
+        <v-list-item id="tab-search" :to="{name: 'search'}">
             <v-list-item-icon>
                 <v-icon>search</v-icon>
             </v-list-item-icon>
@@ -9,7 +9,7 @@
             </v-list-item-content>
         </v-list-item>
 
-        <v-list-item id="tab-tags" to="/tags">
+        <v-list-item id="tab-tags" :to="{name: 'tags'}">
             <v-list-item-icon>
                 <v-icon>label</v-icon>
             </v-list-item-icon>
@@ -18,7 +18,7 @@
             </v-list-item-content>
         </v-list-item>
 
-        <v-list-item id="tab-about" to="/about">
+        <v-list-item id="tab-about" :to="{name: 'about'}">
             <v-list-item-icon>
                 <v-icon>help</v-icon>
             </v-list-item-icon>
@@ -40,7 +40,7 @@
             </v-list-item-content>
         </v-list-item>
 
-        <v-list-item id="tab-organization" to="/organization">
+        <v-list-item id="tab-organization" :to="{name: 'organization'}">
             <v-list-item-icon>
                 <v-icon>admin_panel_settings</v-icon>
             </v-list-item-icon>

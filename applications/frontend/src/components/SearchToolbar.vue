@@ -1,14 +1,17 @@
 <template>
-    <v-container>
+    <v-container class="py-0 px-5">
+        <v-menu absolute offset-y :value="showMenu" min-width="120" close-on-click close-on-content-click>
+            <v-container>
+                <CrumbList :crumb-ids="crumbIds" v-on:clicked-summary="routeToFull"/>
+            </v-container>
+        </v-menu>
         <SearchBar
                 sort-by="relevance"
                 crumb-type="all"
                 v-on:found-ids="(ids) => crumbIds = ids"
                 v-on:typed-like="updateSearch"
         />
-        <v-menu absolute offset-y :value="showMenu" min-width="120" close-on-click close-on-content-click>
-            <CrumbList :crumb-ids="crumbIds" v-on:clicked-summary="routeToFull"/>
-        </v-menu>
+
     </v-container>
 </template>
 

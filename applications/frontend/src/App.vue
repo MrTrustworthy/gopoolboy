@@ -10,7 +10,7 @@
             <SearchToolbar/>
         </v-app-bar>
 
-        <v-navigation-drawer v-model="drawer" mini-variant expand-on-hover clipped permanent app class="secondary">
+        <v-navigation-drawer v-model="drawer" mini-variant expand-on-hover clipped permanent app class="primary">
             <NavigationBar/>
         </v-navigation-drawer>
 
