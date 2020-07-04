@@ -5,17 +5,17 @@
                 href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic|Material+Icons"
         />
 
-        <v-app-bar app class="primary">
+        <v-app-bar app class="secondary">
             <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
             <img src="./assets/icon.png" width="64" height="64"/>
             <SearchToolbar/>
         </v-app-bar>
 
-        <v-navigation-drawer v-model="drawer" absolute temporary clipped app class="primary">
+        <v-navigation-drawer v-model="drawer" absolute temporary clipped app class="secondary">
             <NavigationBar/>
         </v-navigation-drawer>
 
-        <v-main class="primary">
+        <v-main class="secondary">
             <v-container>
                 <v-row>
                     <v-col cols="2"></v-col>

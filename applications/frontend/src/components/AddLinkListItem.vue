@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="showDialog" max-width="600" scrollable>
+    <v-bottom-sheet v-model="showDialog" scrollable>
 
         <template v-slot:activator="{ on, attrs }">
 
@@ -15,16 +15,14 @@
         </template>
 
         <v-card>
-            <v-card-title>
-                <SearchCard crumb-type="all" v-on:found-ids="(ids) => crumbIds = ids"/>
-            </v-card-title>
-            <v-card-text>
+            <SearchCard class="secondary" default-crumb-type="all" v-on:found-ids="(ids) => crumbIds = ids"/>
+            <v-divider></v-divider>
+            <v-card-text class="primary">
                 <CrumbList :crumb-ids="crumbIdsToShow" v-on:clicked-summary="addLink"/>
             </v-card-text>
-
         </v-card>
 
-    </v-dialog>
+    </v-bottom-sheet>
 </template>
 
 <script>

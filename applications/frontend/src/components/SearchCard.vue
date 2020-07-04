@@ -8,7 +8,7 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-            <span>types</span>
+            <span>types:</span>
             <v-radio-group v-model="crumbType" row>
                 <v-radio value="all" label="All"></v-radio>
                 <v-radio value="question" label="Question"></v-radio>
@@ -16,7 +16,7 @@
             </v-radio-group>
         </v-card-actions>
         <v-card-actions>
-            <span>sort by</span>
+            <span>sort by:</span>
             <v-radio-group v-model="sortBy" row>
                 <v-radio value="relevance" label="Relevance"></v-radio>
                 <v-radio value="votes" label="Votes"></v-radio>
@@ -33,10 +33,16 @@
     export default {
         name: "SearchCard",
         components: {SearchBar},
+        props: {
+          defaultCrumbType: {
+              type: String,
+              default: "question"
+          }
+        },
         data() {
             return {
                 sortBy: "relevance",
-                crumbType: "question",
+                crumbType: this.defaultCrumbType,
                 crumbIds: []
             };
         },

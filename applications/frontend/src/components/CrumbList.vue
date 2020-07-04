@@ -1,7 +1,7 @@
 <template>
-    <v-list>
+    <v-list class="secondary">
         <template v-for="crumbId of crumbIds">
-            <CrumbSummary :key="crumbId" :id="crumbId" v-on:clicked-summary="clickedSummary"/>
+            <CrumbSummary class="secondary" :key="crumbId" :id="crumbId" v-on:clicked-summary="clickedSummary"/>
             <v-divider inset :key="crumbId + '_inset'"></v-divider>
         </template>
     </v-list>
