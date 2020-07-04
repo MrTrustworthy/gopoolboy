@@ -10,12 +10,19 @@
             <DetailActionButtons :source-object="linkData" :show-add-link="false"/>
 
             <v-card-actions>
-                <Votes
-                        :votes="linkData.votes"
-                        :own-vote="linkData.ownVote"
-                        :object-id="linkData.id"
-                        object-type="crumblink"
-                />
+                <v-row align="center" justify="center">
+                    <v-col cols="3" align="center"/>
+                    <v-col cols="6">
+                        <Votes
+                                :votes="linkData.votes"
+                                :own-vote="linkData.ownVote"
+                                :object-id="linkData.id"
+                                object-type="crumblink"
+                        />
+                    </v-col>
+                    <v-col cols="3"/>
+                </v-row>
+
             </v-card-actions>
         </v-card>
     </div>

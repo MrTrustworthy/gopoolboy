@@ -30,14 +30,6 @@
                 required: false,
                 type: [String, Number],
             },
-            confirmedActionEvent: {
-                type: String,
-                default: "confirmed-action",
-            },
-            failedActionEvent: {
-                type: String,
-                default: "failed-action",
-            },
         },
         computed: {
             crumbTypeCapitalized: function () {
@@ -70,12 +62,12 @@
                             type: this.crumbType,
                             tags: newCrumbData.tagIds,
                         },
+                        refetchQueries: ["GetLinkedCrumbIds"], // not needed if !this.linkTo
                         client: "crumblerClient",
                     });
                 let crumbId = data.data.createCrumb.id;
 
                 if (!this.linkTo) {
-                    this.$emit(this.confirmedActionEvent);
                     await this.$router.push({name: "crumbdetail", params: {id: fromId(crumbId)}});
                     return;
                 }
@@ -86,10 +78,9 @@
                             fromId: this.linkTo,
                             toId: crumbId,
                         },
+                        refetchQueries: ["GetLinkedCrumbIds"],
                         client: "zeldaClient",
                     });
-                this.$emit(this.confirmedActionEvent);
-
             },
             parseNewCrumbData() {
                 if (!this.newCrumbTitle || !this.newCrumbText) {

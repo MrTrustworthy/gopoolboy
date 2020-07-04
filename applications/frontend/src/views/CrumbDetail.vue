@@ -2,12 +2,12 @@
     <div id="crumbdetail">
         <Speeddial/>
 
-        <CrumbFull v-bind:id="crumbId" :main="true" v-on:added-link="refresh"/>
+        <CrumbFull v-bind:id="crumbId" :main="true"/>
         <br>
         <h2>Found a total of {{ getLinkedCrumbIds.length }} linked Crumbs</h2>
         <br>
         <div v-for="qId in getLinkedCrumbIds" :key="qId">
-            <CrumbFull v-bind:id="qId" v-on:added-link="refresh"/>
+            <CrumbFull v-bind:id="qId"/>
 
             <v-row justify="center">
                 <v-btn fab class="accent" size="36" @click="() => toggleShowLink(qId)">
@@ -21,7 +21,7 @@
             <br>
         </div>
         <h2>Post new response</h2>
-        <NewCrumb crumbType="answer" :linkTo="crumbId" v-on:confirmed-action="refresh"/>
+        <NewCrumb crumbType="answer" :linkTo="crumbId"/>
     </div>
 </template>
 
@@ -60,9 +60,6 @@
             },
         },
         methods: {
-            refresh() {
-                this.$apollo.queries.getLinkedCrumbIds.refetch();
-            },
             getShowLink(crumbId) {
                 const showLink = this.showLinkFlags[crumbId];
                 return showLink !== undefined ? showLink : this.showLinkDefault;

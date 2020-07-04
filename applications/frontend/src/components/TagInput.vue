@@ -95,12 +95,12 @@
                                 value: newTag.value
                             }
                         },
+                        refetchQueries: ["GetAllTags"],
                         client: "taginatorClient"
                     });
                 this.waitingForTags--;
                 this.model.push(result.data.createTag);
                 this.$emit("new-tags", this.tagIds);
-                await this.$apollo.queries.getAllTags.refetch();
             },
             parseTag(str) {
                 /***

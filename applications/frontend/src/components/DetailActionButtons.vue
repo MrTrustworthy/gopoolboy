@@ -10,10 +10,7 @@
                     <CreatedAtListItem :timestamp="sourceObject.createdAt"/>
                 </v-col>
                 <v-col :cols="colWidth" v-if="showAddLink">
-                    <AddLinkListItem
-                            :crumb-id="sourceObject.id"
-                            v-on:added-link="() => $emit('added-link')"
-                    />
+                    <AddLinkListItem :crumb-id="sourceObject.id"/>
                 </v-col>
             </v-row>
         </v-list>

@@ -42,8 +42,7 @@
             </v-container>
 
 
-            <DetailActionButtons :source-object="getCrumb" :show-add-link="true"
-                                 v-on:added-link="() => $emit('added-link')"/>
+            <DetailActionButtons :source-object="getCrumb" :show-add-link="true"/>
 
             <v-container fluid>
                 <v-card-text class="secondary">

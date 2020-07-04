@@ -39,10 +39,6 @@
                 type: [String, Number],
                 required: true
             },
-            addedLinkEvent: {
-                type: String,
-                default: "added-link",
-            },
         },
         data() {
             return {
@@ -69,9 +65,9 @@
                         fromId: linkId,
                         toId: this.crumbId,
                     },
+                    refetchQueries: ["GetLinkedCrumbIds"],
                     client: "zeldaClient",
                 });
-                this.$emit(this.addedLinkEvent);
                 this.showDialog = false;
             }
         },
