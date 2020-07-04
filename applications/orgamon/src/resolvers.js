@@ -64,9 +64,14 @@ async function inviteUser(args, organization) {
 
 async function deleteUser(args, organization) {
     logger.info("Delete user", {id: args.id, organization});
-    await ensureUserIsInOrganization(args.id, organization);
-    await apiDeleteUser(args.id);
-    return true;
+    const msg = `deleting user ${args.id} in organization ${organization}`;
+    try {
+        await ensureUserIsInOrganization(args.id, organization);
+        await apiDeleteUser(args.id);
+        return {success: true, message: `${msg} was successful`};
+    } catch (e) {
+        return {success: false, message: `${msg} was not successful`};
+    }
 }
 
 /* Role Resolvers */

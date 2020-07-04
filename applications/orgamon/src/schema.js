@@ -43,6 +43,7 @@ const typeDefs = gql`
 
     type MutationResult {
         success: Boolean
+        message: String
     }
 
     type Query {
