@@ -1,15 +1,17 @@
 <template>
-    <v-card>
-        <v-card-title>
-            Invite new User
-        </v-card-title>
+    <v-card shaped>
+        <v-container>
+            <v-card-title>
+                Invite new User
+            </v-card-title>
 
-        <v-text-field v-model="newUserEmail" label="New user email" :rules="[rules.required, rules.email]"/>
-        <v-select v-model="newUserRole" label="Role" :items="possibleRoleNames"></v-select>
+            <v-text-field v-model="newUserEmail" label="New user email" :rules="[rules.required, rules.email]"/>
+            <v-select v-model="newUserRole" label="Role" :items="possibleRoleNames"></v-select>
 
-        <v-card-actions>
-            <v-btn @click="invite">Invite new user</v-btn>
-        </v-card-actions>
+            <v-card-actions>
+                <v-btn @click="invite">Invite new user</v-btn>
+            </v-card-actions>
+        </v-container>
     </v-card>
 </template>
 

@@ -62,8 +62,8 @@ async function inviteUser(args, organization) {
      * Resolver to invite a new user as requested by the organization/org owner
      */
     logger.info("Inviting new user", {email: args.email, role: args.role, organization});
-    await createUser(organization, args.email, args.role);
-    return getOrganizationUser(args.id, organization);
+    const newUserId = await createUser(organization, args.email, args.role);
+    return getOrganizationUser(newUserId, organization);
 }
 
 async function deleteUser(args, organization) {

@@ -111,6 +111,7 @@ async function createUser(orgaId, email, role) {
     });
     logger.info("Email reset is underway", {orgaId, email, role, reset: passwordReset});
 
+    return initialUserData.user_id;
 }
 
 async function getOrganizationUser(userId, organization) {
