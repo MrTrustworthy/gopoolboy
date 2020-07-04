@@ -5,13 +5,12 @@
                 href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic|Material+Icons"
         />
 
-        <v-app-bar app class="secondary">
-            <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
+        <v-app-bar app clipped-left collapse-on-scroll class="secondary">
             <img src="./assets/icon.png" width="64" height="64"/>
             <SearchToolbar/>
         </v-app-bar>
 
-        <v-navigation-drawer v-model="drawer" absolute temporary clipped app class="secondary">
+        <v-navigation-drawer v-model="drawer" mini-variant expand-on-hover clipped permanent app class="secondary">
             <NavigationBar/>
         </v-navigation-drawer>
 
@@ -47,7 +46,7 @@
         },
         data() {
             return {
-                drawer: false
+                drawer: true
             };
         }
     };
