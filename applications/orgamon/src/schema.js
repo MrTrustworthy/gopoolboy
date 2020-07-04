@@ -19,6 +19,7 @@ const typeDefs = gql`
     type Organization {
         id: ID
         name: String
+        createdAt: String
     }
 
     type Role {

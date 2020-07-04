@@ -2,5 +2,6 @@ query GetOrganization {
     getOrganization {
         id
         name
+        createdAt
     }
 }

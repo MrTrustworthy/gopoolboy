@@ -37,7 +37,6 @@ async function createUser(orgaId, email, role) {
     );
     logger.info("User got assigned app_metadata attributes", {orgaId, email, role, user: enrichedUserData});
 
-
     await assignRoleToUser(initialUserData.user_id, role);
     logger.info("User got assigned role", {orgaId, email, role});
 

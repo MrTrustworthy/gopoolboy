@@ -27,9 +27,6 @@
 </template>
 
 <script>
-    import {fromId} from "@/urlids";
-    import moment from "moment";
-
     export default {
         name: "Votes",
         props: {
