@@ -8,7 +8,7 @@
         </div>
 
 
-        <v-list-item v-else @click="clickItem" two-line>
+        <v-list-item v-else @click="clickItem" two-line class="elevation-1">
             <v-list-item-icon>
                 <CrumbTypeIcon :crumb-type="getCrumb.type"></CrumbTypeIcon>
             </v-list-item-icon>

@@ -20,9 +20,9 @@
                 <v-row>
                     <v-col cols="2"></v-col>
                     <v-col cols="8">
-                        <v-slide-y-transition>
-                            <router-view/>
-                        </v-slide-y-transition>
+                        <v-slide-x-transition hide-on-leave>
+                            <router-view :key="$route.path"/>
+                        </v-slide-x-transition>
                     </v-col>
                     <v-col cols="2"></v-col>
                 </v-row>
@@ -30,9 +30,7 @@
         </v-main>
 
         <Notifications/>
-
     </v-app>
-
 </template>
 
 <script>
