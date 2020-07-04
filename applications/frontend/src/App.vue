@@ -5,7 +5,7 @@
                 href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic|Material+Icons"
         />
 
-        <v-app-bar app clipped-left collapse-on-scroll class="secondary">
+        <v-app-bar app clipped-left hide-on-scroll class="secondary">
             <img src="./assets/icon.png" width="64" height="64"/>
             <SearchToolbar/>
         </v-app-bar>

@@ -5,7 +5,7 @@
             An error occured :(
         </div>
 
-        <v-card v-else shaped>
+        <v-card v-else shaped class="elevation-1">
             <v-container>
                 <v-card-title> {{ getOrganization.name }}</v-card-title>
                 <v-card-subtitle>Organization ID: {{ getOrganization.id }}</v-card-subtitle>

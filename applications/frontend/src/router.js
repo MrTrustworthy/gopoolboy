@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import CrumbsView from "./views/Crumbs.vue";
+import Search from "./views/Search.vue";
 import AboutView from "./views/About.vue";
 import CrumbDetailView from "./views/CrumbDetail.vue";
 import ProfileView from "./views/Profile.vue";
@@ -23,8 +23,8 @@ export const router = new VueRouter({
         },
         {
             path: "/crumbs",
-            name: "crumbs",
-            component: CrumbsView,
+            name: "search",
+            component: Search,
             meta: {
                 requiresLogin: true,
             },

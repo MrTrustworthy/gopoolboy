@@ -1,5 +1,5 @@
 <template>
-    <v-card shaped>
+    <v-card shaped class="elevation-1">
         <v-card-text>
             <SearchBar :sort-by="sortBy" :crumb-type="crumbType" v-on:found-ids="updateIds"/>
             <div>

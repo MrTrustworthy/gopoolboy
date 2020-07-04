@@ -1,11 +1,11 @@
 <template>
     <v-list>
-        <v-list-item id="tab-crumbs" to="/crumbs">
+        <v-list-item id="tab-search" to="/crumbs">
             <v-list-item-icon>
-                <v-icon>dynamic_feed</v-icon>
+                <v-icon>search</v-icon>
             </v-list-item-icon>
             <v-list-item-content>
-                <v-list-item-title>Crumbs</v-list-item-title>
+                <v-list-item-title>Search</v-list-item-title>
             </v-list-item-content>
         </v-list-item>
 

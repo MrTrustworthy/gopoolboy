@@ -1,5 +1,5 @@
 <template>
-    <v-card shaped>
+    <v-card class="elevation-1" shaped>
         <v-container>
             <v-card-title>
                 Invite new User

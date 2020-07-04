@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-skeleton-loader v-if="$auth.loading || $apollo.queries.getUser.loading" type="card"></v-skeleton-loader>
-        <v-card v-else shaped>
+        <v-card v-else shaped class="elevation-1">
 
             <v-container fluid>
                 <v-list-item two-line v-bind:to="'/profile/' + getUser.id">

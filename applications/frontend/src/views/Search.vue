@@ -1,5 +1,5 @@
 <template>
-    <div id="crumbs">
+    <div id="search">
         <CreateWidgetSnackbar/>
         <SearchCard crumbType="question" v-on:found-ids="(ids) => crumbIds = ids"/>
         <br>
@@ -14,7 +14,7 @@
     import {fromId} from "@/urlids";
 
     export default {
-        name: "Crumbs",
+        name: "Search",
         data() {
             return {
                 crumbIds: []

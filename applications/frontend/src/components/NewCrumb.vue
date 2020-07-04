@@ -1,5 +1,5 @@
 <template>
-    <v-card shaped>
+    <v-card shaped class="elevation-1">
         <v-container fluid>
             <v-card-title>
                 New {{ crumbTypeCapitalized }}

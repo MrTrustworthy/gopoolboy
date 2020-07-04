@@ -2,11 +2,11 @@
     <div>
         <v-skeleton-loader v-if="isLoading" type="card"></v-skeleton-loader>
 
-        <v-card v-else-if="$apollo.queries.getCrumbLinkBetween.error">
+        <v-card class="elevation-1" v-else-if="$apollo.queries.getCrumbLinkBetween.error">
             An error occured :(
         </v-card>
 
-        <v-card v-else shaped>
+        <v-card v-else shaped class="elevation-1">
             <DetailActionButtons :source-object="linkData" :show-add-link="false"/>
 
             <v-card-actions>
