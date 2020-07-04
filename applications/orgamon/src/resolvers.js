@@ -8,7 +8,6 @@ const {
     getAllOrganizationUsers,
     getRoles: apiGetRoles,
     deleteUser: apiDeleteUser,
-    getRoleNameForUser,
     assignRoleToUser,
     clearAllRolesFromUser,
     getOrganizationUser,
@@ -69,13 +68,22 @@ async function inviteUser(args, organization) {
 
 async function deleteUser(args, organization) {
     logger.info("Delete user", {id: args.id, organization});
-    const msg = `deleting user ${args.id} in organization ${organization}`;
+    const user = await getOrganizationUser(args.id, organization);
+
+    if (user.organizationRole.toLowerCase() === "owner") {
+        return {success: false, message: "Can't delete the owner of an organization"};
+    }
+    const totalOrganizationUsers = (await getUsers(args, organization)).length;
+    if (totalOrganizationUsers <= 1) {
+        return {success: false, message: "Can't delete the last user of an organization"};
+    }
+
+    const msg = `Deleting user ${args.id} in organization ${organization}`;
     try {
-        await getOrganizationUser(args.id, organization);
         await apiDeleteUser(args.id);
         return {success: true, message: `${msg} was successful`};
     } catch (e) {
-        return {success: false, message: `${msg} was not successful`};
+        return {success: false, message: `${msg} was not successful due to an error`};
     }
 }
 
@@ -99,7 +107,7 @@ async function changeUserRole(args, organization, user) {
 
     await clearAllRolesFromUser(args.id);
     await assignRoleToUser(args.id, args.role);
-    return getOrganizationUser(args.id);
+    return getOrganizationUser(args.id, organization);
 }
 
 module.exports = {

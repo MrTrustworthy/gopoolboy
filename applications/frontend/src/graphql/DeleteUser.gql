@@ -1,5 +1,6 @@
 mutation DeleteUser($userId: String!) {
     deleteUser(id: $userId) {
         success
+        message
     }
 }

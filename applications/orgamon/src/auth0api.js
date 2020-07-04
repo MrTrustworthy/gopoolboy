@@ -114,7 +114,7 @@ async function createUser(orgaId, email, role) {
 }
 
 async function getOrganizationUser(userId, organization) {
-    logger.info("Ensuring user is in organization", {userId, organization});
+    logger.info("Getting user from organization", {userId, organization});
     let isInOrganization = false;
     let user = null;
     try {
@@ -125,7 +125,7 @@ async function getOrganizationUser(userId, organization) {
     }
     if (!isInOrganization) {
         logger.error("User doesn't seem to belong in organization", {userId, organization});
-        throw new AuthenticationError(`User ${userId} does not belong to organization ${organization}`);
+        throw new Error(`User ${userId} does not belong to organization ${organization}`);
     }
     return user;
 }
@@ -144,7 +144,6 @@ async function deleteUser(userId) {
 module.exports = {
     createUser,
     getRoles,
-    getRoleNameForUser,
     assignRoleToUser,
     getAllOrganizationUsers,
     clearAllRolesFromUser,

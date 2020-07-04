@@ -6,7 +6,10 @@
             <v-container fluid>
                 <v-list-item two-line v-bind:to="'/profile/' + getUser.id">
                     <v-list-item-content>
-                        <v-list-item-title>{{ getUser.nickname }} {{ isSelf ? "(You)" : "" }}</v-list-item-title>
+                        <v-list-item-title>
+                            <v-icon v-text="roleIcon"></v-icon>
+                            {{ getUser.nickname }} {{ isSelf ? "(You)" : "" }}
+                        </v-list-item-title>
                         <v-list-item-subtitle>ID: {{ getUser.id }}</v-list-item-subtitle>
                     </v-list-item-content>
                     <v-list-item-avatar>
@@ -42,10 +45,15 @@
                 </v-list>
 
                 <div v-if="editable">
-                    <v-select :items="possibleRoles" v-model="newUserRole" item-text="name" item-value="name"
-                              label="New Role"></v-select>
+                    <v-select
+                            :loading="roleChangeLoading"
+                            :items="possibleRoles"
+                            v-model="newUserRole"
+                            item-text="name"
+                            item-value="name"
+                            label="New Role"
+                    />
                     <v-card-actions>
-                        <v-btn @click="changeUserRole">Update Role</v-btn>
                         <v-btn @click="$store.commit('addPendingNotification', 'Sorry, this feature is not available yet')">
                             Reset password
                         </v-btn>
@@ -97,9 +105,16 @@
                 getUser: {},
                 getRoles: [],
                 newUserRole: null,
+                roleChangeLoading: false,
                 confirmRemoveUser: false,
                 expandDetails: false,
             };
+        },
+        watch: {
+            newUserRole: function (newVal) {
+                if (newVal === null) return;
+                this.changeUserRole();
+            }
         },
         computed: {
             isSelf: function () {
@@ -108,11 +123,18 @@
             possibleRoles: function () {
                 return this.getRoles.filter((r) => r.name !== this.getUser.organizationRole);
             },
+            roleIcon: function () {
+                return {
+                    owner: "admin_panel_settings",
+                    editor: "create",
+                    viewer: "visibility"
+                }[this.getUser.organizationRole.toLowerCase()];
+            },
             detailFields: function () {
                 return [
                     {text: `Name: ${this.getUser.name}`, icon: "face"},
                     {text: `Email: ${this.getUser.email}`, icon: "email"},
-                    {text: `Role: ${this.getUser.organizationRole}`, icon: "admin_panel_settings"},
+                    {text: `Role: ${this.getUser.organizationRole}`, icon: "rule"},
                     {text: `Created at: ${this.getUser.createdAt}`, icon: "av_timer"},
                     {text: `Last Login: ${this.getUser.lastLogin || 'Never'}`, icon: "restore"},
                     {text: `Logins: ${this.getUser.loginCount || '0'}`, icon: "timeline"},
@@ -146,6 +168,7 @@
                     return;
                 }
                 console.log("Changing role for user", this.userId, "to", this.newUserRole);
+                this.roleChangeLoading = true;
                 this.$apollo
                     .mutate({
                         mutation: require("../graphql/ChangeUserRole.gql"),
@@ -154,7 +177,10 @@
                             role: this.newUserRole,
                         },
                     })
-                    .then((_) => (this.newUserRole = null));
+                    .then((_) => {
+                        this.newUserRole = null;
+                        this.roleChangeLoading = false;
+                    });
             },
             onConfirmRemoveUser() {
                 console.log("Deleting user", this.userId);
@@ -164,7 +190,7 @@
                     variables: {
                         userId: this.userId,
                     },
-                });
+                }).then(response => this.$store.commit("addPendingNotification", response.data.deleteUser.message));
             },
             onCancelRemoveUser() {
                 console.log("Aborted deleting user", this.userId);
