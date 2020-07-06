@@ -1,0 +1,37 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:struct", "struct")
+
+#@ app = data.values.admin
+#@ appName = app.appName
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: #@ appName
+    namespace: #@ app.namespace
+    labels:
+        name: #@ appName
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            name: #@ appName
+    template:
+        metadata:
+            name: #@ appName
+            labels:
+                name: #@ appName
+        spec:
+            containers:
+                - name: #@ appName
+                  image: #@ app.imageName
+                  ports:
+                      - containerPort: #@ app.appPort
+                  env:
+                      - name: NODE_ENV
+                        value: production
+                  resources:
+                      requests:
+                          memory: #@ app.resources.ram
+                      limits:
+                          memory: #@ app.resources.ram

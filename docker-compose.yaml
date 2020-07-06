@@ -113,6 +113,26 @@ services:
         ports:
             - 8080:8080
 
+    admin:
+        build:
+            context: applications/admin
+            dockerfile: dev.Dockerfile
+        environment:
+            NODE_ENV: development
+            VUE_APP_ORGAMON_GRAPHQL_HTTP: http://localhost:4040/graphql
+            VUE_APP_FINDR_GRAPHQL_HTTP: http://localhost:4080/graphql
+            VUE_APP_CRUMBLER_GRAPHQL_HTTP: http://localhost:4120/graphql
+            VUE_APP_ZELDA_GRAPHQL_HTTP: http://localhost:4160/graphql
+            VUE_APP_TAGINATOR_GRAPHQL_HTTP: http://localhost:4200/graphql
+            VUE_APP_GRAPHQL_TOKEN_NAME: apollo-token
+            VUE_APP_AUTH0_DOMAIN: dev-poolboy.eu.auth0.com
+            VUE_APP_AUTH0_SPA_ADMIN_CLIENT_ID: "${AUTH0_SPA_ADMIN_CLIENT_ID}"
+            VUE_APP_AUTH0_AUDIENCE: http://dev-poolboy-api
+        volumes:
+            - ./applications/admin/src:/app/src
+        ports:
+            - 8081:8080
+
     homepage:
         build:
             context: applications/homepage

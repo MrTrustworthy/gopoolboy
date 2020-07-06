@@ -1,0 +1,75 @@
+# This workflow will build a docker container, publish it to Google Container Registry, and deploy it to GKE.
+name: Deploy admin
+
+on:
+    push:
+        branches:
+            - master
+        paths:
+            - "applications/admin/**"
+            - "services/admin/**"
+            - ".github/workflows/admin.yaml"
+
+env:
+    GKE_PROJECT: staging-poolboy
+    GKE_ZONE: europe-west3-b
+    GKE_CLUSTER: kubernetes-cluster
+    YTT_VERSION: v0.27.2
+    KAPP_VERSION: v0.27.0
+    KBLD_VERSION: v0.22.0
+    GCP_VERSION: "293.0.0"
+    VUE_APP_GRAPHQL_TOKEN_NAME: apollo-token
+    VUE_APP_FINDR_GRAPHQL_HTTP: https://findr.gopoolboy.dev
+    VUE_APP_CRUMBLER_GRAPHQL_HTTP: https://crumbler.gopoolboy.dev
+    VUE_APP_ORGAMON_GRAPHQL_HTTP: https://orgamon.gopoolboy.dev
+    VUE_APP_ZELDA_GRAPHQL_HTTP: https://zelda.gopoolboy.dev
+    VUE_APP_TAGINATOR_GRAPHQL_HTTP: https://taginator.gopoolboy.dev
+    VUE_APP_AUTH0_DOMAIN: staging-poolboy.eu.auth0.com
+    VUE_APP_AUTH0_AUDIENCE: http://staging-poolboy-api
+
+jobs:
+    deploy-admin-staging:
+        name: Deploy admin staging
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+              with:
+                  version: ${{ env.GCP_VERSION }}
+                  project_id: ${{ env.GKE_PROJECT }}
+                  service_account_key: ${{ secrets.GKE_KEY }}
+                  export_default_credentials: true
+            - id: secrets
+              uses: GoogleCloudPlatform/github-actions/get-secretmanager-secrets@master
+              with:
+                  secrets: |-
+                      auth0_spa_admin_client_id:staging-poolboy/staging-admin_auth0_spa_admin_client_id
+            - run: |
+                  gcloud auth configure-docker
+            - name: Install and configure k14s
+              run: |
+                  sudo wget -O /bin/ytt https://github.com/k14s/ytt/releases/download/"$YTT_VERSION"/ytt-linux-amd64 \
+                      && sudo chmod +x /bin/ytt
+                  sudo wget -O /bin/kapp https://github.com/k14s/kapp/releases/download/"$KAPP_VERSION"/kapp-linux-amd64 \
+                      && sudo chmod +x /bin/kapp
+                  sudo wget -O /bin/kbld https://github.com/k14s/kbld/releases/download/"$KBLD_VERSION"/kbld-linux-amd64 \
+                      && sudo chmod +x /bin/kbld
+
+            - name: Build and Deploy via k14s
+              env:
+                  VUE_APP_AUTH0_SPA_ADMIN_CLIENT_ID: ${{ steps.secrets.outputs.auth0_spa_admin_client_id }}
+              run: |
+                  gcloud container clusters get-credentials $GKE_CLUSTER --zone $GKE_ZONE --project $GKE_PROJECT
+
+                  echo "VUE_APP_GRAPHQL_TOKEN_NAME=$VUE_APP_GRAPHQL_TOKEN_NAME" > applications/admin/.env
+                  echo "VUE_APP_FINDR_GRAPHQL_HTTP=$VUE_APP_FINDR_GRAPHQL_HTTP" >> applications/admin/.env
+                  echo "VUE_APP_ZELDA_GRAPHQL_HTTP=$VUE_APP_ZELDA_GRAPHQL_HTTP" >> applications/admin/.env
+                  echo "VUE_APP_TAGINATOR_GRAPHQL_HTTP=$VUE_APP_TAGINATOR_GRAPHQL_HTTP" >> applications/admin/.env
+                  echo "VUE_APP_CRUMBLER_GRAPHQL_HTTP=$VUE_APP_CRUMBLER_GRAPHQL_HTTP" >> applications/admin/.env
+                  echo "VUE_APP_ORGAMON_GRAPHQL_HTTP=$VUE_APP_ORGAMON_GRAPHQL_HTTP" >> applications/admin/.env
+                  echo "VUE_APP_AUTH0_DOMAIN=$VUE_APP_AUTH0_DOMAIN" >> applications/admin/.env
+                  echo "VUE_APP_AUTH0_AUDIENCE=$VUE_APP_AUTH0_AUDIENCE" >> applications/admin/.env
+                  echo "VUE_APP_AUTH0_SPA_ADMIN_CLIENT_ID=$VUE_APP_AUTH0_SPA_ADMIN_CLIENT_ID" >> applications/admin/.env
+
+                  ytt -f services/admin | kbld -f - | kapp deploy -a admin -f - -n admin --diff-summary --yes
