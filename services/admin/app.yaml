@@ -9,12 +9,12 @@ admin:
   ingressName: admin-ingress
   staticIpName: nginx-ingress-static-global-ip
   configMapName: admin-configmap
-  externalUrl: app.gopoolboy.dev
+  externalUrl: admin.gopoolboy.dev
   sslCertSecretName: admin-ssl-secret
   dockerfileFolder: applications/admin
   namespace: admin
   appPort: 80
   officeIps: "78.94.91.126/32,78.35.144.135/32"
-  
+
   resources:
     ram: 256Mi
