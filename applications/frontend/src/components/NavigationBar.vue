@@ -1,5 +1,17 @@
 <template>
     <v-list>
+
+        <v-list-item id="tab-home">
+            <v-list-item-icon>
+                <img src="../assets/icon.png" width="32" height="32"/>
+            </v-list-item-icon>
+            <v-list-item-content>
+                <v-list-item-title class="title">GoPoolboy</v-list-item-title>
+            </v-list-item-content>
+        </v-list-item>
+
+        <v-divider></v-divider>
+
         <v-list-item id="tab-search" :to="{name: 'search'}">
             <v-list-item-icon>
                 <v-icon>search</v-icon>

@@ -5,11 +5,6 @@
                 href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic|Material+Icons"
         />
 
-        <v-app-bar app clipped-left hide-on-scroll class="secondary">
-            <img src="./assets/icon.png" width="64" height="64"/>
-            <SearchToolbar/>
-        </v-app-bar>
-
         <v-navigation-drawer v-model="drawer" mini-variant expand-on-hover clipped permanent app class="primary">
             <NavigationBar/>
         </v-navigation-drawer>
@@ -35,12 +30,10 @@
 <script>
     import NavigationBar from "./components/NavigationBar.vue";
     import Notifications from "./components/Notifications";
-    import SearchToolbar from "./components/SearchToolbar";
 
     export default {
         name: "App",
         components: {
-            SearchToolbar,
             Notifications,
             NavigationBar,
         },
