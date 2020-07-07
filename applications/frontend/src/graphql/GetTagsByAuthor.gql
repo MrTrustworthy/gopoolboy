@@ -1,0 +1,8 @@
+query GetTagsByAuthor($authorId: String!){
+  getTagsByAuthor(authorId: $authorId){
+    id
+    name
+    value
+    createdAt
+  }
+}

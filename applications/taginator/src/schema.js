@@ -1,7 +1,7 @@
 const {gql} = require("apollo-server");
 const {AuthenticationError} = require("apollo-server");
 const {initialize, authRequired, PERMISSIONS} = require("@gopoolboy/auth");
-const {getTagsByIds, getAllTags, createTag} = require("./resolvers");
+const {getTagsByIds, getAllTags, getTagsByAuthor, createTag} = require("./resolvers");
 
 initialize(process.env.AUTH0_DOMAIN, process.env.API_IDENTIFIER, AuthenticationError);
 
@@ -11,6 +11,7 @@ const typeDefs = gql`
         name: String!
         value: String!
         authorId: String
+        createdAt: String
     }
 
     input TagInput {
@@ -21,6 +22,7 @@ const typeDefs = gql`
     type Query {
         getTagsByIds(ids: [ID]!): [Tag]
         getAllTags: [Tag]
+        getTagsByAuthor(authorId: String!): [Tag]
     }
 
     type Mutation {
@@ -31,7 +33,8 @@ const typeDefs = gql`
 const resolvers = {
     Query: {
         getTagsByIds: authRequired(getTagsByIds, PERMISSIONS.READ_TAGS),
-        getAllTags: authRequired(getAllTags, PERMISSIONS.READ_TAGS)
+        getAllTags: authRequired(getAllTags, PERMISSIONS.READ_TAGS),
+        getTagsByAuthor: authRequired(getTagsByAuthor, PERMISSIONS.READ_TAGS)
     },
     Mutation: {
         createTag: authRequired(createTag, PERMISSIONS.CREATE_TAGS),

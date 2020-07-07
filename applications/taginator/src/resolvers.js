@@ -50,6 +50,15 @@ const getTagsByIds = async (args, organization, user) => {
     return Promise.all(args.ids.map(id => getTagDataById(id, organization, user)));
 };
 
+const getTagsByAuthor = async (args, organization, user) => {
+    logger.info("Getting all Tags by author", {organization, user, authorId: args.authorId});
+    let tags = await knexClient
+        .from("tags")
+        .where({organization_id: organization, creator_id: args.authorId})
+        .select("id");
+
+    return Promise.all(tags.map(res => getTagDataById(res.id, organization, user)));
+};
 const getAllTags = async (args, organization, user) => {
     logger.info("Getting all Tags", {organization, user});
     let tags = await knexClient
@@ -60,4 +69,4 @@ const getAllTags = async (args, organization, user) => {
     return Promise.all(tags.map(res => getTagDataById(res.id, organization, user)));
 };
 
-module.exports = {getTagsByIds, getAllTags, createTag};
+module.exports = {getTagsByIds, getAllTags, getTagsByAuthor, createTag};

@@ -1,20 +1,23 @@
 <template>
     <v-timeline>
         <v-timeline-item
-                v-for="crumb in orderedCrumbs"
-                :key="crumb.id"
+                v-for="item in orderedItems"
+                :key="item.__typename + item.id"
                 large
+                :color="iconColor(item)"
         >
             <template v-slot:opposite>
-                <CreatedAListItem :timestamp="crumb.createdAt" :show-icon="false"/>
+                <CreatedAListItem :timestamp="item.createdAt" :show-icon="false"/>
             </template>
 
             <template v-slot:icon>
-                <CrumbTypeIcon :crumb-type="crumb.type"/>
+                <CrumbTypeIcon v-if="item.__typename === 'Crumb'" :crumb-type="item.type"/>
+                <v-icon v-else>label</v-icon>
             </template>
 
             <v-card>
-                <CrumbSummary :id="crumb.id" v-on:clicked-summary="routeToFull"/>
+                <CrumbSummary v-if="item.__typename === 'Crumb'" :id="item.id" v-on:clicked-summary="routeToFull"/>
+                <TagChip v-else :tag="item"/>
             </v-card>
 
         </v-timeline-item>
@@ -26,10 +29,11 @@
     import CrumbTypeIcon from "./CrumbTypeIcon";
     import CrumbSummary from "./CrumbSummary";
     import {fromId} from "@/urlids";
+    import TagChip from "./TagChip";
 
     export default {
         name: "CrumbTimeline",
-        components: {CrumbSummary, CrumbTypeIcon, CreatedAListItem},
+        components: {TagChip, CrumbSummary, CrumbTypeIcon, CreatedAListItem},
         props: {
             authorId: {
                 type: String,
@@ -38,17 +42,25 @@
         },
         data() {
             return {
-                getCrumbsByAuthor: []
+                getCrumbsByAuthor: [],
+                getTagsByAuthor: []
             };
         },
         computed: {
-            orderedCrumbs() {
-                return this.getCrumbsByAuthor.slice().sort((a, b) => b.createdAt - a.createdAt);
+            orderedItems() {
+                return this.getCrumbsByAuthor
+                    .concat(this.getTagsByAuthor)
+                    .sort((a, b) => b.createdAt - a.createdAt);
             }
         },
         methods: {
             routeToFull(id) {
                 this.$router.push({name: "crumbdetail", params: {id: fromId(id)}});
+            },
+            iconColor(item) {
+                if (item.__typename === "Tag") return "accent"
+                if (item.type === "question") return "primary"
+                return "secondary"
             }
         },
         apollo: {
@@ -58,6 +70,13 @@
                     return {authorId: this.authorId};
                 },
                 client: "crumblerClient",
+            },
+            getTagsByAuthor: {
+                query: require("../graphql/GetTagsByAuthor.gql"),
+                variables() {
+                    return {authorId: this.authorId};
+                },
+                client: "taginatorClient",
             },
         },
     };

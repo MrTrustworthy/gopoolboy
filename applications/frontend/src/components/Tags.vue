@@ -1,15 +1,15 @@
 <template>
     <v-container class="secondary">
         <span>{{ getTagsByIds.length }} Tags:</span>
-        <v-chip v-for="tag in getTagsByIds" :key="tag.id" :color="colorForId(tag.id)">
-            {{ tag.name }}:{{ tag.value }}
-        </v-chip>
+        <TagChip :tag="tag" v-for="tag in getTagsByIds" :key="tag.id"/>
     </v-container>
 </template>
 
 <script>
+    import TagChip from "./TagChip";
     export default {
         name: "Tags",
+        components: {TagChip},
         props: {
             tagIds: {
                 type: Array,
@@ -19,13 +19,7 @@
         data() {
             return {
                 getTagsByIds: [],
-                colors: ['green', 'purple', 'indigo', 'cyan', 'teal', 'orange'],
             };
-        },
-        methods: {
-            colorForId(id) {
-                return this.colors[id % this.colors.length];
-            },
         },
         apollo: {
             getTagsByIds: {
