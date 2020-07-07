@@ -110,9 +110,20 @@ const getCrumbLinkBetween = async (args, organization, user) => {
     return getCrumbLinkDataById(ids.id, organization, user);
 };
 
+const getCrumbLinksByAuthor = async (args, organization, user) => {
+    logger.info("Getting crumblink by author", {authorId: args.authorId, organization, user});
+    const ids = await knexClient
+        .from("crumblinks")
+        .where({organization_id: organization, creator_id: args.authorId})
+        .select("id");
+
+    return Promise.all(ids.map(res => getCrumbLinkDataById(res.id, organization, user)));
+};
+
 module.exports = {
     getLinkedCrumbIds,
     getCrumbLinkBetween,
+    getCrumbLinksByAuthor,
     createCrumbLink,
     voteCrumbLink,
 };

@@ -1,0 +1,7 @@
+query GetCrumbLinksByAuthor($authorId: String!){
+  getCrumbLinksByAuthor(authorId: $authorId){
+    id
+    links
+    createdAt
+  }
+}
