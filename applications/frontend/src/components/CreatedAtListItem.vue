@@ -3,7 +3,7 @@
         <template v-slot:activator="{ on, attrs }">
 
             <v-list-item v-bind="attrs" v-on="on">
-                <v-list-item-icon>
+                <v-list-item-icon v-if="showIcon">
                     <v-icon>av_timer</v-icon>
                 </v-list-item-icon>
                 <v-list-item-content>
@@ -25,6 +25,10 @@
             timestamp: {
                 type: String,
                 default: "0"
+            },
+            showIcon: {
+                type: Boolean,
+                default: true
             }
         },
         methods: {

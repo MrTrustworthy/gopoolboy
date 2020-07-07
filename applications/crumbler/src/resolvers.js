@@ -109,6 +109,17 @@ const getCrumb = async (args, organization, user) => {
     return getCrumbDataById(args.id, organization, user);
 };
 
+const _fetchMinimalDataForCrumb = async (crumbData, organization, user, queryInfo) => {
+    /**
+     * Will fetch the full crumb data if needed, or just the IDs if only those are queries
+     */
+    if (crumbData.length === 0) return [];
+
+    const fields = queryInfo.fieldNodes[0].selectionSet.selections.map(selection => selection.name.value);
+    if (fields.length === 1 && fields[0] === "id") return crumbData;
+    return Promise.all(crumbData.map(record => getCrumbDataById(record.id, organization, user)));
+};
+
 const getCrumbsWithTag = async (args, organization, user, info) => {
     logger.info("Getting all crumbs with tag", {tags: args.tags});
     const crumbData = await knexClient
@@ -116,16 +127,22 @@ const getCrumbsWithTag = async (args, organization, user, info) => {
         .where({organization_id: organization})
         .andWhere("tags", "@>", [args.tag])
         .select("id");
+    return _fetchMinimalDataForCrumb(crumbData, organization, user, info);
+};
 
-    // try to shorten it if only the ID is requested
-    const fields = info.fieldNodes[0].selectionSet.selections.map(selection => selection.name.value);
-    if (crumbData.length === 0 || (fields.length === 1 && fields[0] === "id")) return crumbData;
-    return Promise.all(crumbData.map(record => getCrumbDataById(record.id, organization, user)));
+const getCrumbsByAuthor = async (args, organization, user, info) => {
+    logger.info("Getting all crumbs by author", {authorId: args.authorId});
+    const crumbData = await knexClient
+        .from("crumbs")
+        .where({organization_id: organization, creator_id: args.authorId})
+        .select("id");
+    return _fetchMinimalDataForCrumb(crumbData, organization, user, info);
 };
 
 module.exports = {
     getCrumb,
     getCrumbsWithTag,
+    getCrumbsByAuthor,
     createCrumb,
     voteCrumb,
 };

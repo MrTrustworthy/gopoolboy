@@ -1,0 +1,9 @@
+query GetCrumbsByAuthor($authorId: String!){
+  getCrumbsByAuthor(authorId: $authorId){
+    id
+    title
+    tags
+    type
+    createdAt
+  }
+}

@@ -98,6 +98,10 @@
                 type: Boolean,
                 required: true,
             },
+            expanded: {
+                type: Boolean,
+                default: false
+            }
         },
 
         data() {
@@ -107,7 +111,7 @@
                 newUserRole: null,
                 roleChangeLoading: false,
                 confirmRemoveUser: false,
-                expandDetails: false,
+                expandDetails: this.expanded,
             };
         },
         watch: {
