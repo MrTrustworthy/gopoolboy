@@ -5,11 +5,24 @@ import AboutView from "./views/About.vue";
 import CrumbDetailView from "./views/CrumbDetail.vue";
 import ProfileView from "./views/Profile.vue";
 import OrganizationView from "./views/Organization.vue";
-import {fromId} from "@/urlids";
+import {encodeId} from "@/urlids";
 import {authGuard} from "./auth/authGuard";
 import TagOverview from "./views/TagOverview";
+import TagDetailView from "./views/TagDetail";
 
 Vue.use(VueRouter);
+
+const redirectIds = (routeName) => {
+    return (to, from, next) => {
+        if (isNaN(to.params.id)) {
+            next();
+            return;
+        }
+        let id = encodeId(to.params.id);
+        console.log("Redirecting plain ID", to.params.id, "to nice ID", id);
+        next({name: routeName, params: {id: id}});
+    };
+};
 
 export const router = new VueRouter({
     routes: [
@@ -30,6 +43,15 @@ export const router = new VueRouter({
             },
         },
         {
+            path: "/crumbs/:id",
+            name: "crumbdetail",
+            component: CrumbDetailView,
+            meta: {
+                requiresLogin: true,
+            },
+            beforeEnter: redirectIds("crumbdetail"),
+        },
+        {
             path: "/tags",
             name: "tags",
             component: TagOverview,
@@ -38,21 +60,13 @@ export const router = new VueRouter({
             },
         },
         {
-            path: "/crumbs/:id",
-            name: "crumbdetail",
-            component: CrumbDetailView,
+            path: "/tags/:id",
+            name: "tagdetail",
+            component: TagDetailView,
             meta: {
                 requiresLogin: true,
             },
-            beforeEnter: (to, from, next) => {
-                if (isNaN(to.params.id)) {
-                    next();
-                    return;
-                }
-                let id = fromId(to.params.id);
-                console.log("Redirecting plain ID", to.params.id, "to nice ID", id);
-                next({name: "crumbdetail", params: {id: id}});
-            },
+            beforeEnter: redirectIds("tagdetail"),
         },
         {
             path: "/profile/:userId",

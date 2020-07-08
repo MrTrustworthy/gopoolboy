@@ -3,5 +3,6 @@ query GetTagsByIds($ids: [ID]!){
     id
     name
     value
+    authorId
   }
 }

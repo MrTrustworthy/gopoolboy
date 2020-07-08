@@ -8,9 +8,9 @@
             An error occured :(
         </div>
 
-        <v-list-item sha v-else>
+        <v-list-item v-else class="elevation-1">
             <v-list-item-icon>
-                <v-chip label small :color="color"> {{ tag.name }}:{{ tag.value }}</v-chip>
+                <TagChip :tag="tag"/>
             </v-list-item-icon>
 
             <v-list-item-content>
@@ -27,10 +27,11 @@
 
 <script>
     import AuthorListItem from "./AuthorListItem";
+    import TagChip from "./TagChip";
 
     export default {
         name: "TagSummaryListItem",
-        components: {AuthorListItem},
+        components: {TagChip, AuthorListItem},
         props: {
             tag: {
                 type: Object,
@@ -40,13 +41,7 @@
         data() {
             return {
                 getCrumbsWithTag: [],
-                colors: ['green', 'purple', 'indigo', 'cyan', 'teal', 'orange'],
             };
-        },
-        computed: {
-            color() {
-                return this.colors[this.tag.id % this.colors.length];
-            },
         },
         apollo: {
             getCrumbsWithTag: {

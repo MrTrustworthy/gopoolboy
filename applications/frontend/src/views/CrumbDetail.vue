@@ -30,7 +30,7 @@
     import NewCrumb from "@/components/NewCrumb.vue";
     import Speeddial from "@/components/Speeddial.vue";
 
-    import {toId} from "@/urlids";
+    import {decodeId} from "@/urlids";
     import LinkSummary from "../components/LinkSummary";
 
     export default {
@@ -49,14 +49,14 @@
         },
         data() {
             return {
-                crumbId: toId(this.$route.params.id),
+                crumbId: decodeId(this.$route.params.id),
                 getLinkedCrumbIds: [],
                 showLinkFlags: {}
             };
         },
         watch: {
             $route(to) {
-                this.crumbId = toId(to.params.id);
+                this.crumbId = decodeId(to.params.id);
             },
         },
         methods: {

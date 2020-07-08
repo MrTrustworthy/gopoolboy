@@ -1,10 +1,12 @@
 <template>
-    <v-chip :color="colorForId(tag.id)">
+    <v-chip :color="colorForId(tag.id)" @click="openDetailView">
         {{ tag.name }}:{{ tag.value }}
     </v-chip>
 </template>
 
 <script>
+    import {encodeId} from "@/urlids";
+
     export default {
         name: "TagChip",
         props: {
@@ -22,6 +24,9 @@
             colorForId(id) {
                 return this.colors[id % this.colors.length];
             },
+            openDetailView() {
+                this.$router.push({name: "tagdetail", params: {id: encodeId(this.tag.id)}});
+            }
         },
     };
 </script>

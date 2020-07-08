@@ -15,7 +15,7 @@
 </template>
 
 <script>
-    import {fromId} from "@/urlids";
+    import {encodeId} from "@/urlids";
     import TagInput from "./TagInput";
 
     export default {
@@ -68,7 +68,7 @@
                 let crumbId = data.data.createCrumb.id;
 
                 if (!this.linkTo) {
-                    await this.$router.push({name: "crumbdetail", params: {id: fromId(crumbId)}});
+                    await this.$router.push({name: "crumbdetail", params: {id: encodeId(crumbId)}});
                     return;
                 }
                 await this.$apollo

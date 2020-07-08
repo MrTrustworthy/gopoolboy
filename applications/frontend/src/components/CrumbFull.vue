@@ -27,7 +27,7 @@
 
                     <v-col cols="3">
                         <v-btn v-if="!main" class="mx-auto"
-                               :to="{name: 'crumbdetail', params: {id: fromId(getCrumb.id)} }">
+                               :to="{name: 'crumbdetail', params: {id: encodeId(getCrumb.id)} }">
                             <v-icon>all_out</v-icon>
                         </v-btn>
                     </v-col>
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-    import {fromId} from "@/urlids";
+    import {encodeId} from "@/urlids";
     import Votes from "./Votes";
     import DOMPurify from 'dompurify';
     import marked from "marked";
@@ -77,7 +77,7 @@
         data() {
             return {
                 getCrumb: {},
-                fromId: fromId,
+                encodeId: encodeId,
                 getUsers: [],
             };
         },

@@ -34,7 +34,7 @@
     import CreatedAListItem from "./CreatedAtListItem";
     import CrumbTypeIcon from "./CrumbTypeIcon";
     import CrumbSummary from "./CrumbSummary";
-    import {fromId} from "@/urlids";
+    import {encodeId} from "@/urlids";
     import TagChip from "./TagChip";
 
     export default {
@@ -63,7 +63,7 @@
         },
         methods: {
             routeToFull(id) {
-                this.$router.push({name: "crumbdetail", params: {id: fromId(id)}});
+                this.$router.push({name: "crumbdetail", params: {id: encodeId(id)}});
             },
             iconColor(item) {
                 if (item.__typename === "Tag") return "accent";
@@ -72,7 +72,7 @@
                 return "secondary";
             },
             goToLinked(crumbLink) {
-                this.$router.push({name: "crumbdetail", params: {id: fromId(crumbLink.links[0])}});
+                this.$router.push({name: "crumbdetail", params: {id: encodeId(crumbLink.links[0])}});
             }
         },
         apollo: {

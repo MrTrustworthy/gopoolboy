@@ -11,7 +11,7 @@
     import CreateWidgetSnackbar from "@/components/Speeddial.vue";
     import CrumbList from "../components/CrumbList";
     import SearchCard from "../components/SearchCard";
-    import {fromId} from "@/urlids";
+    import {encodeId} from "@/urlids";
 
     export default {
         name: "Search",
@@ -27,7 +27,7 @@
         },
         methods: {
             routeToFull(id) {
-                this.$router.push({name: "crumbdetail", params: {id: fromId(id)}});
+                this.$router.push({name: "crumbdetail", params: {id: encodeId(id)}});
             }
         }
     };
