@@ -1,0 +1,1 @@
+Have to run `gcloud auth application-default login` to get the local service account for PubSub when running tests
