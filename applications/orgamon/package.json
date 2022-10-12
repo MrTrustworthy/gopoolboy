@@ -9,7 +9,7 @@
     },
     "dependencies": {
         "@gopoolboy/auth": "^0.1.1",
-        "apollo-server": "^2.14.2",
+        "apollo-server": "^2.25.4",
         "auth0": "^2.25.1",
         "dotenv": "^8.2.0",
         "generate-password": "^1.5.1",
